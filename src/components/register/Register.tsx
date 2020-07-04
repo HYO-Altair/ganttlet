@@ -1,16 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Avatar,
-    Button,
-    CssBaseline,
-    TextField,
-    Grid,
-    Box,
-    Typography,
-    Container,
-    Link as MuiLink,
-} from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Link } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,8 +13,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link to="https://material-ui.com/">
-                <MuiLink color="inherit">Your Website</MuiLink>
+            <Link color="inherit" component={RouterLink} to="https://material-ui.com/">
+                Your Website
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -180,8 +170,8 @@ export default function Register(): JSX.Element {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link to="/login">
-                                <MuiLink variant="body2">Already have an account? Sign in</MuiLink>
+                            <Link variant="body2" component={RouterLink} to="/login">
+                                Already have an account? Sign in
                             </Link>
                         </Grid>
                     </Grid>

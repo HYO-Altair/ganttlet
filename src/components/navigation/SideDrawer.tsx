@@ -48,13 +48,13 @@ const styles = (theme: Theme) =>
         },
     });
 
-interface Props extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
     // non style props
     handleSideDrawerClose: { (): void };
     sideDrawerOpen: boolean;
     // injected style props
 }
-function SideDrawer(props: Props) {
+function SideDrawer(props: IProps) {
     const { classes, handleSideDrawerClose, sideDrawerOpen } = props;
 
     const menuItems = [

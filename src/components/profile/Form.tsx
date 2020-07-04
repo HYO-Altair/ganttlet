@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function Form() {
+export default function Form(): JSX.Element {
     const classes = useStyles();
 
     return (

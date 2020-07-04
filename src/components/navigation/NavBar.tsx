@@ -17,6 +17,8 @@ import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';
 import * as Constants from '../../config/constants';
 
+import { IUser } from '../../config/sharedTypes';
+
 const drawerWidth = Constants.drawerWidth;
 
 const styles = (theme: Theme) =>
@@ -60,14 +62,7 @@ const styles = (theme: Theme) =>
         },
     });
 
-type Json = string | number | boolean | null | { [property: string]: Json } | Json[];
-
-interface IUser {
-    loggedIn: boolean;
-    email: string;
-}
-
-interface Props extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
     // non style props
     handleMobileDrawerOpen: VoidFunction;
     handleMobileDrawerClose: VoidFunction;
@@ -81,7 +76,7 @@ interface Props extends WithStyles<typeof styles> {
     selectTab: { (selectedTab: string): void };
     // injected style props
 }
-function NavBar(props: Props): JSX.Element {
+function NavBar(props: IProps): JSX.Element {
     const {
         classes,
         handleMobileDrawerOpen,

@@ -14,6 +14,7 @@ import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
 import firebase from './components/Firebase/firebase';
 
+import { IUser } from './config/sharedTypes';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -27,10 +28,7 @@ const styles = (theme: Theme) =>
     });
 
 type Props = WithStyles<typeof styles>;
-interface IUser {
-    loggedIn: boolean;
-    email: string;
-}
+
 function App(props: Props): JSX.Element {
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');

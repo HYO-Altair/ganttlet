@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Grid, Typography, Box, IconButton, withWidth, isWidthUp, TextField } from '@material-ui/core';
+import { Grid, Typography, Box, IconButton, withWidth, isWidthUp } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MailIcon from '@material-ui/icons/Mail';
 import GitHubIcon from '@material-ui/icons/GitHub';
@@ -42,14 +42,14 @@ const styles = (theme: Theme) =>
         },
     });
 
-interface Props extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
     // non style props
     theme: Theme;
     width: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     // injected style props
 }
 
-function Footer(props: Props): JSX.Element {
+function Footer(props: IProps): JSX.Element {
     const { classes, theme, width } = props;
     return (
         <footer className="lg-p-top">

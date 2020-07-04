@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
     Avatar,
@@ -16,7 +16,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from '../Firebase/firebase';
-import { useFormContext, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
 
 function Copyright() {
@@ -68,16 +68,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-interface LoginFormObject {
+interface ILoginFormObject {
     email: string;
     password: string;
 }
 
 export default function Login(): JSX.Element {
     const classes = useStyles();
-    const { register, handleSubmit, errors } = useForm<LoginFormObject>();
+    const { register, handleSubmit, errors } = useForm<ILoginFormObject>();
 
-    const onSubmit = (data: LoginFormObject) => {
+    const onSubmit = (data: ILoginFormObject) => {
         firebase.signIn(data.email, data.password);
     };
 

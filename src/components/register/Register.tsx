@@ -100,7 +100,7 @@ export default function Register(): JSX.Element {
                 </Typography>
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid data-cy="firstNameContainer" item xs={12} sm={6}>
                             <TextField
                                 autoComplete="fname"
                                 name="firstName"
@@ -111,10 +111,11 @@ export default function Register(): JSX.Element {
                                 label="First Name"
                                 autoFocus
                                 inputRef={register({ required: true, maxLength: 64 })}
+                                data-cy="firstName"
                             />
                             {errors.firstName && <ErrorDisplay type={errors.firstName.type} />}
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid data-cy="lastNameContainer" item xs={12} sm={6}>
                             <TextField
                                 variant="outlined"
                                 required
@@ -124,10 +125,11 @@ export default function Register(): JSX.Element {
                                 name="lastName"
                                 autoComplete="lname"
                                 inputRef={register({ required: true, maxLength: 64 })}
+                                data-cy="lastName"
                             />
                             {errors.lastName && <ErrorDisplay type={errors.lastName.type} />}
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid data-cy="emailContainer" item xs={12}>
                             <TextField
                                 variant="outlined"
                                 required
@@ -141,10 +143,11 @@ export default function Register(): JSX.Element {
                                     maxLength: 256,
                                     validate: emailIsUnique,
                                 })}
+                                data-cy="email"
                             />
                             {errors.email && <ErrorDisplay type={errors.email.type} />}
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid data-cy="passwordContainer" item xs={12}>
                             <TextField
                                 variant="outlined"
                                 required
@@ -155,6 +158,7 @@ export default function Register(): JSX.Element {
                                 id="password"
                                 autoComplete="current-password"
                                 inputRef={register({ required: true, minLength: 12 })}
+                                data-cy="password"
                             />
                             {errors.password && <ErrorDisplay type={errors.password.type} />}
                         </Grid>
@@ -167,7 +171,15 @@ export default function Register(): JSX.Element {
                             </Grid>
                             */}
                     </Grid>
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                    <Button
+                        id="submitButton"
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        data-cy="submitButton"
+                    >
                         Sign Up
                     </Button>
                     {/*Google Sign in */}

@@ -137,6 +137,7 @@ export default function Register(): JSX.Element {
                                 id="email"
                                 label="Email Address"
                                 name="email"
+                                type="email"
                                 autoComplete="email"
                                 inputRef={register({
                                     required: true,

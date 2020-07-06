@@ -91,6 +91,12 @@ class FirebaseWrapper {
         }
     }
 
+    deleteUser(): void {
+        if (this.auth.currentUser) {
+            this.auth.currentUser.delete();
+        }
+    }
+
     googleSignIn = () => {
         this.auth
             .signInWithPopup(this.provider)

@@ -3,23 +3,30 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import PeopleIcon from '@material-ui/icons/People';
+import BarChartIcon from '@material-ui/icons/BarChart';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Notifications from '@material-ui/icons/Notifications';
 
 export const mainListItems = (
     <div>
         <ListItem button>
             <ListItemIcon>
-                <AccountCircle />
+                <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Account" />
+            <ListItemText primary="Dashboard" />
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <Notifications />
+                <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Notifications" />
+            <ListItemText primary="Members" />
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reports" />
         </ListItem>
     </div>
 );

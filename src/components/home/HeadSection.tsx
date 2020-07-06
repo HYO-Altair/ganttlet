@@ -1,5 +1,6 @@
 import React, { Fragment, memo } from 'react';
 import classNames from 'classnames';
+
 import { Grid, Typography, Card, Button, Hidden, Box, withWidth, isWidthUp } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 
@@ -89,6 +90,7 @@ const styles = (theme: Theme) =>
             paddingTop: theme.spacing(4),
         },
     });
+
 interface Props extends WithStyles<typeof styles> {
     // non style props
     theme: Theme;

@@ -1,24 +1,30 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
+import {
+    Avatar,
+    Button,
+    CssBaseline,
+    TextField,
+    Grid,
+    Box,
+    Typography,
+    Container,
+    Link as MuiLink,
+} from '@material-ui/core';
+import { useForm } from 'react-hook-form';
+
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+
+import firebase from '../Firebase/firebase';
+import ErrorDisplay from '../shared/ErrorDisplay';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+            <Link to="https://material-ui.com/">
+                <MuiLink color="inherit">Your Website</MuiLink>
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -47,14 +53,44 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    appBarSpacer: theme.mixins.toolbar,
+    googleBtn: {
+        width: '100%',
+        margin: '0 0 48px 0',
+        display: 'flex',
+        '& img': {
+            width: '16px',
+            height: '16px',
+            padding: 0,
+            margin: '0 5px',
+            'vertical-align': 'middle',
+        },
+    },
 }));
 
-export default function Register() {
-    const classes = useStyles();
+interface RegisterFormObject {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+}
 
+export default function Register(): JSX.Element {
+    const classes = useStyles();
+    const { register, handleSubmit, errors } = useForm<RegisterFormObject>();
+    const onSubmit = (data: RegisterFormObject) => {
+        firebase.createUser(data.email, data.password, data.firstName, data.lastName);
+    };
+
+    // This is redundant, but when I tried to use the FirebaseWrapper member function directly I got an error saying `this` is undefined
+    const emailIsUnique = async (email: string) => {
+        const isUnique = !(await firebase.userAlreadyExists(email));
+        return isUnique;
+    };
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
             <CssBaseline />
+            <div className={classes.appBarSpacer} />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
@@ -62,7 +98,7 @@ export default function Register() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -74,7 +110,9 @@ export default function Register() {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                inputRef={register({ required: true, maxLength: 64 })}
                             />
+                            {errors.firstName && <ErrorDisplay type={errors.firstName.type} />}
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -85,7 +123,9 @@ export default function Register() {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
+                                inputRef={register({ required: true, maxLength: 64 })}
                             />
+                            {errors.lastName && <ErrorDisplay type={errors.lastName.type} />}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -96,7 +136,13 @@ export default function Register() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                inputRef={register({
+                                    required: true,
+                                    maxLength: 256,
+                                    validate: emailIsUnique,
+                                })}
                             />
+                            {errors.email && <ErrorDisplay type={errors.email.type} />}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -108,22 +154,34 @@ export default function Register() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                inputRef={register({ required: true, minLength: 12 })}
                             />
+                            {errors.password && <ErrorDisplay type={errors.password.type} />}
                         </Grid>
+                        {/*
                         <Grid item xs={12}>
                             <FormControlLabel
                                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                                 label="I want to receive inspiration, marketing promotions and updates via email."
                             />
-                        </Grid>
+                            </Grid>
+                            */}
                     </Grid>
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         Sign Up
                     </Button>
+                    {/*Google Sign in */}
+                    <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                            alt="logo"
+                        />
+                        Sign Up With Google
+                    </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="/signin" variant="body2">
-                                Already have an account? Sign in
+                            <Link to="/login">
+                                <MuiLink variant="body2">Already have an account? Sign in</MuiLink>
                             </Link>
                         </Grid>
                     </Grid>

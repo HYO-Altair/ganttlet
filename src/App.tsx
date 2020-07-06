@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
+import React, { Fragment, Suspense, memo, useState, useCallback, useEffect, Dispatch, SetStateAction } from 'react';
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
@@ -13,9 +13,13 @@ import Dashboard from './components/dashboard/Dashboard';
 import PropsRoute from './utils/components/PropsRoute';
 import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
+import firebase from './components/Firebase/firebase';
 
 const styles = (theme: Theme) =>
     createStyles({
+        root: {
+            display: 'flex',
+        },
         wrapper: {
             backgroundColor: theme.palette.common.white,
             overflowX: 'hidden',
@@ -23,15 +27,35 @@ const styles = (theme: Theme) =>
         },
     });
 
-interface Props extends WithStyles<typeof styles> {
-    // non style props
-    // injected style props
+type Props = WithStyles<typeof styles>;
+interface IUser {
+    loggedIn: boolean;
+    email: string;
 }
-
 function App(props: Props): JSX.Element {
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+    const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
+    const [user, setUser] = useState({ loggedIn: false, email: '' });
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChange(setUser);
+        return () => {
+            unsubscribe();
+        };
+    }, [setUser]);
+
+    // updates user hook when firebase auth status changes
+    function onAuthStateChange(callback: Dispatch<SetStateAction<IUser>>) {
+        return firebase.auth.onAuthStateChanged((user) => {
+            if (user) {
+                callback({ loggedIn: true, email: user.email ? user.email : '' });
+            } else {
+                callback({ loggedIn: false, email: '' });
+            }
+        });
+    }
 
     const selectHome = useCallback(() => {
         smoothScrollTop();
@@ -57,6 +81,12 @@ function App(props: Props): JSX.Element {
         setSelectedTab('Profile');
     }, [setSelectedTab]);
 
+    const selectDashBoard = useCallback(() => {
+        smoothScrollTop();
+        document.title = 'Dashboard | Ganttlet';
+        setSelectedTab('Dashboard');
+    }, [setSelectedTab]);
+
     const handleMobileDrawerOpen = useCallback(() => {
         setIsMobileDrawerOpen(true);
     }, [setIsMobileDrawerOpen]);
@@ -64,6 +94,15 @@ function App(props: Props): JSX.Element {
     const handleMobileDrawerClose = useCallback(() => {
         setIsMobileDrawerOpen(false);
     }, [setIsMobileDrawerOpen]);
+
+    const handleSideDrawerOpen = useCallback(() => {
+        setIsSideDrawerOpen(true);
+    }, [setIsSideDrawerOpen]);
+
+    const handleSideDrawerClose = useCallback(() => {
+        setIsSideDrawerOpen(false);
+    }, [setIsSideDrawerOpen]);
+
     return (
         <Router>
             <MuiThemeProvider theme={theme}>
@@ -71,20 +110,36 @@ function App(props: Props): JSX.Element {
                 <GlobalStyles />
                 <Suspense fallback={<Fragment />}>
                     <div className={classes.wrapper}>
-                        <NavBar
-                            selectedTab={selectedTab}
-                            selectTab={setSelectedTab}
-                            mobileDrawerOpen={isMobileDrawerOpen}
-                            handleMobileDrawerOpen={handleMobileDrawerOpen}
-                            handleMobileDrawerClose={handleMobileDrawerClose}
-                        />
-                        <Switch>
-                            <PropsRoute path="/dashboard" component={Dashboard} />
-                            <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
-                            <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
-                            <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
-                            <PropsRoute path="/" component={Home} selectHome={selectHome} />
-                        </Switch>
+                        <div className={classes.root}>
+                            <NavBar
+                                selectedTab={selectedTab}
+                                selectTab={setSelectedTab}
+                                mobileDrawerOpen={isMobileDrawerOpen}
+                                handleMobileDrawerOpen={handleMobileDrawerOpen}
+                                handleMobileDrawerClose={handleMobileDrawerClose}
+                                handleSideDrawerOpen={handleSideDrawerOpen}
+                                handleSideDrawerClose={handleSideDrawerClose}
+                                sideDrawerOpen={isSideDrawerOpen}
+                                user={user}
+                                setUser={setUser}
+                            />
+                            {user.loggedIn ? (
+                                //routes that users can go to if they are logged in
+                                <Switch>
+                                    <PropsRoute path="/home" component={Home} selectHome={selectHome} />
+                                    <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
+                                    <PropsRoute path="/" component={Dashboard} selectDashboard={selectDashBoard} />
+                                </Switch>
+                            ) : (
+                                //routes that users can go to if they are not logged in
+
+                                <Switch>
+                                    <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
+                                    <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
+                                    <PropsRoute path="/" component={Home} selectHome={selectHome} />
+                                </Switch>
+                            )}
+                        </div>
                     </div>
                 </Suspense>
             </MuiThemeProvider>

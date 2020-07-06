@@ -7,6 +7,10 @@ module.exports = {
             jsx: true, // Allows for the parsing of JSX
         },
     },
+    plugins: [
+        // ...
+        'react-hooks',
+    ],
     settings: {
         react: {
             version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
@@ -26,6 +30,8 @@ module.exports = {
             {
                 endOfLine: 'auto',
             },
-        ],
+        ], // ...
+        'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+        'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     },
 };

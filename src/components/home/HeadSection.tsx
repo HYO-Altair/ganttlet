@@ -91,13 +91,13 @@ const styles = (theme: Theme) =>
         },
     });
 
-interface Props extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
     // non style props
     theme: Theme;
     width: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     // injected style props
 }
-function HeadSection(props: Props): JSX.Element {
+function HeadSection(props: IProps): JSX.Element {
     const { classes, theme, width } = props;
     return (
         <Fragment>

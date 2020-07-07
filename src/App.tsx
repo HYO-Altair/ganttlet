@@ -2,7 +2,7 @@ import React, { Fragment, Suspense, memo, useState, useCallback, useEffect, Disp
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import NavBar from './components/navigation/NavBar';
@@ -10,11 +10,11 @@ import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
 import Dashboard from './components/dashboard/Dashboard';
-import PropsRoute from './utils/components/PropsRoute';
 import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
 import firebase from './components/Firebase/firebase';
 
+import { IUser } from './config/sharedTypes';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -28,10 +28,7 @@ const styles = (theme: Theme) =>
     });
 
 type Props = WithStyles<typeof styles>;
-interface IUser {
-    loggedIn: boolean;
-    email: string;
-}
+
 function App(props: Props): JSX.Element {
     const { classes } = props;
     const [selectedTab, setSelectedTab] = useState('');
@@ -103,6 +100,31 @@ function App(props: Props): JSX.Element {
         setIsSideDrawerOpen(false);
     }, [setIsSideDrawerOpen]);
 
+    const renderMergedProps = (component: any, ...rest: any) => {
+        const finalProps = Object.assign({}, ...rest);
+        return React.createElement(component, finalProps);
+    };
+
+    const PropsRoute = ({ component, ...rest }: any) => (
+        <Route {...rest} render={(routeProps) => renderMergedProps(component, routeProps, rest)} />
+    );
+
+    // routes that should only be accessed by users not logged in
+    const PublicRoute = ({ component, ...rest }: any) =>
+        user.loggedIn ? (
+            <Redirect to={{ pathname: '/dashboard' }} />
+        ) : (
+            <Route {...rest} render={(routeProps) => renderMergedProps(component, routeProps, rest)} />
+        );
+
+    // routes that should only be accessed by users logged in
+    const PrivateRoute = ({ component, ...rest }: any) =>
+        user.loggedIn ? (
+            <Route {...rest} render={(routeProps) => renderMergedProps(component, routeProps, rest)} />
+        ) : (
+            <Redirect to={{ pathname: '/login' }} />
+        );
+
     return (
         <Router>
             <MuiThemeProvider theme={theme}>
@@ -123,22 +145,18 @@ function App(props: Props): JSX.Element {
                                 user={user}
                                 setUser={setUser}
                             />
-                            {user.loggedIn ? (
-                                //routes that users can go to if they are logged in
-                                <Switch>
-                                    <PropsRoute path="/home" component={Home} selectHome={selectHome} />
-                                    <PropsRoute path="/profile" component={Profile} selectProfile={selectProfile} />
-                                    <PropsRoute path="/" component={Dashboard} selectDashboard={selectDashBoard} />
-                                </Switch>
-                            ) : (
-                                //routes that users can go to if they are not logged in
-
-                                <Switch>
-                                    <PropsRoute path="/login" component={Login} selectLogin={selectLogin} />
-                                    <PropsRoute path="/register" component={Register} selectRegister={selectRegister} />
-                                    <PropsRoute path="/" component={Home} selectHome={selectHome} />
-                                </Switch>
-                            )}
+                            <Switch>
+                                <PropsRoute path="/home" component={Home} selectHome={selectHome} />
+                                <PrivateRoute
+                                    path={'/dashboard'}
+                                    component={Dashboard}
+                                    selectDashboard={selectDashBoard}
+                                />
+                                <PrivateRoute path="/profile" component={Profile} selectProfile={selectProfile} />
+                                <PublicRoute path="/login" component={Login} selectLogin={selectLogin} />
+                                <PublicRoute path="/register" component={Register} selectRegister={selectRegister} />
+                                <PropsRoute path="/" component={Home} selectHome={selectHome} />
+                            </Switch>
                         </div>
                     </div>
                 </Suspense>

@@ -38,7 +38,7 @@ const styles = (theme: Theme) =>
         },
     });
 
-interface Props extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
     // non style props
     Icon: React.ReactNode;
     color: string;
@@ -46,7 +46,7 @@ interface Props extends WithStyles<typeof styles> {
     text: string;
     // injected style props
 }
-function FeatureCard(props: Props) {
+function FeatureCard(props: IProps) {
     const { classes, Icon, color, headline, text } = props;
     return (
         <Fragment>

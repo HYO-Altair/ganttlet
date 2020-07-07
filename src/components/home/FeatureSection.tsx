@@ -27,12 +27,12 @@ const styles = () =>
         },
     });
 
-interface Props extends WithStyles<typeof styles> {
+interface IProps extends WithStyles<typeof styles> {
     // non style props
     width: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     // injected style props
 }
-function FeatureSection(props: Props): JSX.Element {
+function FeatureSection(props: IProps): JSX.Element {
     const { classes, width } = props;
 
     function calculateSpacing(width: 'xs' | 'sm' | 'md' | 'lg' | 'xl') {

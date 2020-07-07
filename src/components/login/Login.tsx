@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
     Avatar,
     Button,
@@ -12,20 +11,20 @@ import {
     Box,
     Typography,
     Container,
-    Link as MuiLink,
+    Link,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from '../Firebase/firebase';
-import { useFormContext, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link to="https://material-ui.com/">
-                <MuiLink color="inherit">Your Website</MuiLink>
+            <Link color="inherit" component={RouterLink} to="https://material-ui.com/">
+                Your Website
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -69,16 +68,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-interface LoginFormObject {
+interface ILoginFormObject {
     email: string;
     password: string;
 }
 
 export default function Login(): JSX.Element {
     const classes = useStyles();
-    const { register, handleSubmit, errors } = useForm<LoginFormObject>();
+    const { register, handleSubmit, errors } = useForm<ILoginFormObject>();
 
-    const onSubmit = (data: LoginFormObject) => {
+    const onSubmit = (data: ILoginFormObject) => {
         firebase.signIn(data.email, data.password);
     };
 
@@ -137,15 +136,13 @@ export default function Login(): JSX.Element {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link to="#">
-                                <MuiLink href="#" variant="body2">
-                                    Forgot password?
-                                </MuiLink>
+                            <Link variant="body2" component={RouterLink} to="#">
+                                Forgot password?
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link to="/register">
-                                <MuiLink variant="body2">Don&apos;t have an account? Sign Up</MuiLink>
+                            <Link variant="body2" component={RouterLink} to="/register">
+                                Don&apos;t have an account? Sign Up
                             </Link>
                         </Grid>
                     </Grid>

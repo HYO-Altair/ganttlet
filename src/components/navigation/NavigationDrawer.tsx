@@ -32,12 +32,14 @@ const styles = (theme: Theme) =>
             textDecoration: 'none !important',
         },
     });
+
 interface IMenuItem {
     link: string;
     name: string;
     icon: React.ReactNode;
 }
-interface Props extends WithStyles<typeof styles> {
+
+interface IProps extends WithStyles<typeof styles> {
     // non style props
     anchor: 'bottom' | 'left' | 'right' | 'top';
     open: boolean;
@@ -49,7 +51,7 @@ interface Props extends WithStyles<typeof styles> {
 
     // injected style props
 }
-function NavigationDrawer(props: Props): JSX.Element {
+function NavigationDrawer(props: IProps): JSX.Element {
     const { width, open, onClose, anchor, classes, menuItems, selectedItem, theme } = props;
 
     useEffect(() => {

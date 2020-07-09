@@ -12,7 +12,7 @@ export const teamsPath = rootPath + 'child/teams';
 // template for resetting database
 export const cleanDatabaseJSON = {
     users: {},
-    teams: {},
+    projects: {},
 };
 
 // template for adding a new user to users
@@ -21,30 +21,37 @@ export const newUserJSON = {
     lname: '',
     email: '',
     password: '',
-    teams: {},
-    settings: {},
-};
-
-// template for adding a new team to teams
-export const newTeamJSON = {
-    managers: {},
-    members: {},
     projects: {},
+    settings: {},
 };
 
 // template for adding a new project to a team
 export const newProjectJSON = {
+    name: '',
+    timezone: '',
     description: '',
     managers: {},
     members: {},
-    table: {},
+    tasks: {},
 };
 
 // template for adding a new task to a project
 export const newProjectTaskJSON = {
     id: '',
     taskname: '',
+    description: '',
+    color: '',
     duration: '',
     startdate: '',
     enddate: '',
+    assignees: {},
+    subtasks: {},
+    comments: {},
+};
+
+// template for adding a new comment to a task
+export const newTaskComment = {
+    op: '',
+    text: '',
+    taggedusers: {},
 };

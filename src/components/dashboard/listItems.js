@@ -1,7 +1,12 @@
 import React from 'react';
 
 import { ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core';
-import { DashboardIcon, PeopleIcon, BarChartIcon, AssignmentIcon } from '@material-ui/icons';
+import {
+    Dashboard as DashboardIcon,
+    People as PeopleIcon,
+    BarChart as BarChartIcon,
+    Assignment as AssignmentIcon,
+} from '@material-ui/icons';
 
 export const mainListItems = (
     <div>

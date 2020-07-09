@@ -77,8 +77,8 @@ export default function Login(): JSX.Element {
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<ILoginFormObject>();
 
-    const onSubmit = (data: ILoginFormObject) => {
-        firebase.signIn(data.email, data.password);
+    const onSubmit = async (data: ILoginFormObject) => {
+        await firebase.signIn(data.email, data.password);
     };
 
     return (
@@ -122,6 +122,9 @@ export default function Login(): JSX.Element {
                         inputRef={register({ required: true, minLength: 12 })}
                     />
                     {errors.password && <ErrorDisplay type={errors.password.type} />}
+                    {!errors.password && !errors.email && firebase.lastLoginAttemptWasInvalid && (
+                        <ErrorDisplay type={'invalidLoginAttempt'} />
+                    )}
                     <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         Sign In

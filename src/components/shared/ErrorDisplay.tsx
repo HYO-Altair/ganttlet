@@ -7,6 +7,7 @@ errorMappings.set('required', 'Required');
 errorMappings.set('minLength', 'Too Short');
 errorMappings.set('maxLength', 'Too Long');
 errorMappings.set('validate', 'Account Exists');
+errorMappings.set('invalidLoginAttempt', 'Invalid Email or Password');
 
 export default function ErrorDisplay(props: { type: string }): JSX.Element {
     return (

@@ -30,6 +30,7 @@ class FirebaseWrapper {
     auth: app.auth.Auth;
     db: app.database.Database;
     loggedIn: boolean;
+    lastLoginAttemptWasInvalid: boolean;
     provider: firebase.auth.GoogleAuthProvider;
 
     constructor() {
@@ -49,6 +50,7 @@ class FirebaseWrapper {
         });
 
         this.loggedIn = false;
+        this.lastLoginAttemptWasInvalid = false;
 
         this.provider = new app.auth.GoogleAuthProvider();
     }
@@ -72,8 +74,13 @@ class FirebaseWrapper {
         this.auth.createUserWithEmailAndPassword(email, password);
     }
 
-    signIn(email: string, password: string): void {
-        this.auth.signInWithEmailAndPassword(email, password);
+    async signIn(email: string, password: string): Promise<void> {
+        try {
+            await this.auth.signInWithEmailAndPassword(email, password);
+            this.lastLoginAttemptWasInvalid = false;
+        } catch (error) {
+            this.lastLoginAttemptWasInvalid = true;
+        }
     }
 
     signOut(): void {

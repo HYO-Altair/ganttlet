@@ -53,21 +53,10 @@ class FirebaseWrapper {
 
     /* Auth API */
 
-    createUser(email: string, password: string, firstName: string, lastName: string): void {
+    async createUser(email: string, password: string, firstName: string, lastName: string): Promise<void> {
         // Need to add code to save user info in the realtime database as well.
-        const dbObject = {
-            email: email,
-            fname: firstName,
-            lName: lastName,
-            teams: {
-                teamCount: 0,
-            },
-            settings: {
-                theme: 'default',
-            },
-        };
-        this.db.ref('/users').push(dbObject);
-        this.auth.createUserWithEmailAndPassword(email, password);
+        await this.auth.createUserWithEmailAndPassword(email, password);
+        this.pushUserObject(this.auth.currentUser?.uid || 'null_user', email, firstName, lastName);
     }
 
     async signIn(email: string, password: string): Promise<void> {
@@ -94,27 +83,38 @@ class FirebaseWrapper {
         }
     }
 
-    deleteUser(): void {
+    deleteUser() {
         if (this.auth.currentUser) {
+            this.deleteCurrentUsersObject();
             this.auth.currentUser.delete();
         }
     }
 
-    googleSignIn = () => {
-        this.auth
-            .signInWithPopup(this.provider)
-            .then((result) => {
-                if (result) {
-                    const user = result.user;
-                    console.log(user);
-                    // To-do: handle what happen after (redirect, etc.)
-                }
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                console.log(errorCode);
-            });
-    };
+    async googleSignIn() {
+        try {
+            const result = await this.auth.signInWithPopup(this.provider);
+            const user = result.user;
+            // const token = googleSignInResult.credential.
+            // We need to use Google OAuth to get the users details.
+            this.pushUserObject(user?.uid || 'null_user', 'proletariat@revolution.com', 'Karl', 'Marx');
+        } catch (error) {
+            // const errorCode = error.code;
+            console.log(error);
+        }
+        // this.auth
+        //     .signInWithPopup(this.provider)
+        //     .then((result) => {
+        //         if (result) {
+        //             const user = result.user;
+        //             console.log(user);
+        //             // To-do: handle what happen after (redirect, etc.)
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         const errorCode = error.code;
+        //         console.log(errorCode);
+        //     });
+    }
 
     /* -------- */
 
@@ -126,9 +126,28 @@ class FirebaseWrapper {
     }
 
     async userAlreadyExists(email: string) {
-        const snapshotOfPotentialUser = await this.db.ref('users').orderByChild('email').equalTo(email).once('value');
+        const snapshotOfPotentialUser = await this.db.ref('/users').orderByChild('email').equalTo(email).once('value');
         const exists = await snapshotOfPotentialUser.exists();
         return exists;
+    }
+
+    pushUserObject(uid: string, email: string, firstName: string, lastName: string): void {
+        const dbObject = {
+            email: email,
+            fname: firstName,
+            lName: lastName,
+            teams: {
+                teamCount: 0,
+            },
+            settings: {
+                theme: 'default',
+            },
+        };
+        this.db.ref(`/users/${uid}`).set(dbObject);
+    }
+
+    async deleteCurrentUsersObject() {
+        this.db.ref(`/users/${this.auth.currentUser?.uid}`).remove();
     }
 
     /* -------- */

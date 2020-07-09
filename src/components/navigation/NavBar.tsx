@@ -156,7 +156,12 @@ function NavBar(props: IProps): JSX.Element {
                     <div>
                         {user.loggedIn ? (
                             <div>
-                                <Link key="profile" to="/profile" className={classes.noDecoration}>
+                                <Link
+                                    key="profile"
+                                    to="/profile"
+                                    className={classes.noDecoration}
+                                    data-cy="profileButton"
+                                >
                                     <IconButton color="inherit" onClick={handlePersonIconClick}>
                                         <PersonIcon />
                                     </IconButton>

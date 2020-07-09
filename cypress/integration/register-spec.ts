@@ -1,3 +1,21 @@
+describe('Register Page User Creation, Redirect and Deletion Test', () => {
+    it('Should Create New Account, Redirects to Dashboard, Go To Profile, Delete User and Redirect to Login', () => {
+        cy.visit('http://localhost:3000/register');
+        cy.wait(10);
+
+        cy.get('[data-cy=firstName]').type('Karl');
+        cy.get('[data-cy=lastName]').type('Marx');
+        cy.get('[data-cy=email]').type('marx@communism.com');
+        cy.get('[data-cy=password]').type('123456abcdef');
+        cy.get('[data-cy=submitButton]').click();
+        cy.url().should('include', 'dashboard');
+
+        cy.get('[data-cy=profileButton]').click();
+        cy.get('[data-cy=deleteButton]').click();
+        cy.url().should('include', 'login');
+    });
+});
+
 describe('Register Page Required Field Tests', () => {
     before(() => {
         cy.visit('http://localhost:3000/register');
@@ -57,7 +75,7 @@ describe('Duplicate User Test', () => {
         cy.wait(10);
 
         cy.get('[data-cy=email]').type('bot@cypress.com');
-        cy.get('[data-cy=submitButton]').click();
+        cy.get('[data-cy=submitButton]').click().click();
         cy.get('[data-cy=emailContainer]').contains('Account Exists');
     });
 });
@@ -65,18 +83,3 @@ describe('Duplicate User Test', () => {
 // Cypress bot details
 // Email: bot@cypress.com
 // Password: 123456abcdef
-
-// This is commented out currently because it doesn't look like the routing functionality is completely there yet.
-//
-// describe('Register Page User Creation and Redirect Test', () => {
-//     before(() => {
-//         cy.visit('http://localhost:3000/register');
-//         cy.get('[data-cy=firstName]').type('雷門');
-//         cy.get('[data-cy=lastName]').type('電気');
-//         cy.get('[data-cy=email]').type('lightning@mha.com');
-//         cy.get('[data-cy=password]').type('123456abcdef');
-//         cy.get('[data-cy=submitButton]').click();
-//     });
-
-//     cy.url().should('contain', 'dashboard');
-// });

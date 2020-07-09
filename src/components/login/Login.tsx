@@ -93,40 +93,54 @@ export default function Login(): JSX.Element {
                     Sign in
                 </Typography>
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
+                    <div data-cy="emailContainer">
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            inputRef={register({
+                                required: true,
+                                maxLength: 256,
+                            })}
+                            data-cy="email"
+                        />
+                        {errors.email && <ErrorDisplay type={errors.email.type} />}
+                    </div>
+
+                    <div data-cy="passwordContainer">
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            inputRef={register({ required: true, minLength: 12 })}
+                            data-cy="password"
+                        />
+                        {errors.password && <ErrorDisplay type={errors.password.type} />}
+                        {!errors.password && !errors.email && firebase.lastLoginAttemptWasInvalid && (
+                            <ErrorDisplay type={'invalidLoginAttempt'} />
+                        )}
+                    </div>
+
+                    <Button
+                        type="submit"
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        inputRef={register({
-                            required: true,
-                            maxLength: 256,
-                        })}
-                    />
-                    {errors.email && <ErrorDisplay type={errors.email.type} />}
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        inputRef={register({ required: true, minLength: 12 })}
-                    />
-                    {errors.password && <ErrorDisplay type={errors.password.type} />}
-                    {!errors.password && !errors.email && firebase.lastLoginAttemptWasInvalid && (
-                        <ErrorDisplay type={'invalidLoginAttempt'} />
-                    )}
-                    <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        data-cy="submitButton"
+                    >
                         Sign In
                     </Button>
                     {/*Google Sign in */}

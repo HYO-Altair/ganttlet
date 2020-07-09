@@ -51,6 +51,10 @@ describe('Duplicate User Test', () => {
     });
 });
 
+// Cypress bot details
+// Email: bot@cypress.com
+// Password: 123456abcdef
+
 // This is commented out currently because it doesn't look like the routing functionality is completely there yet.
 //
 // describe('Register Page User Creation and Redirect Test', () => {

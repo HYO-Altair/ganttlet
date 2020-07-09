@@ -46,3 +46,18 @@ describe('Invalid Login Attempt Tests', () => {
         cy.get('[data-cy=passwordContainer]').contains('Invalid Email or Password');
     });
 });
+
+describe('Redirect To Dashboard On Log In', () => {
+    before(() => {
+        cy.visit('http://localhost:3000/login');
+        cy.wait(10);
+
+        cy.get('[data-cy=email]').type('bot@cypress.com');
+        cy.get('[data-cy=password]').type('123456abcdef');
+        cy.get('[data-cy=submitButton]').click();
+    });
+
+    it('Should Redirect to Dashboard', () => {
+        cy.url().should('include', 'dashboard');
+    });
+});

@@ -1,7 +1,7 @@
 describe('Register Page User Creation, Redirect and Deletion Test', () => {
-    it('Should Create New Account, Redirects to Dashboard, Go To Profile, Delete User and Redirect to Login', () => {
+    it('Should Create New Account, Redirect to Dashboard, Go To Profile, Delete User and Redirect to Login', () => {
         cy.visit('http://localhost:3000/register');
-        cy.wait(10);
+        cy.wait(100);
 
         cy.get('[data-cy=firstName]').type('Karl');
         cy.get('[data-cy=lastName]').type('Marx');
@@ -16,16 +16,27 @@ describe('Register Page User Creation, Redirect and Deletion Test', () => {
     });
 });
 
+describe('Duplicate User Test', () => {
+    it('Should Not Allow Used Email To Be Submitted', () => {
+        cy.visit('http://localhost:3000/register');
+        cy.wait(100);
+
+        cy.get('[data-cy=email]').type('bot@cypress.com');
+        cy.get('[data-cy=submitButton]').click();
+        cy.get('[data-cy=emailContainer]').contains('Account Exists');
+    });
+});
+
 describe('Register Page Required Field Tests', () => {
     before(() => {
         cy.visit('http://localhost:3000/register');
 
-        // This is an issue that popped up after upgrading to Cypress 4.10.0. For some reson,
+        // This is an issue that popped up after upgrading to Cypress 4.100.0. For some reson,
         // unless I wait after loading the page, it says that the element got detached from the DOM.
         //https://github.com/cypress-io/cypress/issues/7306
         // Somehow, just a 1ms wait is sufficient here but this varies. My guess is it's a problem with the new version of
         //Cypress since no real changes have been made to the Register page or the test spec.
-        cy.wait(1);
+        cy.wait(100);
         cy.get('[data-cy=submitButton]').click();
     });
 
@@ -46,7 +57,7 @@ describe('Register Page Required Field Tests', () => {
 describe('Register Page Max/Min Length Tests', () => {
     before(() => {
         cy.visit('http://localhost:3000/register');
-        cy.wait(10);
+        cy.wait(100);
 
         cy.get('[data-cy=firstName]').type(new Array(65 + 1).join('a'));
         cy.get('[data-cy=lastName]').type(new Array(65 + 1).join('a'));
@@ -66,17 +77,6 @@ describe('Register Page Max/Min Length Tests', () => {
     });
     it('Should Not Accept Password Shorter Than 12 Characters ', () => {
         cy.get('[data-cy=passwordContainer]').contains('Too Short');
-    });
-});
-
-describe('Duplicate User Test', () => {
-    it('Should Not Allow Used Email To Be Submitted', () => {
-        cy.visit('http://localhost:3000/register');
-        cy.wait(10);
-
-        cy.get('[data-cy=email]').type('bot@cypress.com');
-        cy.get('[data-cy=submitButton]').click().click();
-        cy.get('[data-cy=emailContainer]').contains('Account Exists');
     });
 });
 

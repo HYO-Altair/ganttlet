@@ -1,18 +1,6 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import {
-    Avatar,
-    Button,
-    CssBaseline,
-    TextField,
-    FormControlLabel,
-    Checkbox,
-    Grid,
-    Box,
-    Typography,
-    Container,
-    Link,
-} from '@material-ui/core';
+import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from '../Firebase/firebase';
@@ -144,7 +132,12 @@ export default function Login(): JSX.Element {
                         Sign In
                     </Button>
                     {/*Google Sign in */}
-                    <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
+                    <Button
+                        onClick={() => {
+                            firebase.googleSignIn();
+                        }}
+                        className={classes.googleBtn}
+                    >
                         <img
                             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
                             alt="logo"

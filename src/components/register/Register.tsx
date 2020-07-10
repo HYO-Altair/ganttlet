@@ -132,8 +132,6 @@ export default function Register(): JSX.Element {
                                 id="email"
                                 label="Email Address"
                                 name="email"
-                                type="email"
-                                autoComplete="email"
                                 inputRef={register({
                                     required: true,
                                     maxLength: 256,
@@ -157,14 +155,6 @@ export default function Register(): JSX.Element {
                             />
                             {errors.password && <ErrorDisplay type={errors.password.type} />}
                         </Grid>
-                        {/*
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                            </Grid>
-                            */}
                     </Grid>
                     <Button
                         id="submitButton"

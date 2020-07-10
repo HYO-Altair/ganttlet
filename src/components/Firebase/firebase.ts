@@ -26,6 +26,18 @@ const config = {
 //     };
 // }
 
+interface IGoogleAuthProfile {
+    email: string;
+    family_name: string;
+    given_name: string;
+    granted_scopes: string;
+    id: string;
+    locale: string;
+    name: string;
+    picture: string;
+    verified_email: boolean;
+}
+
 class FirebaseWrapper {
     auth: app.auth.Auth;
     db: app.database.Database;
@@ -48,6 +60,11 @@ class FirebaseWrapper {
         this.loggedIn = false;
         this.lastLoginAttemptWasInvalid = false;
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: Special setting for Cypress to prevent jank with staying signed in.
+        if (window.Cypress) {
+            this.auth.setPersistence(app.auth.Auth.Persistence.NONE);
+        }
         this.provider = new app.auth.GoogleAuthProvider();
     }
 
@@ -85,35 +102,41 @@ class FirebaseWrapper {
 
     deleteUser() {
         if (this.auth.currentUser) {
-            this.deleteCurrentUsersObject();
-            this.auth.currentUser.delete();
+            try {
+                // Saving it beforehand because the currentUser becomes null if the delete succeeds
+                const uid = this.auth.currentUser.uid;
+
+                this.auth.currentUser.delete();
+                this.deleteCurrentUsersObject(uid);
+            } catch (error) {
+                // Firebase has a concept of some actions needing the user to have signed in recently and
+                // delete is one of them. So, this catch block catches the exception thrown if it has been
+                // too long since the last sign in.
+                // TODO: Somehow make the user sign in again.
+            }
         }
     }
 
     async googleSignIn() {
         try {
             const result = await this.auth.signInWithPopup(this.provider);
-            const user = result.user;
-            // const token = googleSignInResult.credential.
-            // We need to use Google OAuth to get the users details.
-            this.pushUserObject(user?.uid || 'null_user', 'proletariat@revolution.com', 'Karl', 'Marx');
-        } catch (error) {
-            // const errorCode = error.code;
-            console.log(error);
+
+            if (result.additionalUserInfo?.isNewUser) {
+                // For some reason, the profile key does not have typing by default so I console.logged in
+                // and made an interface out of it.
+                const profile = result.additionalUserInfo?.profile as IGoogleAuthProfile;
+
+                const uid = result.user?.uid || 'null_id';
+                const email = profile.email;
+                const firstName = profile?.given_name;
+                const lastName = profile?.family_name;
+
+                this.pushUserObject(uid, email, firstName, lastName);
+            }
+        } catch (err) {
+            const error = err as app.auth.Error;
+            console.log(`${error.code} : ${error.message}`);
         }
-        // this.auth
-        //     .signInWithPopup(this.provider)
-        //     .then((result) => {
-        //         if (result) {
-        //             const user = result.user;
-        //             console.log(user);
-        //             // To-do: handle what happen after (redirect, etc.)
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         const errorCode = error.code;
-        //         console.log(errorCode);
-        //     });
     }
 
     /* -------- */
@@ -146,8 +169,8 @@ class FirebaseWrapper {
         this.db.ref(`/users/${uid}`).set(dbObject);
     }
 
-    async deleteCurrentUsersObject() {
-        this.db.ref(`/users/${this.auth.currentUser?.uid}`).remove();
+    async deleteCurrentUsersObject(uid: string) {
+        this.db.ref(`/users/${uid}`).remove();
     }
 
     /* -------- */

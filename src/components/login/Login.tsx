@@ -144,7 +144,12 @@ export default function Login(): JSX.Element {
                         Sign In
                     </Button>
                     {/*Google Sign in */}
-                    <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
+                    <Button
+                        onClick={() => {
+                            firebase.googleSignIn();
+                        }}
+                        className={classes.googleBtn}
+                    >
                         <img
                             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
                             alt="logo"

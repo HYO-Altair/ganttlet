@@ -175,7 +175,7 @@ function NavBar(props: IProps): JSX.Element {
                                     </IconButton>
                                 </Link>
 
-                                <Link key="logout" to="/logout" className={classes.noDecoration}>
+                                <Link key="logout" to="/login" className={classes.noDecoration} data-cy="logoutButton">
                                     <IconButton color="inherit" onClick={handleExitIconClick}>
                                         <ExitToAppIcon />
                                     </IconButton>

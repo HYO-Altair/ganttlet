@@ -24,9 +24,8 @@ jobs:
               run: npm ci
             - name: testing build
               run: npm run build --if-present
+
             - name: Verify Cypress
               run: $(npm bin)/cypress verify
             - name: Run Cypress tests
-              uses: cypress-io/github-action@v2
-              with:
-                  browser: chrome
+              run: npm test --if-present

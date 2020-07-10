@@ -1,46 +1,81 @@
 {
     "users": {
-        "_firebaseGeneratedUniqueKey": {
+        "_username1": {
             "fname": "_fname1",
             "lname": "_lname1",
             "email": "_email1",
-            "teams": {
-                "_teamname1": {
-                    "position": "manager"
-                }
+            "password": "_hashedPassword",
+            "projects": {
+                "_project1": "_project1id"
+            },
+            "settings": {
+                "theme": "dark"
+            }
+        },
+        "_username2": {
+            "fname": "_fname2",
+            "lname": "_lname2",
+            "email": "_email2",
+            "password": "_hashedPassword",
+            "projects": {
+                "_project1": "_project1id"
+            },
+            "settings": {
+                "theme": "dark"
+            }
+        },
+        "_username3": {
+            "fname": "_fname2",
+            "lname": "_lname2",
+            "email": "_email2",
+            "password": "_hashedPassword",
+            "projects": {
+                "_project1": "_project1id"
+            },
+            "settings": {
+                "theme": "dark"
+            }
+        },
+        "_username4": {
+            "fname": "_fname2",
+            "lname": "_lname2",
+            "email": "_email2",
+            "password": "_hashedPassword",
+            "projects": {
+                "_project1": "_project1id"
             },
             "settings": {
                 "theme": "dark"
             }
         }
     },
-    "teams": {
-        "_teamname1": {
+    "projects": {
+        "_proj1ID": {
+            "name": "_projname1",
+            "timezone": "_timezone",
             "managers": {
-                "_username1": true,
-                "_username2": true
+                "_username1": true
             },
             "members": {
                 "_username3": true,
                 "_username4": true
             },
-            "projects": {
-                "_projname1": {
-                    "description": "_description1",
-                    "managers": {
-                        "_username1": true
-                    },
-                    "members": {
-                        "_username3": true,
-                        "_username4": true
-                    },
-                    "table": {
+            "tasks": {
+                "_firebase_gen_id": {
+                    "id": "_id",
+                    "taskname": "_taskname",
+                    "description": "_description",
+                    "color": "_color",
+                    "duration": "_duration",
+                    "startdate": "_startdate",
+                    "enddate": "_enddate",
+                    "assignees": {},
+                    "subtasks": {},
+                    "comments": {
                         "_firebase_gen_id": {
-                            "id": "_id",
-                            "taskname": "_taskname",
-                            "duration": "_duration",
-                            "startdate": "_startdate",
-                            "enddate": "_enddate"
+                            "op": "_username1",
+                            "text": "_atextstring",
+                            "taggedusers": { "username2": true, "username3": true }
                         }
                     }
                 }

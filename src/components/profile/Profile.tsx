@@ -1,9 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Box, Typography, Container, Grid } from '@material-ui/core';
+import { Box, Typography, Container, Grid, Button } from '@material-ui/core';
 
 import Form from './Form';
+import firebase from '../Firebase/firebase';
 
 function Copyright() {
     return (
@@ -119,10 +120,20 @@ export default function Profile(): JSX.Element {
                         {/* User Profile Goes here */}
                         <Form />
                     </Grid>
+
                     <Box pt={4}>
                         <Copyright />
                     </Box>
                 </Container>
+                <Button
+                    onClick={() => {
+                        firebase.deleteUser();
+                    }}
+                    variant="contained"
+                    data-cy="deleteButton"
+                >
+                    Delete Account
+                </Button>
             </main>
         </div>
     );

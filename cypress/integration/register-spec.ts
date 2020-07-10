@@ -1,26 +1,53 @@
+describe('Register Page User Creation, Redirect and Deletion Test', () => {
+    it('Should Create New Account, Redirects to Dashboard, Go To Profile, Delete User and Redirect to Login', () => {
+        cy.visit('http://localhost:3000/register');
+        cy.wait(10);
+
+        cy.get('[data-cy=firstName]').type('Karl');
+        cy.get('[data-cy=lastName]').type('Marx');
+        cy.get('[data-cy=email]').type('marx@communism.com');
+        cy.get('[data-cy=password]').type('123456abcdef');
+        cy.get('[data-cy=submitButton]').click();
+        cy.url().should('include', 'dashboard');
+
+        cy.get('[data-cy=profileButton]').click();
+        cy.get('[data-cy=deleteButton]').click();
+        cy.url().should('include', 'login');
+    });
+});
+
 describe('Register Page Required Field Tests', () => {
     before(() => {
         cy.visit('http://localhost:3000/register');
+
+        // This is an issue that popped up after upgrading to Cypress 4.10.0. For some reson,
+        // unless I wait after loading the page, it says that the element got detached from the DOM.
+        //https://github.com/cypress-io/cypress/issues/7306
+        // Somehow, just a 1ms wait is sufficient here but this varies. My guess is it's a problem with the new version of
+        //Cypress since no real changes have been made to the Register page or the test spec.
+        cy.wait(1);
         cy.get('[data-cy=submitButton]').click();
     });
 
     it('Should Not Accept Empty First Name', () => {
-        cy.get('[data-cy=firstNameContainer]').find('p').contains('Required');
+        cy.get('[data-cy=firstNameContainer]').contains('Required');
     });
     it('Should Not Accept Empty Last Name', () => {
-        cy.get('[data-cy=lastNameContainer]').find('p').contains('Required');
+        cy.get('[data-cy=lastNameContainer]').contains('Required');
     });
     it('Should Not Accept Empty Email', () => {
-        cy.get('[data-cy=emailContainer]').find('p').contains('Required');
+        cy.get('[data-cy=emailContainer]').contains('Required');
     });
     it('Should Not Accept Empty Password', () => {
-        cy.get('[data-cy=passwordContainer]').find('p').contains('Required');
+        cy.get('[data-cy=passwordContainer]').contains('Required');
     });
 });
 
 describe('Register Page Max/Min Length Tests', () => {
     before(() => {
         cy.visit('http://localhost:3000/register');
+        cy.wait(10);
+
         cy.get('[data-cy=firstName]').type(new Array(65 + 1).join('a'));
         cy.get('[data-cy=lastName]').type(new Array(65 + 1).join('a'));
         cy.get('[data-cy=email]').type(`a@${new Array(251 + 1).join('a')}.com`);
@@ -45,23 +72,14 @@ describe('Register Page Max/Min Length Tests', () => {
 describe('Duplicate User Test', () => {
     it('Should Not Allow Used Email To Be Submitted', () => {
         cy.visit('http://localhost:3000/register');
-        cy.get('[data-cy=email]').type('a@b.com');
-        cy.get('[data-cy=submitButton]').click();
+        cy.wait(10);
+
+        cy.get('[data-cy=email]').type('bot@cypress.com');
+        cy.get('[data-cy=submitButton]').click().click();
         cy.get('[data-cy=emailContainer]').contains('Account Exists');
     });
 });
 
-// This is commented out currently because it doesn't look like the routing functionality is completely there yet.
-//
-// describe('Register Page User Creation and Redirect Test', () => {
-//     before(() => {
-//         cy.visit('http://localhost:3000/register');
-//         cy.get('[data-cy=firstName]').type('雷門');
-//         cy.get('[data-cy=lastName]').type('電気');
-//         cy.get('[data-cy=email]').type('lightning@mha.com');
-//         cy.get('[data-cy=password]').type('123456abcdef');
-//         cy.get('[data-cy=submitButton]').click();
-//     });
-
-//     cy.url().should('contain', 'dashboard');
-// });
+// Cypress bot details
+// Email: bot@cypress.com
+// Password: 123456abcdef

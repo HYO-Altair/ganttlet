@@ -88,6 +88,14 @@ export default function Register(): JSX.Element {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
+                {/* 
+                So the Cypress tests fail if we don't have the form as noValidate. This wouldn't really matter
+                but I was intending to use the inbuilt html validation to make emails of the correct format.
+                But that leads to the form not being submitted when the button is clicked (use-form-hook error
+                messages are not displayed). This could probably be worked around by having Cypress test each field
+                independently rather than typing everything out first and then clicking the button but I think in the
+                long term, it's best if we have our own custom validation for email syntax or just ignore it.
+                */}
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid data-cy="firstNameContainer" item xs={12} sm={6}>
@@ -95,7 +103,6 @@ export default function Register(): JSX.Element {
                                 autoComplete="fname"
                                 name="firstName"
                                 variant="outlined"
-                                required
                                 fullWidth
                                 id="firstName"
                                 label="First Name"
@@ -108,7 +115,6 @@ export default function Register(): JSX.Element {
                         <Grid data-cy="lastNameContainer" item xs={12} sm={6}>
                             <TextField
                                 variant="outlined"
-                                required
                                 fullWidth
                                 id="lastName"
                                 label="Last Name"
@@ -122,7 +128,6 @@ export default function Register(): JSX.Element {
                         <Grid data-cy="emailContainer" item xs={12}>
                             <TextField
                                 variant="outlined"
-                                required
                                 fullWidth
                                 id="email"
                                 label="Email Address"
@@ -141,7 +146,6 @@ export default function Register(): JSX.Element {
                         <Grid data-cy="passwordContainer" item xs={12}>
                             <TextField
                                 variant="outlined"
-                                required
                                 fullWidth
                                 name="password"
                                 label="Password"
@@ -174,7 +178,12 @@ export default function Register(): JSX.Element {
                         Sign Up
                     </Button>
                     {/*Google Sign in */}
-                    <Button onClick={firebase.googleSignIn} className={classes.googleBtn}>
+                    <Button
+                        onClick={() => {
+                            firebase.googleSignIn();
+                        }}
+                        className={classes.googleBtn}
+                    >
                         <img
                             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
                             alt="logo"

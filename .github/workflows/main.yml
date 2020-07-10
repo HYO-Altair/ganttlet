@@ -13,6 +13,7 @@ jobs:
         strategy:
             matrix:
                 node-version: [12.x]
+                machines: [1, 2, 3]
 
         steps:
             - uses: actions/checkout@v2
@@ -29,4 +30,8 @@ jobs:
             - name: Run Cypress tests
               uses: cypress-io/github-action@v2
               with:
+                  build: npm run build
+                  start: npm start
                   browser: chrome
+                  wait-on: http://localhost:3000
+                  parallel: true

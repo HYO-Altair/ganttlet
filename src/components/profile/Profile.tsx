@@ -103,13 +103,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile(): JSX.Element {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
 
     return (
         <div className={classes.root}>

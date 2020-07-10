@@ -13,7 +13,6 @@ jobs:
         strategy:
             matrix:
                 node-version: [12.x]
-                machines: [1, 2, 3]
 
         steps:
             - uses: actions/checkout@v2
@@ -33,4 +32,3 @@ jobs:
                   build: npm run build
                   start: npm start
                   browser: chrome
-                  parallel: true

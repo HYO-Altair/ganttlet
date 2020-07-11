@@ -5,7 +5,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import projectImage from '../../assets/images/gantt.png'
+import projectImage from '../../assets/images/gantt.png';
 
 const useStyles = makeStyles({
     root: {
@@ -13,26 +13,26 @@ const useStyles = makeStyles({
     },
 });
 
-interface Props{
+interface Props {
     Projects: {
         name: string;
         description: string;
-    }
+    };
 }
 
-export default function ImgMediaCard(props: Props) {
+export default function ImgMediaCard(props: Props): JSX.Element {
     const classes = useStyles();
-    const {Projects} = props;
+    const { Projects } = props;
 
     return (
         <Card className={classes.root}>
             <CardActionArea>
                 <CardMedia
                     component="img"
-                    alt= {Projects.name}
+                    alt={Projects.name}
                     height="140"
                     image={projectImage}
-                    title= {Projects.name}
+                    title={Projects.name}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5">
@@ -46,5 +46,3 @@ export default function ImgMediaCard(props: Props) {
         </Card>
     );
 }
-
-

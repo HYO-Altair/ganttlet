@@ -13,18 +13,20 @@ const config = {
     measurementId: 'G-WH23WGKNYZ',
 };
 
-// Not sure where we could end up using this, but just declaring for now
-// interface IUser {
-//     email: string;
-//     fname: string;
-//     lName: string;
-//     teams: {
-//         teamCount: number;
-//     };
-//     settings: {
-//         theme: string; // Probably change this to an enum or something
-//     };
-// }
+interface IProject {
+    name: string;
+    description: string;
+    owner: string;
+    members: string[];
+}
+
+interface IUser {
+    uid: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    projects: IProject[];
+}
 
 interface IGoogleAuthProfile {
     email: string;
@@ -41,9 +43,12 @@ interface IGoogleAuthProfile {
 class FirebaseWrapper {
     auth: app.auth.Auth;
     db: app.database.Database;
+    provider: firebase.auth.GoogleAuthProvider;
+
     loggedIn: boolean;
     lastLoginAttemptWasInvalid: boolean;
-    provider: firebase.auth.GoogleAuthProvider;
+
+    currentUser: IUser | undefined;
 
     constructor() {
         app.initializeApp(config);
@@ -59,6 +64,7 @@ class FirebaseWrapper {
 
         this.loggedIn = false;
         this.lastLoginAttemptWasInvalid = false;
+        this.currentUser = undefined;
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: Special setting for Cypress to prevent jank with staying signed in.
@@ -71,9 +77,9 @@ class FirebaseWrapper {
     /* Auth API */
 
     async createUser(email: string, password: string, firstName: string, lastName: string): Promise<void> {
-        // Need to add code to save user info in the realtime database as well.
-        await this.auth.createUserWithEmailAndPassword(email, password);
-        this.pushUserObject(this.auth.currentUser?.uid || 'null_user', email, firstName, lastName);
+        const result = await this.auth.createUserWithEmailAndPassword(email, password);
+        const uid = result.user?.uid || 'null_uid';
+        this.pushUserObject(uid, email, firstName, lastName);
     }
 
     async signIn(email: string, password: string): Promise<void> {
@@ -107,8 +113,9 @@ class FirebaseWrapper {
                 const uid = this.auth.currentUser.uid;
 
                 this.auth.currentUser.delete();
-                this.deleteCurrentUsersObject(uid);
+                this.deleteUserObject(uid);
             } catch (error) {
+                console.log(error);
                 // Firebase has a concept of some actions needing the user to have signed in recently and
                 // delete is one of them. So, this catch block catches the exception thrown if it has been
                 // too long since the last sign in.
@@ -126,7 +133,7 @@ class FirebaseWrapper {
                 // and made an interface out of it.
                 const profile = result.additionalUserInfo?.profile as IGoogleAuthProfile;
 
-                const uid = result.user?.uid || 'null_id';
+                const uid = result.user?.uid || 'null_uid';
                 const email = profile.email;
                 const firstName = profile?.given_name;
                 const lastName = profile?.family_name;
@@ -159,17 +166,12 @@ class FirebaseWrapper {
             email: email,
             fname: firstName,
             lName: lastName,
-            teams: {
-                teamCount: 0,
-            },
-            settings: {
-                theme: 'default',
-            },
+            projects: {},
         };
         this.db.ref(`/users/${uid}`).set(dbObject);
     }
 
-    async deleteCurrentUsersObject(uid: string) {
+    async deleteUserObject(uid: string) {
         this.db.ref(`/users/${uid}`).remove();
     }
 

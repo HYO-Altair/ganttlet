@@ -26,8 +26,8 @@ interface IUser {
     firstName: string;
     lastName: string;
     projects: {
-        owned: IProject[] | undefined;
-        member: IProject[] | undefined;
+        owned: IProject[] | null;
+        member: IProject[] | null;
     };
 }
 
@@ -51,7 +51,7 @@ class FirebaseWrapper {
     loggedIn: boolean;
     lastLoginAttemptWasInvalid: boolean;
 
-    currentUser: IUser | undefined;
+    currentUser: IUser | null;
 
     constructor() {
         app.initializeApp(config);
@@ -62,12 +62,15 @@ class FirebaseWrapper {
             return app.auth().onAuthStateChanged((user) => {
                 // Not currently used, but I felt it was best to have it available
                 this.loggedIn = Boolean(user);
+                if (!this.loggedIn) {
+                    this.currentUser = null;
+                }
             });
         });
 
         this.loggedIn = false;
         this.lastLoginAttemptWasInvalid = false;
-        this.currentUser = undefined;
+        this.currentUser = null;
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: Special setting for Cypress to prevent jank with staying signed in.
@@ -105,7 +108,7 @@ class FirebaseWrapper {
     deleteUser() {
         if (this.auth.currentUser) {
             try {
-                // Saving it beforehand because the currentUser becomes null if the delete succeeds
+                // Saving it beforehand because the currentUser in auth becomes null if the delete succeeds
                 const uid = this.auth.currentUser.uid;
 
                 this.auth.currentUser.delete();
@@ -155,8 +158,8 @@ class FirebaseWrapper {
                 firstName: data.firstName,
                 lastName: data.lastName,
                 projects: {
-                    owned: undefined,
-                    member: undefined,
+                    owned: null,
+                    member: null,
                 },
             };
             this.currentUser = newCurrentUser;
@@ -165,8 +168,7 @@ class FirebaseWrapper {
 
     async userAlreadyExists(email: string) {
         const snapshotOfPotentialUser = await this.db.ref('/users').orderByChild('email').equalTo(email).once('value');
-        const exists = await snapshotOfPotentialUser.exists();
-        return exists;
+        return snapshotOfPotentialUser.exists();
     }
 
     async pushUserObject(uid: string, email: string, firstName: string, lastName: string): Promise<void> {

@@ -25,7 +25,10 @@ interface IUser {
     email: string;
     firstName: string;
     lastName: string;
-    projects: IProject[];
+    projects: {
+        owned: IProject[] | undefined;
+        member: IProject[] | undefined;
+    };
 }
 
 interface IGoogleAuthProfile {
@@ -79,13 +82,17 @@ class FirebaseWrapper {
     async createUser(email: string, password: string, firstName: string, lastName: string): Promise<void> {
         const result = await this.auth.createUserWithEmailAndPassword(email, password);
         const uid = result.user?.uid || 'null_uid';
-        this.pushUserObject(uid, email, firstName, lastName);
+        await this.pushUserObject(uid, email, firstName, lastName);
+        this.setUserDataListener(uid);
     }
 
     async signIn(email: string, password: string): Promise<void> {
         try {
-            await this.auth.signInWithEmailAndPassword(email, password);
+            const result = await this.auth.signInWithEmailAndPassword(email, password);
             this.lastLoginAttemptWasInvalid = false;
+
+            const uid = result.user?.uid || 'null_uid';
+            this.setUserDataListener(uid);
         } catch (error) {
             this.lastLoginAttemptWasInvalid = true;
         }
@@ -93,17 +100,6 @@ class FirebaseWrapper {
 
     signOut(): void {
         this.auth.signOut();
-    }
-
-    resetPassword(email: string): void {
-        this.auth.sendPasswordResetEmail(email);
-    }
-
-    // Kinda redundant, but TS complains if I use the isLoggedIn function
-    updatePassword(password: string): void {
-        if (this.auth.currentUser) {
-            this.auth.currentUser.updatePassword(password);
-        }
     }
 
     deleteUser() {
@@ -127,19 +123,19 @@ class FirebaseWrapper {
     async googleSignIn() {
         try {
             const result = await this.auth.signInWithPopup(this.provider);
-
+            const uid = result.user?.uid || 'null_uid';
             if (result.additionalUserInfo?.isNewUser) {
                 // For some reason, the profile key does not have typing by default so I console.logged in
                 // and made an interface out of it.
                 const profile = result.additionalUserInfo?.profile as IGoogleAuthProfile;
 
-                const uid = result.user?.uid || 'null_uid';
                 const email = profile.email;
                 const firstName = profile?.given_name;
                 const lastName = profile?.family_name;
 
-                this.pushUserObject(uid, email, firstName, lastName);
+                await this.pushUserObject(uid, email, firstName, lastName);
             }
+            this.setUserDataListener(uid);
         } catch (err) {
             const error = err as app.auth.Error;
             console.log(`${error.code} : ${error.message}`);
@@ -150,9 +146,21 @@ class FirebaseWrapper {
 
     /* Database Operations API */
 
-    async test(): Promise<void> {
-        const data = await (await this.db.ref('/').once('value')).val();
-        console.log(data);
+    async setUserDataListener(uid: string) {
+        this.db.ref(`/users/${uid}`).on('value', async (snapshot) => {
+            const data = snapshot.val();
+            const newCurrentUser: IUser = {
+                uid: uid,
+                email: data.email,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                projects: {
+                    owned: undefined,
+                    member: undefined,
+                },
+            };
+            this.currentUser = newCurrentUser;
+        });
     }
 
     async userAlreadyExists(email: string) {
@@ -161,12 +169,11 @@ class FirebaseWrapper {
         return exists;
     }
 
-    pushUserObject(uid: string, email: string, firstName: string, lastName: string): void {
+    async pushUserObject(uid: string, email: string, firstName: string, lastName: string): Promise<void> {
         const dbObject = {
             email: email,
-            fname: firstName,
-            lName: lastName,
-            projects: {},
+            firstName: firstName,
+            lastName: lastName,
         };
         this.db.ref(`/users/${uid}`).set(dbObject);
     }

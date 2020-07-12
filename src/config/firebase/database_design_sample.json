@@ -1,9 +1,9 @@
 {
     "users": {
         "uid": {
-            "fname": "_fname1",
-            "lname": "_lname1",
-            "email": "_email1",
+            "firstName": "Izuku",
+            "lastName": "Midoriya",
+            "email": "izuku@mha.com",
             "projects": {
                 "owned": {
                     "projectID": true

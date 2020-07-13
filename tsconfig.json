@@ -18,5 +18,5 @@
         "noImplicitThis": true,
         "strictNullChecks": true
     },
-    "include": ["src"]
+    "include": ["src", "store/actions", "store/reducers", "store/store.tsx"]
 }

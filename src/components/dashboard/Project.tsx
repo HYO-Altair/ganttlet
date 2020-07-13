@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-    Projects: {
+    project: {
         name: string;
         description: string;
     };
@@ -22,24 +22,18 @@ interface Props {
 
 export default function ImgMediaCard(props: Props): JSX.Element {
     const classes = useStyles();
-    const { Projects } = props;
+    const { project } = props;
 
     return (
         <Card className={classes.root}>
             <CardActionArea>
-                <CardMedia
-                    component="img"
-                    alt={Projects.name}
-                    height="140"
-                    image={projectImage}
-                    title={Projects.name}
-                />
+                <CardMedia component="img" alt={project.name} height="140" image={projectImage} title={project.name} />
                 <CardContent>
                     <Typography gutterBottom variant="h5">
-                        {Projects.name}
+                        {project.name}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                        {Projects.description}
+                        {project.description}
                     </Typography>
                 </CardContent>
             </CardActionArea>

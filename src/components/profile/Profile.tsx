@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, Container, Grid, Button } from '@material-ui/core';
 
 import Form from './Form';
-import firebase from '../Firebase/firebase';
+import firebase from '../../services/Firebase/firebase';
 
 function Copyright() {
     return (

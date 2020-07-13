@@ -1,4 +1,8 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -7,8 +11,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Footer from '../footer/Footer';
 import Table from './Table';
-import Projects from './Projects';
-
+import Project from './Project';
+import AddProject from './AddProject';
+import { firebaseConnect } from 'react-redux-firebase';
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -38,10 +43,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Dashboard() {
+const Dashboard = (props) => {
     const classes = useStyles();
 
-    const Proj = [
+    /*const projects = [
         {
             name: 'Project1',
             description: 'Describe Project1',
@@ -65,6 +70,8 @@ export default function Dashboard() {
             description: 'Describe Project5',
         },
     ];
+*/
+    const { projects } = props;
 
     return (
         <main className={classes.content}>
@@ -77,11 +84,16 @@ export default function Dashboard() {
                             <Table />
                         </Paper>
                     </Grid>
-                    {Proj.map((p) => (
-                        <Grid item xs={3}>
-                            <Projects Projects={p} />
-                        </Grid>
-                    ))}
+                    {/* add project temp code */}
+                    <AddProject />
+
+                    {/*projects*/}
+                    {projects &&
+                        projects.map((p) => (
+                            <Grid item xs={3}>
+                                <Project project={p.value} />
+                            </Grid>
+                        ))}
                 </Grid>
                 <Box pt={4}>
                     <Copyright />
@@ -90,4 +102,12 @@ export default function Dashboard() {
             <Footer />
         </main>
     );
-}
+};
+
+const mapStateToProps = (state) => {
+    console.log(state.firebase);
+    return {
+        projects: state.firebase.ordered.projects,
+    };
+};
+export default compose(firebaseConnect([{ path: 'projects' }]), connect(mapStateToProps))(Dashboard);

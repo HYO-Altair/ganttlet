@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import firebase from '../Firebase/firebase';
+import firebase from '../../services/Firebase/firebase';
 import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
 

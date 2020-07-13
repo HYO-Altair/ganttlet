@@ -12,7 +12,7 @@ import Register from './components/register/Register';
 import Dashboard from './components/dashboard/Dashboard';
 import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
-import firebase from './components/Firebase/firebase';
+import firebase from './services/Firebase/firebase';
 
 import { IUser } from './config/sharedTypes';
 const styles = (theme: Theme) =>
@@ -45,7 +45,7 @@ function App(props: Props): JSX.Element {
 
     // updates user hook when firebase auth status changes
     function onAuthStateChange(callback: Dispatch<SetStateAction<IUser>>) {
-        return firebase.auth.onAuthStateChanged((user) => {
+        return firebase.auth.onAuthStateChanged((user: any) => {
             if (user) {
                 callback({ loggedIn: true, email: user.email ? user.email : '' });
             } else {

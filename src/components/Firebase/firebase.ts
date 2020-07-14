@@ -91,12 +91,6 @@ class FirebaseWrapper {
         }
     }
 
-    deleteUser(): void {
-        if (this.auth.currentUser) {
-            this.auth.currentUser.delete();
-        }
-    }
-
     googleSignIn = () => {
         this.auth
             .signInWithPopup(this.provider)
@@ -127,7 +121,17 @@ class FirebaseWrapper {
         const exists = await snapshotOfPotentialUser.exists();
         return exists;
     }
-
+    
+    async addProject(name: string, description: string, mngr: string) {
+        const project = {
+            name: name,
+            description: description,
+            managers: {manager: mngr},
+            memebers: {},
+            table: {}
+        };
+        this.db.ref('projects/' + mngr + '/' + 0).set(project);
+    }
     /* -------- */
 }
 

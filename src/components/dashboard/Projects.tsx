@@ -23,7 +23,6 @@ interface Props{
 export default function ImgMediaCard(props: Props) {
     const classes = useStyles();
     const {Projects} = props;
-
     return (
         <Card className={classes.root}>
             <CardActionArea>

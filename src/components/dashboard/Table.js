@@ -1,8 +1,9 @@
 import React from 'react';
-
-import { Table, TableBody, TableCell, TableHead, TableRow, TextField } from '@material-ui/core';
-
+import { Table, TableBody, TableCell, TableHead, TableRow, TextField, Button } from '@material-ui/core';
 import Title from './Title';
+import firebase from '../Firebase/firebase'
+
+
 
 export default function Orders() {
     return (
@@ -11,9 +12,7 @@ export default function Orders() {
             <Table size="small">
                 <TableHead>
                     <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Task Name</TableCell>
-                        <TableCell>Duration</TableCell>
+                        <TableCell>Project Name</TableCell>
                         <TableCell>Start Date</TableCell>
                         <TableCell>End Date</TableCell>
                     </TableRow>
@@ -31,13 +30,10 @@ export default function Orders() {
                         <TableCell>
                             <TextField />
                         </TableCell>
-
                         <TableCell>
-                            <TextField />
-                        </TableCell>
-
-                        <TableCell>
-                            <TextField />
+                            <Button type="submit" onClick = {() => {firebase.addProject("test2", "test", firebase.auth.currentUser.uid)}}>
+                                add
+                            </Button>
                         </TableCell>
                     </TableRow>
                 </TableBody>

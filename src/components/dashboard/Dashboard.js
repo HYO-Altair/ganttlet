@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,6 +21,9 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Footer from '../footer/Footer';
 import Table from './Table';
 import Projects from './Projects';
+import firebase from '../Firebase//firebase'
+import { PortableWifiOff } from '@material-ui/icons';
+import { get } from 'http';
 
 function Copyright() {
     return (
@@ -63,30 +66,20 @@ export default function Dashboard() {
         setOpen(false);
     };
 
-    const Proj = [
-        {
-            name: 'Project1',
-            description: 'Describe Project1',
-        },
+    const [projDb, setProj] = useState([]);
+    const curUID = firebase.auth.currentUser.uid;
 
-        {
-            name: 'Project2',
-            description: 'Describe Project2',
-        },
+    useEffect(() => {
+        let ref = firebase.db.ref('/projects/' + curUID);
+        ref.on('value' , snapshot => {
+            var proj = snapshot.val();
+            if (proj != null) {
+                setProj(proj);
+            }
+        });
+    },[]);
+    console.log(projDb);
 
-        {
-            name: 'Project3',
-            description: 'Describe Project3',
-        },
-        {
-            name: 'Project4',
-            description: 'Describe Project4',
-        },
-        {
-            name: 'Project5',
-            description: 'Describe Project5',
-        },
-    ];
 
     return (
         <main className={classes.content}>
@@ -99,7 +92,7 @@ export default function Dashboard() {
                             <Table />
                         </Paper>
                     </Grid>
-                    {Proj.map((p) => (
+                    {projDb.map((p) => (
                         <Grid item xs={3}>
                             <Projects Projects={p} />
                         </Grid>

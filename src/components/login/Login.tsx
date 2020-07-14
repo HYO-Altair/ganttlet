@@ -3,11 +3,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import firebase from '../../services/Firebase/firebase';
 import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
 import { connect } from 'react-redux';
-import { emailLogIn } from '../../store/actions/authActions';
+import { emailLogIn, googleLogIn } from '../../store/actions/authActions';
 import { Json } from '../../config/sharedTypes';
 
 function Copyright() {
@@ -66,9 +65,10 @@ interface ILoginFormObject {
 interface IProps {
     authError: string;
     emailLogIn: any;
+    googleLogIn: any;
 }
 const Login = (props: IProps): JSX.Element => {
-    const { authError, emailLogIn } = props;
+    const { authError, emailLogIn, googleLogIn } = props;
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<ILoginFormObject>();
 
@@ -141,7 +141,7 @@ const Login = (props: IProps): JSX.Element => {
                     {/*Google Sign in */}
                     <Button
                         onClick={() => {
-                            firebase.googleSignIn();
+                            googleLogIn();
                         }}
                         className={classes.googleBtn}
                     >
@@ -179,6 +179,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         emailLogIn: (credentials: Json) => dispatch(emailLogIn(credentials)),
+        googleLogIn: () => dispatch(googleLogIn()),
     };
 };
 

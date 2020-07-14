@@ -8,7 +8,7 @@ import { config } from '../config/firebase/firebase_consts';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-firebase.initializeApp(config, 'notDefault');
+firebase.initializeApp(config);
 
 const initialState = {};
 

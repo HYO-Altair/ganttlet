@@ -11,7 +11,6 @@ import RegisterIcon from '@material-ui/icons/ExitToApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
-import firebase from '../../services/Firebase/firebase';
 
 import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';

@@ -1,7 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-import { config } from '../../config/firebase/firebase_consts';
+import { config } from '../config/firebase/firebase_consts';
 
 interface IProject {
     name: string;

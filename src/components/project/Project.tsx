@@ -5,14 +5,14 @@ import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import { Card, CardActionArea, CardContent } from '@material-ui/core';
 
-interface Props {
+interface IProps {
     project: {
         name: string;
         description: string;
     };
 }
 
-const Project = (props: Props): JSX.Element => {
+const Project = (props: IProps): JSX.Element => {
     const { project } = props;
     if (project) {
         return (

@@ -13,7 +13,6 @@ import Dashboard from './components/dashboard/Dashboard';
 import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
 import Project from './components/project/Project';
-import firebase from './services/Firebase/firebase';
 
 import { IUser } from './config/sharedTypes';
 import { connect } from 'react-redux';

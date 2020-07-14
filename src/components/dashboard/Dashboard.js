@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Footer from '../footer/Footer';
 import Table from './Table';
-import Project from './Project';
+import ProjectCard from './ProjectCard';
 import AddProject from './AddProject';
 import { firebaseConnect } from 'react-redux-firebase';
 function Copyright() {
@@ -91,7 +91,7 @@ const Dashboard = (props) => {
                     {projects &&
                         projects.map((p) => (
                             <Grid key={p.key} item xs={3}>
-                                <Project project={p.value} />
+                                <ProjectCard project={p.value} projectID={p.key} />
                             </Grid>
                         ))}
                 </Grid>

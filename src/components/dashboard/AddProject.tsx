@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { createProject } from '../../store/actions/projectActions';
 import TextField from '@material-ui/core/TextField';

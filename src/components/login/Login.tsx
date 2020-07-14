@@ -6,6 +6,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from '../../services/Firebase/firebase';
 import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
+import { connect } from 'react-redux';
+import { emailLogIn } from '../../store/actions/authActions';
+import { Json } from '../../config/sharedTypes';
 
 function Copyright() {
     return (
@@ -60,13 +63,17 @@ interface ILoginFormObject {
     email: string;
     password: string;
 }
-
-export default function Login(): JSX.Element {
+interface IProps {
+    authError: string;
+    emailLogIn: any;
+}
+const Login = (props: IProps): JSX.Element => {
+    const { authError, emailLogIn } = props;
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<ILoginFormObject>();
 
     const onSubmit = async (data: ILoginFormObject) => {
-        await firebase.signIn(data.email, data.password);
+        await emailLogIn({ email: data.email, password: data.password });
     };
 
     return (
@@ -116,7 +123,7 @@ export default function Login(): JSX.Element {
                             data-cy="password"
                         />
                         {errors.password && <ErrorDisplay type={errors.password.type} />}
-                        {!errors.password && !errors.email && firebase.lastLoginAttemptWasInvalid && (
+                        {!errors.password && !errors.email && authError && (
                             <ErrorDisplay type={'invalidLoginAttempt'} />
                         )}
                     </div>
@@ -163,4 +170,16 @@ export default function Login(): JSX.Element {
             </Box>
         </Container>
     );
-}
+};
+const mapStateToProps = (state: any) => {
+    return {
+        authError: state.auth.authError,
+    };
+};
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        emailLogIn: (credentials: Json) => dispatch(emailLogIn(credentials)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

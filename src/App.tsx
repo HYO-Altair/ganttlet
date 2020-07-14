@@ -16,6 +16,7 @@ import Project from './components/project/Project';
 import firebase from './services/Firebase/firebase';
 
 import { IUser } from './config/sharedTypes';
+import { connect } from 'react-redux';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -28,32 +29,15 @@ const styles = (theme: Theme) =>
         },
     });
 
-type Props = WithStyles<typeof styles>;
+interface IProps extends WithStyles<typeof styles> {
+    auth: any;
+}
 
-function App(props: Props): JSX.Element {
-    const { classes } = props;
+function App(props: IProps): JSX.Element {
+    const { classes, auth } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
-    const [user, setUser] = useState({ loggedIn: false, email: '' });
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChange(setUser);
-        return () => {
-            unsubscribe();
-        };
-    }, [setUser]);
-
-    // updates user hook when firebase auth status changes
-    function onAuthStateChange(callback: Dispatch<SetStateAction<IUser>>) {
-        return firebase.auth.onAuthStateChanged((user: firebase.User | null) => {
-            if (user) {
-                callback({ loggedIn: true, email: user.email ? user.email : '' });
-            } else {
-                callback({ loggedIn: false, email: '' });
-            }
-        });
-    }
 
     const selectHome = useCallback(() => {
         smoothScrollTop();
@@ -117,7 +101,7 @@ function App(props: Props): JSX.Element {
 
     // routes that should only be accessed by users not logged in
     const PublicRoute = ({ component, ...rest }: any) =>
-        user.loggedIn ? (
+        auth.uid ? (
             <Redirect to={{ pathname: '/dashboard' }} />
         ) : (
             <Route {...rest} render={(routeProps) => renderMergedProps(component, routeProps, rest)} />
@@ -125,7 +109,7 @@ function App(props: Props): JSX.Element {
 
     // routes that should only be accessed by users logged in
     const PrivateRoute = ({ component, ...rest }: any) =>
-        user.loggedIn ? (
+        auth.uid ? (
             <Route {...rest} render={(routeProps) => renderMergedProps(component, routeProps, rest)} />
         ) : (
             <Redirect to={{ pathname: '/login' }} />
@@ -148,8 +132,6 @@ function App(props: Props): JSX.Element {
                                 handleSideDrawerOpen={handleSideDrawerOpen}
                                 handleSideDrawerClose={handleSideDrawerClose}
                                 sideDrawerOpen={isSideDrawerOpen}
-                                user={user}
-                                setUser={setUser}
                             />
                             <Switch>
                                 <PropsRoute path="/home" component={Home} selectHome={selectHome} />
@@ -174,5 +156,10 @@ function App(props: Props): JSX.Element {
 App.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-
-export default withStyles(styles, { withTheme: true })(memo(App));
+const mapStateToProps = (state: any) => {
+    console.log(state);
+    return {
+        auth: state.firebase.auth,
+    };
+};
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(App)));

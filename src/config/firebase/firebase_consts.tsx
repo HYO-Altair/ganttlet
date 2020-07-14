@@ -62,5 +62,5 @@ export interface newProjectTaskJSON {
 export interface newTaskComment {
     op: string;
     text: string;
-    taggedusers: unknown;
+    taggedUsers: unknown;
 }

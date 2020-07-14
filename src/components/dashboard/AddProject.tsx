@@ -6,18 +6,11 @@ import { createProject } from '../../store/actions/projectActions';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 
-const useStyles = makeStyles({
-    root: {
-        maxWidth: 345,
-    },
-});
-
-interface Props {
+interface IProps {
     createProject: any;
 }
 
-const AddProject = (props: Props): JSX.Element => {
-    const classes = useStyles();
+const AddProject = (props: IProps): JSX.Element => {
     const { createProject } = props;
     const [project, setProject] = React.useState({ name: '', description: '' });
     const handleChange = (e: any) => {
@@ -39,8 +32,7 @@ const AddProject = (props: Props): JSX.Element => {
             </div>
 
             <Button onClick={handleSubmit} color="secondary">
-                {' '}
-                Submit{' '}
+                Submit
             </Button>
         </div>
     );

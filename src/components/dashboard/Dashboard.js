@@ -90,7 +90,7 @@ const Dashboard = (props) => {
                     {/*projects*/}
                     {projects &&
                         projects.map((p) => (
-                            <Grid item xs={3}>
+                            <Grid key={p.key} item xs={3}>
                                 <Project project={p.value} />
                             </Grid>
                         ))}
@@ -105,7 +105,6 @@ const Dashboard = (props) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state.firebase);
     return {
         projects: state.firebase.ordered.projects,
     };

@@ -1,28 +1,5 @@
 const initState = {
-    projects: [
-        {
-            name: 'Project1',
-            description: 'Describe Project1',
-        },
-
-        {
-            name: 'Project2',
-            description: 'Describe Project2',
-        },
-
-        {
-            name: 'Project3',
-            description: 'Describe Project3',
-        },
-        {
-            name: 'Project4',
-            description: 'Describe Project4',
-        },
-        {
-            name: 'Project5',
-            description: 'Describe Project5',
-        },
-    ],
+    projects: [],
 };
 
 const projectReducer = (state = initState, action) => {

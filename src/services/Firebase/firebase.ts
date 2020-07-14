@@ -74,7 +74,7 @@ class FirebaseWrapper {
 
     async createUser(email: string, password: string, firstName: string, lastName: string): Promise<void> {
         const result = await this.auth.createUserWithEmailAndPassword(email, password);
-        const uid = result.user?.uid || 'null_uid';
+        const uid = result.user?.uid ?? 'null_uid';
         await this.pushUserObject(uid, email, firstName, lastName);
         this.setUserDataListener(uid);
     }
@@ -84,7 +84,7 @@ class FirebaseWrapper {
             const result = await this.auth.signInWithEmailAndPassword(email, password);
             this.lastLoginAttemptWasInvalid = false;
 
-            const uid = result.user?.uid || 'null_uid';
+            const uid = result.user?.uid ?? 'null_uid';
             this.setUserDataListener(uid);
         } catch (error) {
             this.lastLoginAttemptWasInvalid = true;
@@ -104,7 +104,7 @@ class FirebaseWrapper {
                 this.auth.currentUser.delete();
                 this.deleteUserObject(uid);
             } catch (error) {
-                console.log(error);
+                console.error(error);
                 // Firebase has a concept of some actions needing the user to have signed in recently and
                 // delete is one of them. So, this catch block catches the exception thrown if it has been
                 // too long since the last sign in.
@@ -116,7 +116,7 @@ class FirebaseWrapper {
     async googleSignIn() {
         try {
             const result = await this.auth.signInWithPopup(this.provider);
-            const uid = result.user?.uid || 'null_uid';
+            const uid = result.user?.uid ?? 'null_uid';
             if (result.additionalUserInfo?.isNewUser) {
                 // For some reason, the profile key does not have typing by default so I console.logged in
                 // and made an interface out of it.
@@ -131,7 +131,7 @@ class FirebaseWrapper {
             this.setUserDataListener(uid);
         } catch (err) {
             const error = err as app.auth.Error;
-            console.log(`${error.code} : ${error.message}`);
+            console.error(`${error.code} : ${error.message}`);
         }
     }
 

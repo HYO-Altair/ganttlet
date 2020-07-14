@@ -45,7 +45,7 @@ function App(props: Props): JSX.Element {
 
     // updates user hook when firebase auth status changes
     function onAuthStateChange(callback: Dispatch<SetStateAction<IUser>>) {
-        return firebase.auth.onAuthStateChanged((user: any) => {
+        return firebase.auth.onAuthStateChanged((user: firebase.User | null) => {
             if (user) {
                 callback({ loggedIn: true, email: user.email ? user.email : '' });
             } else {

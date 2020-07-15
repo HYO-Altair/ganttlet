@@ -20,27 +20,31 @@ interface IGoogleAuthProfile {
     picture: string;
     verified_email: boolean;
 }**/
+
+// action for logging users in thru email
 export const emailLogIn = (credentials) => {
     return async (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();
-
         try {
             await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
-            dispatch({ type: 'LOGIN_SUCCESS' });
+            return dispatch({ type: 'LOGIN_SUCCESS' });
         } catch (err) {
-            dispatch({ type: 'LOGIN_ERROR', err });
+            return dispatch({ type: 'LOGIN_ERROR', err });
         }
     };
 };
+
+// action for logging users in thru google
 export const googleLogIn = () => {
     return async (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();
+        const state = getState();
         try {
-            //await firebase.login({ provider: 'google', type: 'popup' });
             const provider = new firebase.auth.GoogleAuthProvider().setCustomParameters({
                 prompt: 'select_account',
             });
             const result = await firebase.auth().signInWithPopup(provider);
+            console.log(result);
             const uid = result.user?.uid ?? 'null_uid';
             if (result.additionalUserInfo?.isNewUser) {
                 // For some reason, the profile key does not have typing by default so I console.logged in
@@ -50,28 +54,32 @@ export const googleLogIn = () => {
                 // push user into database
                 const dbObject = {
                     email: profile.email,
-                    firstName: profile.firstName,
-                    lastName: profile.lastName,
+                    firstName: profile?.given_name,
+                    lastName: profile?.family_name,
                 };
                 await firebase.database().ref(`/users/${uid}`).set(dbObject);
             }
-            dispatch({ type: 'GOOGLE_LOGIN_SUCCESS' });
+            return dispatch({ type: 'GOOGLE_LOGIN_SUCCESS' });
         } catch (err) {
-            dispatch({ type: 'GOOGLE_LOGIN_ERROR', err });
+            return dispatch({ type: 'GOOGLE_LOGIN_ERROR', err });
         }
     };
 };
+
+// action for logging users out
 export const logOut = () => {
     return async (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();
         try {
             await firebase.auth().signOut();
-            dispatch({ type: 'LOGOUT_SUCCESS' });
+            return dispatch({ type: 'LOGOUT_SUCCESS' });
         } catch (err) {
-            dispatch({ type: 'LOGOUT_ERROR', err });
+            return dispatch({ type: 'LOGOUT_ERROR', err });
         }
     };
 };
+
+// action for registering an user
 export const emailRegister = (credentials) => {
     return async (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();
@@ -107,6 +115,7 @@ export const emailRegister = (credentials) => {
     };
 };
 
+// action for deleting an user
 export const deleteUser = () => {
     return async (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();

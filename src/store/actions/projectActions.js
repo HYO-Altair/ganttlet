@@ -1,3 +1,4 @@
+// action for creating a new project
 export const createProject = (project) => {
     return async (dispatch, getState, { getFirebase }) => {
         // make async call to database

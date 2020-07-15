@@ -8,7 +8,6 @@ describe('Register Page User Creation, Redirect and Deletion Test', () => {
         cy.get('[data-cy=email]').type('marx@communism.com');
         cy.get('[data-cy=password]').type('123456abcdef');
         cy.get('[data-cy=submitButton]').click();
-        cy.wait(100);
         cy.url().should('include', 'dashboard');
 
         cy.get('[data-cy=profileButton]').click();
@@ -26,7 +25,6 @@ describe('Duplicate User Test', () => {
         cy.get('[data-cy=email]').type('bot@cypress.com');
         cy.get('[data-cy=password]').type('123456abcdef');
         cy.get('[data-cy=submitButton]').click();
-        cy.wait(100);
 
         cy.get('[data-cy=emailContainer]').contains('Account Exists');
     });

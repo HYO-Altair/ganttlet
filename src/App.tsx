@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, memo, useState, useCallback, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
@@ -14,7 +14,6 @@ import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
 import Project from './components/project/Project';
 
-import { IUser } from './config/sharedTypes';
 import { connect } from 'react-redux';
 const styles = (theme: Theme) =>
     createStyles({
@@ -156,7 +155,7 @@ App.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state: any) => {
-    console.log(state);
+    //console.log(state);
     return {
         auth: state.firebase.auth,
     };

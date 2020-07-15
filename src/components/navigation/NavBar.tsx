@@ -1,4 +1,4 @@
-import React, { memo, SetStateAction, Dispatch } from 'react';
+import React, { memo } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +16,6 @@ import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';
 import * as Constants from '../../config/constants';
 
-import { IUser } from '../../config/sharedTypes';
 import { logOut } from '../../store/actions/authActions';
 import { connect } from 'react-redux';
 
@@ -230,7 +229,6 @@ function NavBar(props: IProps): JSX.Element {
     );
 }
 const mapStateToProps = (state: any) => {
-    console.log(state);
     return {
         auth: state.firebase.auth,
     };

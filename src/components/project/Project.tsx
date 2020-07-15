@@ -48,7 +48,6 @@ const Project = (props: IProps): JSX.Element => {
     }
 };
 const mapStateToProps = (state: any, ownProps: any) => {
-    console.log(state);
     const id = ownProps.match.params.id;
     const projects = state.firebase.data.projects;
     const project = projects ? projects[id] : null;

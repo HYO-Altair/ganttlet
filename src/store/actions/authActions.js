@@ -118,8 +118,7 @@ export const deleteUser = () => {
                 await firebase.database().ref(`/users/${state.firebase.auth.uid}`).remove();
 
                 // delete the user in firebase auth
-                // TODO doesn't work, user isn't removed from firebase auth
-                //await firebase.auth().deleteUser(state.firebase.auth.uid);
+                await firebase.auth().currentUser.delete();
 
                 return dispatch({ type: 'DELETE_USER_SUCCESS' });
             } else {

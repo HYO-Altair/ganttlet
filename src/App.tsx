@@ -178,4 +178,5 @@ const mapStateToProps = (state: any) => {
         profile: state.firebase.profile,
     };
 };
+
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(App)));

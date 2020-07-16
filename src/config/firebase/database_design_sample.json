@@ -6,10 +6,10 @@
             "email": "izuku@mha.com",
             "projects": {
                 "owned": {
-                    "projectID": true
+                    "projectID": "this project's name"
                 },
                 "member": {
-                    "projectID": true
+                    "projectID": "another project's name"
                 }
             },
             "settings": {
@@ -19,10 +19,10 @@
     },
     "projects": {
         "projectID": {
-            "name": "_projname1",
-            "timezone": "_timezone",
-            "creator": {
-                "_username1": true
+            "name": "this project's name",
+            "timezoneOffset": "_timezoneOffset",
+            "managers": {
+                "_username2": true
             },
             "members": {
                 "_username3": true

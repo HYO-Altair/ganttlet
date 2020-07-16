@@ -18,7 +18,7 @@ const store = createStore(rootReducer, initialState, composeWithDevTools(applyMi
 
 const rrfProps = {
     firebase,
-    config,
+    config: config,
     dispatch: store.dispatch,
     attachAuthIsReady: true,
     // createFirestoreInstance // <- needed if using firestore

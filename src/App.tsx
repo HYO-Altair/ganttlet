@@ -30,10 +30,11 @@ const styles = (theme: Theme) =>
 
 interface IProps extends WithStyles<typeof styles> {
     auth: any;
+    profile: any;
 }
 
 function App(props: IProps): JSX.Element {
-    const { classes, auth } = props;
+    const { classes, auth, profile } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
@@ -171,9 +172,10 @@ App.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state: any) => {
-    //console.log(state);
+    console.log(state);
     return {
         auth: state.firebase.auth,
+        profile: state.firebase.profile,
     };
 };
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(App)));

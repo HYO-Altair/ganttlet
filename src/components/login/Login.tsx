@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
 import { connect } from 'react-redux';
 import { emailLogIn, googleLogIn } from '../../store/actions/authActions';
-import { Json } from '../../config/sharedTypes';
+import { ILogInCredentials } from '../../store/types/otherTypes';
 
 function Copyright() {
     return (
@@ -178,7 +178,7 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        emailLogIn: (credentials: Json) => dispatch(emailLogIn(credentials)),
+        emailLogIn: (credentials: ILogInCredentials) => dispatch(emailLogIn(credentials)),
         googleLogIn: () => dispatch(googleLogIn()),
     };
 };

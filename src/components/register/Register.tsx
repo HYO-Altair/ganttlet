@@ -8,8 +8,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import ErrorDisplay from '../shared/ErrorDisplay';
 import { connect } from 'react-redux';
-import { Json } from '../../config/sharedTypes';
 import { emailRegister, googleLogIn } from '../../store/actions/authActions';
+import { IRegisterCredentials } from '../../store/types/otherTypes';
 
 function Copyright() {
     return (
@@ -221,7 +221,7 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        emailRegister: (credentials: Json) => dispatch(emailRegister(credentials)),
+        emailRegister: (credentials: IRegisterCredentials) => dispatch(emailRegister(credentials)),
         googleLogIn: () => dispatch(googleLogIn()),
     };
 };

@@ -1,10 +1,12 @@
+import { IAuthState, IAuthAction } from '../types/reducerTypes';
+
 const initState = {
     authError: null,
 };
 /*
  * reducer for all firebase auth stuff
  */
-const authReducer = (state = initState, action) => {
+const authReducer = (state: IAuthState = initState, action: IAuthAction): IAuthState => {
     switch (action.type) {
         // email login
         case 'LOGIN_ERROR':

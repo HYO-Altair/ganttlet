@@ -12,6 +12,8 @@ import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProject from './AddProject';
 import { firebaseConnect } from 'react-redux-firebase';
+import { useFirebase } from 'react-redux-firebase';
+
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -44,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = (props) => {
     const classes = useStyles();
     const { projects } = props;
+    const firebase = useFirebase();
 
     return (
         <main className={classes.content}>
@@ -58,10 +61,12 @@ const Dashboard = (props) => {
                         projects.map((p) => (
                             <Grid key={p.key} item xs={3}>
                                 <ProjectCard project={p.value} projectID={p.key} />
+                                <Typography>{p.key}</Typography>
                             </Grid>
                         ))}
                 </Grid>
                 <Box pt={4}>
+                    {String(firebase.auth().currentUser.uid)}
                     <Copyright />
                 </Box>
             </Container>

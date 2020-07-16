@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import actualFirebase from 'firebase';
 import { IGetFirebase, IRegisterCredentials, ILogInCredentials, TGetState } from '../types/otherTypes';
 import {
     DELETE_USER_ERROR,
@@ -16,6 +17,7 @@ import {
 } from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IGoogleAuthProfile } from '../../config/sharedTypes';
+import { ExtendedFirebaseInstance } from 'react-redux-firebase';
 
 // action for logging users in thru email
 export const emailLogIn = (
@@ -26,7 +28,7 @@ export const emailLogIn = (
         _getState: TGetState,
         { getFirebase }: IGetFirebase,
     ) => {
-        const firebase = getFirebase();
+        const firebase = getFirebase() as ExtendedFirebaseInstance;
         try {
             await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
             dispatch({ type: LOGIN_SUCCESS });
@@ -43,10 +45,11 @@ export const googleLogIn = (): ThunkAction<Promise<void>, TGetState, IGetFirebas
         _getState: TGetState,
         { getFirebase }: IGetFirebase,
     ) => {
-        const firebase = getFirebase();
+        const firebase = getFirebase() as ExtendedFirebaseInstance;
         try {
             // set google provider, and force account selection
-            const provider = new firebase.auth.GoogleAuthProvider().setCustomParameters({
+
+            const provider = new actualFirebase.auth.GoogleAuthProvider().setCustomParameters({
                 prompt: 'select_account',
             });
 

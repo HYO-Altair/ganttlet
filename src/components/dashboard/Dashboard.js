@@ -8,9 +8,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Footer from '../footer/Footer';
-import Table from './Table';
 import ProjectCard from './ProjectCard';
 import AddProject from './AddProject';
 import { firebaseConnect } from 'react-redux-firebase';
@@ -45,32 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
     const classes = useStyles();
-
-    /*const projects = [
-        {
-            name: 'Project1',
-            description: 'Describe Project1',
-        },
-
-        {
-            name: 'Project2',
-            description: 'Describe Project2',
-        },
-
-        {
-            name: 'Project3',
-            description: 'Describe Project3',
-        },
-        {
-            name: 'Project4',
-            description: 'Describe Project4',
-        },
-        {
-            name: 'Project5',
-            description: 'Describe Project5',
-        },
-    ];
-*/
     const { projects } = props;
 
     return (
@@ -78,12 +50,6 @@ const Dashboard = (props) => {
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
-                    {/* Schedule Table */}
-                    <Grid item xs={12}>
-                        <Paper className={classes.paper}>
-                            <Table />
-                        </Paper>
-                    </Grid>
                     {/* add project temp code */}
                     <AddProject />
 

@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import actualFirebase from 'firebase';
-import { IGetFirebase, IRegisterCredentials, ILogInCredentials, TGetState } from '../types/otherTypes';
+import { IGetFirebase, TGetState } from '../types/otherTypes';
 import {
     DELETE_USER_ERROR,
     DELETE_USER_SUCCESS,
@@ -16,8 +16,7 @@ import {
     LOGIN_ERROR,
 } from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IGoogleAuthProfile } from '../../config/sharedTypes';
-import { ExtendedFirebaseInstance } from 'react-redux-firebase';
+import { IGoogleAuthProfile, IRegisterCredentials, ILogInCredentials } from '../../config/types';
 
 // action for logging users in thru email
 export const emailLogIn = (
@@ -28,7 +27,7 @@ export const emailLogIn = (
         _getState: TGetState,
         { getFirebase }: IGetFirebase,
     ) => {
-        const firebase = getFirebase() as ExtendedFirebaseInstance;
+        const firebase = getFirebase();
         try {
             await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
             dispatch({ type: LOGIN_SUCCESS });
@@ -45,7 +44,7 @@ export const googleLogIn = (): ThunkAction<Promise<void>, TGetState, IGetFirebas
         _getState: TGetState,
         { getFirebase }: IGetFirebase,
     ) => {
-        const firebase = getFirebase() as ExtendedFirebaseInstance;
+        const firebase = getFirebase();
         try {
             // set google provider, and force account selection
 
@@ -55,22 +54,29 @@ export const googleLogIn = (): ThunkAction<Promise<void>, TGetState, IGetFirebas
 
             // await for popup sign in to complete
             const result = await firebase.auth().signInWithPopup(provider);
-            const uid = result.user?.uid ?? 'null_uid';
+            const uid = result.user?.uid ?? null;
+
+            // retrieve OAuth info
+            // For some reason, the profile key does not have typing by default so I console.logged in
+            // and made an interface out of it.
+            // retrieve user information
+            const profile = result.additionalUserInfo?.profile as IGoogleAuthProfile;
+
+            const dbObject = {
+                email: profile.email,
+                firstName: profile?.given_name,
+                lastName: profile?.family_name,
+            };
 
             // if user is new, register them as a new user
             if (result.additionalUserInfo?.isNewUser) {
-                // For some reason, the profile key does not have typing by default so I console.logged in
-                // and made an interface out of it.
-                // retrieve user information
-                const profile = result.additionalUserInfo?.profile as IGoogleAuthProfile;
-
                 // push user into database
-                const dbObject = {
-                    email: profile.email,
-                    firstName: profile?.given_name,
-                    lastName: profile?.family_name,
-                };
                 await firebase.database().ref(`/users/${uid}`).set(dbObject);
+            }
+            // if user is not new, potentially update their information
+            else {
+                // using update won't override anything other than email, firstname, lastname
+                await firebase.database().ref(`/users/${uid}`).update(dbObject);
             }
 
             dispatch({ type: GOOGLE_LOGIN_SUCCESS });
@@ -126,7 +132,7 @@ export const emailRegister = (
                 const result = await firebase
                     .auth()
                     .createUserWithEmailAndPassword(credentials.email, credentials.password);
-                const uid = result.user?.uid ?? 'null_uid';
+                const uid = result.user?.uid ?? null;
 
                 // push user into database
                 const dbObject = {
@@ -161,7 +167,7 @@ export const deleteUser = (): ThunkAction<Promise<void>, TGetState, IGetFirebase
                 await firebase.database().ref(`/users/${state.firebase.auth.uid}`).remove();
 
                 // delete the user in firebase auth
-                await firebase.auth().currentUser.delete();
+                await firebase.auth().currentUser?.delete();
 
                 dispatch({ type: DELETE_USER_SUCCESS });
             }

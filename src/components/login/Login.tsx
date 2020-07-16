@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
 import { connect } from 'react-redux';
 import { emailLogIn, googleLogIn } from '../../store/actions/authActions';
-import { ILogInCredentials } from '../../store/types/otherTypes';
+import { ILogInCredentials } from '../../config/types';
 
 function Copyright() {
     return (

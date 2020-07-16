@@ -1,4 +1,4 @@
-import { IProjectJSON } from '../../config/sharedTypes';
+import { IProject } from '../../config/types';
 import { TGetState, IGetFirebase } from '../types/otherTypes';
 import { AnyAction } from 'redux';
 import { CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR } from '../types/actionTypes';
@@ -18,9 +18,7 @@ function generateProjectID(): string {
 }
 
 // action for creating a new project
-export const createProject = (
-    project: IProjectJSON,
-): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+export const createProject = (project: IProject): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
         dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
         _getState: TGetState,

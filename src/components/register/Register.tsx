@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import ErrorDisplay from '../shared/ErrorDisplay';
 import { connect } from 'react-redux';
 import { emailRegister, googleLogIn } from '../../store/actions/authActions';
-import { IRegisterCredentials } from '../../store/types/otherTypes';
+import { IRegisterCredentials } from '../../config/types';
 
 function Copyright() {
     return (

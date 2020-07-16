@@ -20,27 +20,27 @@ export const CREATE_PROJECT_SUCCESS = 'CREATE_PROJECT_SUCCESS';
  */
 interface IEmailLogInAction {
     type: typeof LOGIN_ERROR | typeof LOGIN_SUCCESS;
-    err: string | undefined;
+    err?: string;
 }
 
 interface IGoogleLogInAction {
     type: typeof GOOGLE_LOGIN_ERROR | typeof GOOGLE_LOGIN_SUCCESS;
-    err: string | undefined;
+    err?: string;
 }
 
 interface ILogOutAction {
     type: typeof LOGOUT_ERROR | typeof LOGOUT_SUCCESS;
-    err: string | undefined;
+    err?: string;
 }
 
 interface IEmailRegisterAction {
     type: typeof USER_EXISTS | typeof REGISTER_ERROR | typeof REGISTER_SUCCESS;
-    err: string | undefined;
+    err?: string;
 }
 
 interface IDeleteUserAction {
     type: typeof DELETE_USER_ERROR | typeof DELETE_USER_FAILURE | typeof DELETE_USER_SUCCESS;
-    err: string | undefined;
+    err?: string;
 }
 
 export type TAuthAction =
@@ -57,7 +57,7 @@ export type TAuthAction =
  */
 interface ICreateProject {
     type: typeof CREATE_PROJECT_ERROR | typeof CREATE_PROJECT_SUCCESS;
-    err: string | undefined;
+    err?: string;
 }
 
 export type TProjectAction = ICreateProject;

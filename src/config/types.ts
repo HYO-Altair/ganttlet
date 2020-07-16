@@ -5,44 +5,43 @@ export interface IUser {
 
 export type Json = string | number | boolean | null | { [property: string]: Json } | Json[];
 
-export interface IcleanDatabaseJSON {
+export interface ICleanDatabase {
     users: unknown;
     projects: unknown;
 }
 
-export interface IUserJSON {
-    fname: string;
-    lname: string;
+export interface IUser {
+    firstName: string;
+    lastName: string;
     email: string;
-    password: string;
     projects: unknown;
     settings: unknown;
 }
 
-export interface IProjectJSON {
+export interface IProject {
     name: string;
-    timezone: string;
+    timeZone: string;
     description: string;
     managers: unknown;
     members: unknown;
     tasks: unknown;
 }
 
-export interface IProjectTaskJSON {
+export interface IProjectTask {
     id: string;
-    taskname: string;
+    taskName: string;
     description: string;
     color: string;
     duration: string;
-    startdate: string;
-    enddate: string;
+    startDate: string;
+    endDate: string;
     assignees: unknown;
-    subtasks: unknown;
+    subTasks: unknown;
     comments: unknown;
 }
 
 export interface ITaskComment {
-    op: string;
+    originalPoster: string;
     text: string;
     taggedUsers: unknown;
 }
@@ -57,4 +56,16 @@ export interface IGoogleAuthProfile {
     name: string;
     picture: string;
     verified_email: boolean;
+}
+
+export interface ILogInCredentials {
+    email: string;
+    password: string;
+}
+
+export interface IRegisterCredentials {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
 }

@@ -1,4 +1,4 @@
-import { IProjectJSON } from '../../config/sharedTypes';
+import { IProject } from '../../config/types';
 
 // authReducer
 export interface IAuthState {
@@ -10,10 +10,10 @@ export interface IAuthAction {
 }
 // projectReducer
 export interface IProjectState {
-    projects: IProjectJSON[];
+    projects: IProject[];
 }
 export interface IProjectAction {
     type: string;
-    project: IProjectJSON;
+    project: IProject;
     err: string;
 }

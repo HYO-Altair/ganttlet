@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -12,8 +11,6 @@ import Divider from '@material-ui/core/Divider';
 import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProject from './AddProject';
-import { useSelector } from 'react-redux';
-import { useFirebaseConnect, firebaseConnect } from 'react-redux-firebase';
 import { useFirebase } from 'react-redux-firebase';
 
 function Copyright() {
@@ -47,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
     const classes = useStyles();
-    const { auth, projects } = props;
+    const { projects } = props;
     const firebase = useFirebase();
 
     console.log(projects);
@@ -106,7 +103,7 @@ const Dashboard = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        auth: state.firebase.auth,
+        //auth: state.firebase.auth,
         projects: state.firebase.profile.projects,
     };
 };

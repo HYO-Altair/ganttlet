@@ -15,6 +15,7 @@ import Profile from './components/profile/Profile';
 import Project from './components/project/Project';
 
 import { connect } from 'react-redux';
+import { isLoaded } from 'react-redux-firebase';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -113,41 +114,56 @@ function App(props: IProps): JSX.Element {
             <Redirect to={{ pathname: '/login' }} />
         );
 
+    function AuthIsLoaded({ children }: any) {
+        if (!isLoaded(auth)) return <div>splash screen...</div>;
+        return children;
+    }
+
     return (
         <Router>
-            <MuiThemeProvider theme={theme}>
-                <CssBaseline />
-                <GlobalStyles />
-                <Suspense fallback={<Fragment />}>
-                    <div className={classes.wrapper}>
-                        <div className={classes.root}>
-                            <NavBar
-                                selectedTab={selectedTab}
-                                selectTab={setSelectedTab}
-                                mobileDrawerOpen={isMobileDrawerOpen}
-                                handleMobileDrawerOpen={handleMobileDrawerOpen}
-                                handleMobileDrawerClose={handleMobileDrawerClose}
-                                handleSideDrawerOpen={handleSideDrawerOpen}
-                                handleSideDrawerClose={handleSideDrawerClose}
-                                sideDrawerOpen={isSideDrawerOpen}
-                            />
-                            <Switch>
-                                <PropsRoute path="/home" component={Home} selectHome={selectHome} />
-                                <PrivateRoute
-                                    path={'/dashboard'}
-                                    component={Dashboard}
-                                    selectDashboard={selectDashBoard}
+            <AuthIsLoaded>
+                <MuiThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <GlobalStyles />
+                    <Suspense fallback={<Fragment />}>
+                        <div className={classes.wrapper}>
+                            <div className={classes.root}>
+                                <NavBar
+                                    selectedTab={selectedTab}
+                                    selectTab={setSelectedTab}
+                                    mobileDrawerOpen={isMobileDrawerOpen}
+                                    handleMobileDrawerOpen={handleMobileDrawerOpen}
+                                    handleMobileDrawerClose={handleMobileDrawerClose}
+                                    handleSideDrawerOpen={handleSideDrawerOpen}
+                                    handleSideDrawerClose={handleSideDrawerClose}
+                                    sideDrawerOpen={isSideDrawerOpen}
                                 />
-                                <PrivateRoute path="/profile" component={Profile} selectProfile={selectProfile} />
-                                <PrivateRoute path="/project/:id" component={Project} selectProject={selectProject} />
-                                <PublicRoute path="/login" component={Login} selectLogin={selectLogin} />
-                                <PublicRoute path="/register" component={Register} selectRegister={selectRegister} />
-                                <PropsRoute path="/" component={Home} selectHome={selectHome} />
-                            </Switch>
+                                <Switch>
+                                    <PropsRoute path="/home" component={Home} selectHome={selectHome} />
+                                    <PrivateRoute
+                                        path={'/dashboard'}
+                                        component={Dashboard}
+                                        selectDashboard={selectDashBoard}
+                                    />
+                                    <PrivateRoute path="/profile" component={Profile} selectProfile={selectProfile} />
+                                    <PrivateRoute
+                                        path="/project/:id"
+                                        component={Project}
+                                        selectProject={selectProject}
+                                    />
+                                    <PublicRoute path="/login" component={Login} selectLogin={selectLogin} />
+                                    <PublicRoute
+                                        path="/register"
+                                        component={Register}
+                                        selectRegister={selectRegister}
+                                    />
+                                    <PropsRoute path="/" component={Home} selectHome={selectHome} />
+                                </Switch>
+                            </div>
                         </div>
-                    </div>
-                </Suspense>
-            </MuiThemeProvider>
+                    </Suspense>
+                </MuiThemeProvider>
+            </AuthIsLoaded>
         </Router>
     );
 }

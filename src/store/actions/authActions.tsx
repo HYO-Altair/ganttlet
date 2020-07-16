@@ -1,6 +1,5 @@
 import { AnyAction } from 'redux';
 import actualFirebase from 'firebase';
-import { IGetFirebase, TGetState } from '../types/otherTypes';
 import {
     DELETE_USER_ERROR,
     DELETE_USER_SUCCESS,
@@ -14,6 +13,8 @@ import {
     GOOGLE_LOGIN_SUCCESS,
     LOGIN_SUCCESS,
     LOGIN_ERROR,
+    IGetFirebase,
+    TGetState,
 } from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IGoogleAuthProfile, IRegisterCredentials, ILogInCredentials } from '../../config/types';

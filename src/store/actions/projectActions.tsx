@@ -1,7 +1,6 @@
 import { IProject } from '../../config/types';
-import { TGetState, IGetFirebase } from '../types/otherTypes';
 import { AnyAction } from 'redux';
-import { CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR } from '../types/actionTypes';
+import { CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR, TGetState, IGetFirebase } from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ExtendedFirebaseInstance } from 'react-redux-firebase';
 

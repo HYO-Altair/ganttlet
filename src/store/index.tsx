@@ -8,6 +8,7 @@ import { config } from '../config/firebase/firebase_consts';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+
 firebase.initializeApp(config);
 
 const initialState = {};
@@ -16,9 +17,14 @@ const middleware = [thunk.withExtraArgument({ getFirebase })];
 
 const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
 
+const rrfConfig = {
+    userProfile: 'users', // where profiles are stored in database,
+    useFirebaseForProfile: true,
+};
+
 const rrfProps = {
     firebase,
-    config: config,
+    config: rrfConfig,
     dispatch: store.dispatch,
     attachAuthIsReady: true,
     // createFirestoreInstance // <- needed if using firestore

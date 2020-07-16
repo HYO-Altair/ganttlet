@@ -13,6 +13,4 @@ export const config = {
     messagingSenderId: '783372525556',
     appId: '1:783372525556:web:37eb04f4ccfdbd62fae3a1',
     measurementId: 'G-WH23WGKNYZ',
-    userProfile: 'users', // where profiles are stored in database,
-    useFirebaseForProfile: true,
 };

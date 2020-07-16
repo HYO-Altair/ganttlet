@@ -8,10 +8,12 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProject from './AddProject';
-import { firebaseConnect } from 'react-redux-firebase';
+import { useSelector } from 'react-redux';
+import { useFirebaseConnect, firebaseConnect } from 'react-redux-firebase';
 import { useFirebase } from 'react-redux-firebase';
 
 function Copyright() {
@@ -45,30 +47,57 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
     const classes = useStyles();
-    const { projects } = props;
+    const { auth, projects } = props;
     const firebase = useFirebase();
 
+    console.log(projects);
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={3}>
+                <Grid container spacing={1}>
+                    <Typography>Temp thingy for adding new project</Typography>
                     {/* add project temp code */}
                     <AddProject />
+                </Grid>
 
-                    {/*projects*/}
+                <Divider />
+
+                <Grid container spacing={1}>
+                    <Typography>Owned Projects</Typography>
+                    {/*owned projects*/}
                     {projects &&
-                        projects.map((p) => (
-                            <Grid key={p.key} item xs={3}>
-                                <ProjectCard project={p.value} projectID={p.key} />
-                                <Typography>{p.key}</Typography>
+                        projects.owned &&
+                        Object.keys(projects.owned).map((key) => (
+                            <Grid key={key} item xs={3}>
+                                <ProjectCard projectName={projects.owned[key]} projectID={key} />
                             </Grid>
                         ))}
                 </Grid>
-                <Box pt={4}>
-                    {String(firebase.auth().currentUser.uid)}
-                    <Copyright />
-                </Box>
+
+                <Divider />
+
+                <Grid container spacing={1}>
+                    <Typography>Joined Projects</Typography>
+                    {/*joined projects*/}
+                    {projects &&
+                        projects.joined &&
+                        Object.keys(projects.joined).map((key) => (
+                            <Grid key={key} item xs={3}>
+                                <ProjectCard projectName={projects.joined[key]} projectID={key} />
+                            </Grid>
+                        ))}
+                </Grid>
+
+                <Divider />
+
+                <Grid container spacing={1}>
+                    <Typography>Current Auth User ID</Typography>
+                    <Box pt={4}>
+                        {String(firebase.auth().currentUser.uid)}
+                        <Copyright />
+                    </Box>
+                </Grid>
             </Container>
             <Footer />
         </main>
@@ -77,7 +106,8 @@ const Dashboard = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        projects: state.firebase.ordered.projects,
+        auth: state.firebase.auth,
+        projects: state.firebase.profile.projects,
     };
 };
-export default compose(firebaseConnect([{ path: 'projects' }]), connect(mapStateToProps))(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

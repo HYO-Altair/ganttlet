@@ -172,7 +172,8 @@ App.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state: any) => {
-    console.log(state);
+    // DEBUG: Uncomment to view current state in console
+    //console.log(state);
     return {
         auth: state.firebase.auth,
         profile: state.firebase.profile,

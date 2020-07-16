@@ -1,19 +1,27 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
+import { connect, useSelector } from 'react-redux';
+import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { Card, CardActionArea, CardContent } from '@material-ui/core';
+import { RootState } from '../../store/reducers';
 
 interface IProps {
-    project: {
-        name: string;
-        description: string;
-    };
+    projectID: string;
 }
 
 const Project = (props: IProps): JSX.Element => {
-    const { project } = props;
+    const { projectID } = props;
+
+    useFirebaseConnect([{ path: `projects/${projectID}/` }]);
+
+    const project = useSelector((state: RootState) =>
+        // if projects has been loaded, set project,                             else set to null
+        state.firebase.data.projects ? state.firebase.data.projects[projectID] : null,
+    );
+
+    // DEBUG: uncomment to view current contents of project
+    //console.log(project);
     if (project) {
         return (
             <div>
@@ -41,18 +49,16 @@ const Project = (props: IProps): JSX.Element => {
         return (
             <div>
                 <Typography gutterBottom variant="h5">
-                    Project not found
+                    Project not found or User not authorized.
                 </Typography>
             </div>
         );
     }
 };
 const mapStateToProps = (state: any, ownProps: any) => {
-    const id = ownProps.match.params.id;
-    const projects = state.firebase.data.projects;
-    const project = projects ? projects[id] : null;
+    const projectID = ownProps.match.params.id;
     return {
-        project,
+        projectID,
     };
 };
 

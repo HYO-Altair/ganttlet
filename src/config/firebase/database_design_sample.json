@@ -8,7 +8,7 @@
                 "owned": {
                     "projectID": "this project's name"
                 },
-                "member": {
+                "joined": {
                     "projectID": "another project's name"
                 }
             },

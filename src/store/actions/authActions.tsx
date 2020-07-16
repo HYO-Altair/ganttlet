@@ -72,6 +72,7 @@ export const googleLogIn = (): ThunkAction<Promise<void>, TGetState, IGetFirebas
                 };
                 await firebase.database().ref(`/users/${uid}`).set(dbObject);
             }
+
             dispatch({ type: GOOGLE_LOGIN_SUCCESS });
         } catch (err) {
             dispatch({ type: GOOGLE_LOGIN_ERROR, err });

@@ -4,18 +4,6 @@ import { CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR, TGetState, IGetFirebase }
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ExtendedFirebaseInstance } from 'react-redux-firebase';
 
-// No, I am not a genius. I copied it from
-// https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php
-function generateProjectID(): string {
-    let dt = new Date().getTime();
-    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        const r = (dt + Math.random() * 16) % 16 | 0;
-        dt = Math.floor(dt / 16);
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-    });
-    return uuid;
-}
-
 // action for creating a new project
 export const createProject = (project: IProject): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
@@ -33,7 +21,7 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             // TODO: instantiate stuff not part of project that was passed in
             // debating whether or not all this stuff should be set in project
             // parameter before being passed into this action
-            const ownerUid = auth.currentUser?.uid || '';
+            const ownerUid = auth.currentUser?.uid ?? '';
             const managers = { [ownerUid]: profile.firstName + ' ' + profile.lastName };
             // TODO currently hard coding timezone offset to client's system time
             // but should be selectable upon project creation and passed in inside
@@ -44,9 +32,9 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             // we want to add a dummy example first task or smt to every new proj
             const tasks = {};
 
-            const projectId = generateProjectID();
             // add project id to user's list of projects
-            await db.ref(`/users/${ownerUid}/projects/owned/${projectId}`).set(project.name);
+            const result = await db.ref(`/users/${ownerUid}/projects/owned/`).push(project.name);
+            const projectId = result.key;
             // add project to projects
             await db.ref(`/projects/${projectId}`).set({ ...project, managers, timezoneOffset, members, tasks });
 

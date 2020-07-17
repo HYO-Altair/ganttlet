@@ -10,8 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
-import AddProject from './AddProject';
-import { useFirebase } from 'react-redux-firebase';
+import AddProjectForm from './AddProjectForm';
 
 function Copyright() {
     return (
@@ -45,21 +44,10 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = (props) => {
     const classes = useStyles();
     const { projects } = props;
-    const firebase = useFirebase();
-
-    console.log(projects);
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={1}>
-                    <Typography>Temp thingy for adding new project</Typography>
-                    {/* add project temp code */}
-                    <AddProject />
-                </Grid>
-
-                <Divider />
-
                 <Grid container spacing={1}>
                     <Typography>Owned Projects</Typography>
                     {/*owned projects*/}
@@ -89,9 +77,13 @@ const Dashboard = (props) => {
                 <Divider />
 
                 <Grid container spacing={1}>
-                    <Typography>Current Auth User ID</Typography>
+                    <AddProjectForm />
+                </Grid>
+
+                <Divider />
+
+                <Grid container spacing={1} m="2rem">
                     <Box pt={4}>
-                        {String(firebase.auth().currentUser.uid)}
                         <Copyright />
                     </Box>
                 </Grid>

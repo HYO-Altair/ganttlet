@@ -27,6 +27,5 @@ const rrfProps = {
     config: rrfConfig,
     dispatch: store.dispatch,
     attachAuthIsReady: true,
-    // createFirestoreInstance // <- needed if using firestore
 };
 export { store, rrfProps };

@@ -12,6 +12,7 @@ import Register from './components/register/Register';
 import Dashboard from './components/dashboard/Dashboard';
 import smoothScrollTop from './utils/functions/smoothScrollTop';
 import Profile from './components/profile/Profile';
+import GanttApp from './components/ganttapp/GanttApp';
 import firebase from './components/Firebase/firebase';
 
 import { IUser } from './config/sharedTypes';
@@ -84,6 +85,12 @@ function App(props: Props): JSX.Element {
         setSelectedTab('Dashboard');
     }, [setSelectedTab]);
 
+    const selectGanttApp = useCallback(() => {
+        smoothScrollTop();
+        document.title = 'GanttApp | Ganttlet';
+        setSelectedTab('GanttApp');
+    }, [setSelectedTab]);
+
     const handleMobileDrawerOpen = useCallback(() => {
         setIsMobileDrawerOpen(true);
     }, [setIsMobileDrawerOpen]);
@@ -153,6 +160,7 @@ function App(props: Props): JSX.Element {
                                     selectDashboard={selectDashBoard}
                                 />
                                 <PrivateRoute path="/profile" component={Profile} selectProfile={selectProfile} />
+                                <PublicRoute path="/ganttapp" component={GanttApp} selectProfile={selectGanttApp} />
                                 <PublicRoute path="/login" component={Login} selectLogin={selectLogin} />
                                 <PublicRoute path="/register" component={Register} selectRegister={selectRegister} />
                                 <PropsRoute path="/" component={Home} selectHome={selectHome} />

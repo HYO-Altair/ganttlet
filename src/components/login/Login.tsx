@@ -3,9 +3,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import firebase from '../Firebase/firebase';
 import { useForm } from 'react-hook-form';
 import ErrorDisplay from '../shared/ErrorDisplay';
+import { connect } from 'react-redux';
+import { emailLogIn, googleLogIn } from '../../store/actions/authActions';
+import { ILogInCredentials } from '../../config/types';
 
 function Copyright() {
     return (
@@ -60,13 +62,18 @@ interface ILoginFormObject {
     email: string;
     password: string;
 }
-
-export default function Login(): JSX.Element {
+interface IProps {
+    authError: string;
+    emailLogIn: any;
+    googleLogIn: any;
+}
+const Login = (props: IProps): JSX.Element => {
+    const { authError, emailLogIn, googleLogIn } = props;
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<ILoginFormObject>();
 
     const onSubmit = async (data: ILoginFormObject) => {
-        await firebase.signIn(data.email, data.password);
+        await emailLogIn({ email: data.email, password: data.password });
     };
 
     return (
@@ -116,7 +123,7 @@ export default function Login(): JSX.Element {
                             data-cy="password"
                         />
                         {errors.password && <ErrorDisplay type={errors.password.type} />}
-                        {!errors.password && !errors.email && firebase.lastLoginAttemptWasInvalid && (
+                        {!errors.password && !errors.email && authError && (
                             <ErrorDisplay type={'invalidLoginAttempt'} />
                         )}
                     </div>
@@ -134,7 +141,7 @@ export default function Login(): JSX.Element {
                     {/*Google Sign in */}
                     <Button
                         onClick={() => {
-                            firebase.googleSignIn();
+                            googleLogIn();
                         }}
                         className={classes.googleBtn}
                     >
@@ -163,4 +170,17 @@ export default function Login(): JSX.Element {
             </Box>
         </Container>
     );
-}
+};
+const mapStateToProps = (state: any) => {
+    return {
+        authError: state.auth.authError,
+    };
+};
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        emailLogIn: (credentials: ILogInCredentials) => dispatch(emailLogIn(credentials)),
+        googleLogIn: () => dispatch(googleLogIn()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

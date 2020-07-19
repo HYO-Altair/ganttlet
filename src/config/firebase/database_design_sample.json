@@ -1,48 +1,16 @@
 {
     "users": {
-        "_username1": {
-            "fname": "_fname1",
-            "lname": "_lname1",
-            "email": "_email1",
-            "password": "_hashedPassword",
+        "uid": {
+            "firstName": "Izuku",
+            "lastName": "Midoriya",
+            "email": "izuku@mha.com",
             "projects": {
-                "_project1": "_project1id"
-            },
-            "settings": {
-                "theme": "dark"
-            }
-        },
-        "_username2": {
-            "fname": "_fname2",
-            "lname": "_lname2",
-            "email": "_email2",
-            "password": "_hashedPassword",
-            "projects": {
-                "_project1": "_project1id"
-            },
-            "settings": {
-                "theme": "dark"
-            }
-        },
-        "_username3": {
-            "fname": "_fname2",
-            "lname": "_lname2",
-            "email": "_email2",
-            "password": "_hashedPassword",
-            "projects": {
-                "_project1": "_project1id"
-            },
-            "settings": {
-                "theme": "dark"
-            }
-        },
-        "_username4": {
-            "fname": "_fname2",
-            "lname": "_lname2",
-            "email": "_email2",
-            "password": "_hashedPassword",
-            "projects": {
-                "_project1": "_project1id"
+                "owned": {
+                    "projectID": "this project's name"
+                },
+                "joined": {
+                    "projectID": "another project's name"
+                }
             },
             "settings": {
                 "theme": "dark"
@@ -50,15 +18,14 @@
         }
     },
     "projects": {
-        "_proj1ID": {
-            "name": "_projname1",
-            "timezone": "_timezone",
+        "projectID": {
+            "name": "this project's name",
+            "timezoneOffset": "_timezoneOffset",
             "managers": {
-                "_username1": true
+                "_username2": true
             },
             "members": {
-                "_username3": true,
-                "_username4": true
+                "_username3": true
             },
             "tasks": {
                 "_firebase_gen_id": {

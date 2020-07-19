@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, Container, Grid, Button } from '@material-ui/core';
 
 import Form from './Form';
-import firebase from '../Firebase/firebase';
+import { connect } from 'react-redux';
+import { deleteUser } from '../../store/actions/authActions';
 
 function Copyright() {
     return (
@@ -101,9 +102,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Profile(): JSX.Element {
-    const classes = useStyles();
+interface IProps {
+    deleteUser: any;
+}
 
+const Profile = (props: IProps): JSX.Element => {
+    const { deleteUser } = props;
+    const classes = useStyles();
+    const handleClick = async () => {
+        console.log('trig 1');
+        await deleteUser();
+    };
     return (
         <div className={classes.root}>
             <main className={classes.content}>
@@ -118,16 +127,16 @@ export default function Profile(): JSX.Element {
                         <Copyright />
                     </Box>
                 </Container>
-                <Button
-                    onClick={() => {
-                        firebase.deleteUser();
-                    }}
-                    variant="contained"
-                    data-cy="deleteButton"
-                >
+                <Button onClick={() => handleClick()} variant="contained" data-cy="deleteButton">
                     Delete Account
                 </Button>
             </main>
         </div>
     );
-}
+};
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        deleteUser: () => dispatch(deleteUser()),
+    };
+};
+export default connect(null, mapDispatchToProps)(Profile);

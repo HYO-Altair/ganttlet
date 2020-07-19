@@ -6,8 +6,10 @@ import { useForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-import firebase from '../Firebase/firebase';
 import ErrorDisplay from '../shared/ErrorDisplay';
+import { connect } from 'react-redux';
+import { emailRegister, googleLogIn } from '../../store/actions/authActions';
+import { IRegisterCredentials } from '../../config/types';
 
 function Copyright() {
     return (
@@ -64,19 +66,32 @@ interface RegisterFormObject {
     email: string;
     password: string;
 }
-
-export default function Register(): JSX.Element {
+interface IProps {
+    authError: string;
+    emailRegister: any;
+    googleLogIn: any;
+}
+const Register = (props: IProps): JSX.Element => {
+    const { authError, emailRegister, googleLogIn } = props;
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<RegisterFormObject>();
-    const onSubmit = (data: RegisterFormObject) => {
-        firebase.createUser(data.email, data.password, data.firstName, data.lastName);
+    const onSubmit = async (data: RegisterFormObject) => {
+        await emailRegister({
+            email: data.email,
+            password: data.password,
+            firstName: data.firstName,
+            lastName: data.lastName,
+        });
+        //firebase.createUser(data.email, data.password, data.firstName, data.lastName);
     };
 
     // This is redundant, but when I tried to use the FirebaseWrapper member function directly I got an error saying `this` is undefined
-    const emailIsUnique = async (email: string) => {
-        const isUnique = !(await firebase.userAlreadyExists(email));
-        return isUnique;
+    /**    const emailIsUnique = async (email: string) => {
+        await userExists(email);
+        //const isUnique = !(await firebase.userAlreadyExists(email));
+        return authError;
     };
+    **/
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
             <CssBaseline />
@@ -135,11 +150,15 @@ export default function Register(): JSX.Element {
                                 inputRef={register({
                                     required: true,
                                     maxLength: 256,
-                                    validate: emailIsUnique,
                                 })}
                                 data-cy="email"
                             />
                             {errors.email && <ErrorDisplay type={errors.email.type} />}
+                            {!errors.firstName &&
+                                !errors.lastName &&
+                                !errors.password &&
+                                !errors.email &&
+                                authError && <ErrorDisplay type={authError} />}
                         </Grid>
                         <Grid data-cy="passwordContainer" item xs={12}>
                             <TextField
@@ -170,7 +189,7 @@ export default function Register(): JSX.Element {
                     {/*Google Sign in */}
                     <Button
                         onClick={() => {
-                            firebase.googleSignIn();
+                            googleLogIn();
                         }}
                         className={classes.googleBtn}
                     >
@@ -194,4 +213,17 @@ export default function Register(): JSX.Element {
             </Box>
         </Container>
     );
-}
+};
+const mapStateToProps = (state: any) => {
+    return {
+        authError: state.auth.authError,
+    };
+};
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        emailRegister: (credentials: IRegisterCredentials) => dispatch(emailRegister(credentials)),
+        googleLogIn: () => dispatch(googleLogIn()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

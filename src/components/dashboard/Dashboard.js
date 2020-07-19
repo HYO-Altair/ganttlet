@@ -1,13 +1,16 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
 import Footer from '../footer/Footer';
-import Table from './Table';
-import Projects from './Projects';
+import ProjectCard from './ProjectCard';
+import AddProjectForm from './AddProjectForm';
 
 function Copyright() {
     return (
@@ -38,56 +41,62 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Dashboard() {
+const Dashboard = (props) => {
     const classes = useStyles();
-
-    const Proj = [
-        {
-            name: 'Project1',
-            description: 'Describe Project1',
-        },
-
-        {
-            name: 'Project2',
-            description: 'Describe Project2',
-        },
-
-        {
-            name: 'Project3',
-            description: 'Describe Project3',
-        },
-        {
-            name: 'Project4',
-            description: 'Describe Project4',
-        },
-        {
-            name: 'Project5',
-            description: 'Describe Project5',
-        },
-    ];
-
+    const { projects } = props;
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={3}>
-                    {/* Schedule Table */}
-                    <Grid item xs={12}>
-                        <Paper className={classes.paper}>
-                            <Table />
-                        </Paper>
-                    </Grid>
-                    {Proj.map((p) => (
-                        <Grid item xs={3}>
-                            <Projects Projects={p} />
-                        </Grid>
-                    ))}
+                <Grid container spacing={1}>
+                    <Typography>Owned Projects</Typography>
+                    {/*owned projects*/}
+                    {projects &&
+                        projects.owned &&
+                        Object.keys(projects.owned).map((key) => (
+                            <Grid key={key} item xs={3}>
+                                <ProjectCard projectName={projects.owned[key]} projectID={key} />
+                            </Grid>
+                        ))}
                 </Grid>
-                <Box pt={4}>
-                    <Copyright />
-                </Box>
+
+                <Divider />
+
+                <Grid container spacing={1}>
+                    <Typography>Joined Projects</Typography>
+                    {/*joined projects*/}
+                    {projects &&
+                        projects.joined &&
+                        Object.keys(projects.joined).map((key) => (
+                            <Grid key={key} item xs={3}>
+                                <ProjectCard projectName={projects.joined[key]} projectID={key} />
+                            </Grid>
+                        ))}
+                </Grid>
+
+                <Divider />
+
+                <Grid container spacing={1}>
+                    <AddProjectForm />
+                </Grid>
+
+                <Divider />
+
+                <Grid container spacing={1} m="2rem">
+                    <Box pt={4}>
+                        <Copyright />
+                    </Box>
+                </Grid>
             </Container>
             <Footer />
         </main>
     );
-}
+};
+
+const mapStateToProps = (state) => {
+    return {
+        //auth: state.firebase.auth,
+        projects: state.firebase.profile.projects,
+    };
+};
+export default connect(mapStateToProps)(Dashboard);

@@ -1,4 +1,4 @@
-import React, { memo, SetStateAction, Dispatch } from 'react';
+import React, { memo } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
@@ -11,13 +11,13 @@ import RegisterIcon from '@material-ui/icons/ExitToApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
-import firebase from '../Firebase/firebase';
 
 import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';
 import * as Constants from '../../config/constants';
 
-import { IUser } from '../../config/sharedTypes';
+import { logOut } from '../../store/actions/authActions';
+import { connect } from 'react-redux';
 
 const drawerWidth = Constants.drawerWidth;
 
@@ -70,11 +70,13 @@ interface IProps extends WithStyles<typeof styles> {
     handleSideDrawerOpen: VoidFunction;
     handleSideDrawerClose: VoidFunction;
     sideDrawerOpen: boolean;
-    user: { loggedIn: boolean; email: string };
-    setUser: Dispatch<SetStateAction<IUser>>;
+
     selectedTab: string;
     selectTab: { (selectedTab: string): void };
     // injected style props
+    // redux props
+    logOut: any;
+    auth: any;
 }
 function NavBar(props: IProps): JSX.Element {
     const {
@@ -85,8 +87,9 @@ function NavBar(props: IProps): JSX.Element {
         handleSideDrawerOpen,
         handleSideDrawerClose,
         sideDrawerOpen,
-        user,
         selectedTab,
+        logOut,
+        auth,
     } = props;
 
     const menuItems = [
@@ -114,19 +117,20 @@ function NavBar(props: IProps): JSX.Element {
     };
     const handleExitIconClick = () => {
         //setUser({ loggedIn: false, email: '' });
-        firebase.signOut();
+        //firebase.signOut();
         // redirect to home?
+        logOut();
     };
 
     return (
         <div>
             <AppBar
                 position="absolute"
-                className={clsx(classes.appBar, user.loggedIn && sideDrawerOpen && classes.appBarShift)}
+                className={clsx(classes.appBar, auth.uid && sideDrawerOpen && classes.appBarShift)}
             >
                 <Toolbar className={classes.toolbar}>
                     <div>
-                        {user.loggedIn && (
+                        {auth.uid && (
                             <IconButton
                                 edge="start"
                                 aria-label="open drawer"
@@ -147,14 +151,14 @@ function NavBar(props: IProps): JSX.Element {
                     </div>
                     {/*
                     <div>
-                        <Button onClick={() => setUser({ loggedIn: !user.loggedIn, email: user.email })}>
+                        <Button onClick={() => setUser({ loggedIn: !auth.uid, email: user.email })}>
                             Toggle Logged In
                         </Button>
                     </div>
                     */}
 
                     <div>
-                        {user.loggedIn ? (
+                        {auth.uid ? (
                             <div>
                                 <Link
                                     key="profile"
@@ -213,9 +217,7 @@ function NavBar(props: IProps): JSX.Element {
                     </div>
                 </Toolbar>
             </AppBar>
-            {user.loggedIn && (
-                <SideDrawer handleSideDrawerClose={handleSideDrawerClose} sideDrawerOpen={sideDrawerOpen} />
-            )}
+            {auth.uid && <SideDrawer handleSideDrawerClose={handleSideDrawerClose} sideDrawerOpen={sideDrawerOpen} />}
             <NavigationDrawer
                 menuItems={menuItems}
                 anchor="right"
@@ -226,4 +228,14 @@ function NavBar(props: IProps): JSX.Element {
         </div>
     );
 }
-export default withStyles(styles, { withTheme: true })(memo(NavBar));
+const mapStateToProps = (state: any) => {
+    return {
+        auth: state.firebase.auth,
+    };
+};
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        logOut: () => dispatch(logOut()),
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(memo(NavBar)));

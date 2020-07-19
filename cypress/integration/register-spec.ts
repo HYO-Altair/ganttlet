@@ -20,9 +20,12 @@ describe('Duplicate User Test', () => {
     it('Should Not Allow Used Email To Be Submitted', () => {
         cy.visit('http://localhost:3000/register');
         cy.wait(100);
-
+        cy.get('[data-cy=firstName]').type('Karl');
+        cy.get('[data-cy=lastName]').type('Marx');
         cy.get('[data-cy=email]').type('bot@cypress.com');
+        cy.get('[data-cy=password]').type('123456abcdef');
         cy.get('[data-cy=submitButton]').click();
+
         cy.get('[data-cy=emailContainer]').contains('Account Exists');
     });
 });

@@ -5,6 +5,7 @@ import { connect, useSelector } from 'react-redux';
 import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { RootState } from '../../store/reducers';
 import Chart from './Chart';
+import { BrowserView, MobileView } from 'react-device-detect';
 
 interface IProps {
     projectID: string;
@@ -25,7 +26,12 @@ const Project = (props: IProps): JSX.Element => {
     if (project) {
         return (
             <div>
-                <Chart />
+                <BrowserView>
+                    <Chart />
+                </BrowserView>
+                <MobileView>
+                    <Typography>Mobile Chart</Typography>
+                </MobileView>
             </div>
         );
     } else {

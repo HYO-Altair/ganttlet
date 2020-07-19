@@ -3,8 +3,8 @@ import Typography from '@material-ui/core/Typography';
 import { compose } from 'redux';
 import { connect, useSelector } from 'react-redux';
 import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
-import { Card, CardActionArea, CardContent } from '@material-ui/core';
 import { RootState } from '../../store/reducers';
+import Chart from './Chart';
 
 interface IProps {
     projectID: string;
@@ -25,24 +25,7 @@ const Project = (props: IProps): JSX.Element => {
     if (project) {
         return (
             <div>
-                <Card>
-                    <CardActionArea>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5">
-                                {project.name}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                {project.description}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-                <Typography gutterBottom variant="h5">
-                    {project.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {project.description}
-                </Typography>
+                <Chart />
             </div>
         );
     } else {

@@ -67,6 +67,7 @@ function App(props: IProps): JSX.Element {
         document.title = 'Dashboard | Ganttlet';
         setSelectedTab('Dashboard');
     }, [setSelectedTab]);
+
     const selectProject = useCallback(() => {
         smoothScrollTop();
         document.title = 'Project | Ganttlet';

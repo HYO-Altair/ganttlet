@@ -35,8 +35,10 @@ const parseFirebaseProjectDataJSON = (json: any): IProject => {
     const project = json as IProject;
 
     // Convertin from the firebase uid:value structure to an array.
-    project.tasks.data = Object.values(project.tasks.data) as IProjectTask[];
-    project.tasks.links = [];
+    if (project.tasks) {
+        project.tasks.data = Object.values(project.tasks.data) as IProjectTask[];
+        project.tasks.links = [];
+    }
 
     return project;
 };
@@ -56,7 +58,7 @@ const Project = (props: IProps): JSX.Element => {
     useFirebaseConnect([{ path: `projects/${projectID}/` }]);
 
     const project = useSelector((state: RootState) =>
-        // if projects has been loaded, set project,                                                            else set to null
+        // if projects has been loaded, set project, else set to null
         state.firebase.data.projects ? parseFirebaseProjectDataJSON(state.firebase.data.projects[projectID]) : null,
     );
     if (project) {
@@ -78,6 +80,7 @@ const Project = (props: IProps): JSX.Element => {
     }
 };
 const mapStateToProps = (state: any, ownProps: any) => {
+    console.log(state.firebase);
     const projectID = ownProps.match.params.id;
     return {
         projectID,

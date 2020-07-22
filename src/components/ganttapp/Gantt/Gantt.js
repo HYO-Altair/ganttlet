@@ -82,7 +82,7 @@ export default class Gantt extends Component {
         const { tasks } = this.props;
         gantt.init(this.ganttContainer);
         this.initGanttDataProcessor();
-        gantt.parse(tasks);
+        if (tasks) gantt.parse(tasks);
     }
 
     componentWillUnmount() {

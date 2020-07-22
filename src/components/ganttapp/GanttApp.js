@@ -11,10 +11,6 @@ import { connect } from 'react-redux';
     TODO: Add data robustly
 */
 class GanttApp extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     state = {
         currentZoom: 'Days',
         messages: [],

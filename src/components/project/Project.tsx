@@ -6,7 +6,7 @@ import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
 import GanttApp from '../ganttapp/';
-import { IProject, IProjectTask, ITasksWrapper } from '../../config/types';
+import { IProject, IProjectTask } from '../../config/types';
 
 interface IProps {
     projectID: string;

@@ -101,7 +101,7 @@ export default class Gantt extends Component {
     }
 
     render() {
-        const { zoom, tasks } = this.props;
+        const { zoom } = this.props;
         this.setZoom(zoom);
         return (
             <div

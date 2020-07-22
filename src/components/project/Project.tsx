@@ -5,6 +5,7 @@ import { connect, useSelector } from 'react-redux';
 import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { Card, CardActionArea, CardContent } from '@material-ui/core';
 import { RootState } from '../../store/reducers';
+import GanttApp from '../ganttapp/';
 
 interface IProps {
     projectID: string;
@@ -21,10 +22,10 @@ const Project = (props: IProps): JSX.Element => {
     );
 
     // DEBUG: uncomment to view current contents of project
-    //console.log(project);
+    console.log(project);
     if (project) {
         return (
-            <div>
+            <div style={{ display: 'flex' }}>
                 <Card>
                     <CardActionArea>
                         <CardContent>
@@ -51,6 +52,13 @@ const Project = (props: IProps): JSX.Element => {
                 <Typography gutterBottom variant="h5">
                     Project not found or User not authorized.
                 </Typography>
+
+                {/* 
+                    This is a prototype so I just stick it here
+                    
+                    TODO: Get individual GanttApp from the Firebase backend 
+                */}
+                <GanttApp />
             </div>
         );
     }

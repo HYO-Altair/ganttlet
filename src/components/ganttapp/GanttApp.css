@@ -1,0 +1,7 @@
+.gantt-app {
+    width: calc(100vw - 100px);
+}
+
+.appBarSpacer {
+    height: 64px;
+}

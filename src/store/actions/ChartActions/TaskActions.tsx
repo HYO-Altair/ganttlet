@@ -15,6 +15,6 @@ export const addTask = (
     ) => {
         const firebase = getFirebase() as ExtendedFirebaseInstance;
         const db = firebase.database();
-        db.ref(`projects/${uid}/tasks`).push(task);
+        db.ref(`projects/${uid}/tasks/data`).push(task);
     };
 };

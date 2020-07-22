@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import Gantt from './Gantt';
 import Toolbar from './Toolbar';
 import MessageArea from './MessageArea';
+// import { Fab } from '@material-ui/core';
+// import { Add } from '@material-ui/icons';
+import { addTask } from '../../store/actions/ChartActions/TaskActions';
+import { connect } from 'react-redux';
 
 /*  hardcoded data
     TODO: Add data robustly
 */
-const data = {
-    data: [
-        { id: 1, text: 'Task #1', start_date: '2020-02-12', duration: 3, progress: 0.6 },
-        { id: 2, text: 'Task #2', start_date: '2020-02-16', duration: 3, progress: 0.4 },
-    ],
-    links: [{ id: 1, source: 1, target: 2, type: '0' }],
-};
 class GanttApp extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     state = {
         currentZoom: 'Days',
         messages: [],
@@ -37,10 +38,12 @@ class GanttApp extends Component {
         if (entityType === 'link' && action !== 'delete') {
             message += ` ( source: ${itemData.source}, target: ${itemData.target} )`;
         }
+        this.props.addTask(itemData, this.props.projectID);
         this.addMessage(message);
     };
 
     handleZoomChange = (zoom) => {
+        console.log(this.props.tasks);
         this.setState({
             currentZoom: zoom,
         });
@@ -55,11 +58,21 @@ class GanttApp extends Component {
                     <Toolbar zoom={currentZoom} onZoomChange={this.handleZoomChange} />
                 </div>
                 <div className="gantt-container">
-                    <Gantt tasks={data} zoom={currentZoom} onDataUpdated={this.logDataUpdate} />
+                    <Gantt tasks={this.props.tasks} zoom={currentZoom} onDataUpdated={this.logDataUpdate} />
                 </div>
                 <MessageArea messages={messages} />
             </div>
         );
     }
 }
-export default GanttApp;
+
+const mapStateToProps = (state) => {
+    return {};
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTask: (task, uid) => dispatch(addTask(task, uid)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GanttApp);

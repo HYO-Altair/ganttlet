@@ -6,7 +6,7 @@ import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
 import GanttApp from '../ganttapp/';
-import { IProject, IProjectTask } from '../../config/types';
+import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
 
 interface IProps {
     projectID: string;
@@ -35,9 +35,13 @@ const parseFirebaseProjectDataJSON = (json: any): IProject => {
     const project = json as IProject;
 
     // Convertin from the firebase uid:value structure to an array.
-    if (project.tasks) {
-        project.tasks.data = Object.values(project.tasks.data) as IProjectTask[];
-        project.tasks.links = [];
+    // if task data exist (>0 tasks)
+    if (project.tasks.data) {
+        project.tasks.data = Object.values(project.tasks.data) as IProjectTaskData[];
+    }
+    // if task links exist (>0 links)
+    if (project.tasks.links) {
+        project.tasks.links = Object.values(project.tasks.links) as IProjectTaskLink[];
     }
 
     return project;

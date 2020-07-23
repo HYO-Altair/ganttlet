@@ -96,13 +96,14 @@ export default class Gantt extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.tasks !== this.props.tasks) {
             gantt.clearAll();
-            gantt.parse(this.props.tasks, 'json');
+            if (this.props.tasks) gantt.parse(this.props.tasks, 'json');
         }
     }
 
     render() {
         const { zoom } = this.props;
         this.setZoom(zoom);
+        console.log(this.props);
         return (
             <div
                 ref={(input) => {

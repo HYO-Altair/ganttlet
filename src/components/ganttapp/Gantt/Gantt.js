@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { Component } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
+import PropTypes from 'prop-types';
 
-export default class Gantt extends Component {
+class Gantt extends Component {
     constructor(props) {
         super(props);
         this.initZoom();
@@ -60,13 +62,17 @@ export default class Gantt extends Component {
         const onDataUpdated = this.props.onDataUpdated;
         this.dataProcessor = gantt.createDataProcessor((type, action, item, id) => {
             return new Promise((resolve, reject) => {
-                if (onDataUpdated) {
-                    onDataUpdated(type, action, item, id);
-                }
+                try {
+                    if (onDataUpdated) {
+                        onDataUpdated(type, action, item, id);
+                    }
 
-                // if onDataUpdated changes returns a permanent id of the created item, you can return it from here so dhtmlxGantt could apply it
-                // resolve({id: databaseId});
-                return resolve();
+                    // if onDataUpdated changes returns a permanent id of the created item, you can return it from here so dhtmlxGantt could apply it
+                    // resolve({id: databaseId});
+                    return resolve();
+                } catch (error) {
+                    return reject();
+                }
             });
         });
     }
@@ -103,7 +109,6 @@ export default class Gantt extends Component {
     render() {
         const { zoom } = this.props;
         this.setZoom(zoom);
-        console.log(this.props);
         return (
             <div
                 ref={(input) => {
@@ -114,3 +119,11 @@ export default class Gantt extends Component {
         );
     }
 }
+
+Gantt.propTypes = {
+    tasks: PropTypes.object,
+    zoom: PropTypes.string,
+    onDataUpdated: PropTypes.func,
+};
+
+export default Gantt;

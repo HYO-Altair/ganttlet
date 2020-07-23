@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Gantt from './Gantt';
 import Toolbar from './Toolbar';
 import MessageArea from './MessageArea';
+import PropTypes from 'prop-types';
 // import { Fab } from '@material-ui/core';
 // import { Add } from '@material-ui/icons';
 import {
@@ -14,9 +15,6 @@ import {
 } from '../../store/actions/ChartActions/TaskActions';
 import { connect } from 'react-redux';
 
-/*  hardcoded data
-    TODO: Add data robustly
-*/
 class GanttApp extends Component {
     state = {
         currentZoom: 'Days',
@@ -55,9 +53,6 @@ class GanttApp extends Component {
             if (action === 'update') this.props.updateLink(itemData, this.props.projectID, id);
             if (action === 'delete') this.props.deleteLink(itemData, this.props.projectID, id);
         }
-        console.log('here here');
-        console.log(itemData);
-        //this.props.updateTask(itemData, this.props.projectID, id);
     };
 
     handleZoomChange = (zoom) => {
@@ -84,7 +79,7 @@ class GanttApp extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     return {};
 };
 const mapDispatchToProps = (dispatch) => {
@@ -96,6 +91,17 @@ const mapDispatchToProps = (dispatch) => {
         updateLink: (task, projectid, linkid) => dispatch(updateLink(task, projectid, linkid)),
         deleteLink: (task, projectid, linkid) => dispatch(deleteLink(task, projectid, linkid)),
     };
+};
+
+GanttApp.propTypes = {
+    tasks: PropTypes.object,
+    projectID: PropTypes.string,
+    createTask: PropTypes.func,
+    updateTask: PropTypes.func,
+    deleteTask: PropTypes.func,
+    createLink: PropTypes.func,
+    updateLink: PropTypes.func,
+    deleteLink: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GanttApp);

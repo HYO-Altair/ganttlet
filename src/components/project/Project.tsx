@@ -31,45 +31,43 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const parseFirebaseProjectDataJSON = (json: any): IProject => {
+const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
+    if (json === undefined) {
+        return null;
+    }
+
+    const emptyTasksData = {
+        data: [],
+        links: [],
+    };
+
     const project = json as IProject;
-
-    // Convertin from the firebase uid:value structure to an array.
-    // if task data exist (>0 tasks)
-    if (project.tasks.data) {
+    if (project.tasks) {
         project.tasks.data = Object.values(project.tasks.data) as IProjectTaskData[];
+        // if task links exist (>0 links)
+        if (project.tasks.links) {
+            project.tasks.links = Object.values(project.tasks.links) as IProjectTaskLink[];
+        }
+    } else {
+        project.tasks = emptyTasksData;
     }
-    // if task links exist (>0 links)
-    if (project.tasks.links) {
-        project.tasks.links = Object.values(project.tasks.links) as IProjectTaskLink[];
-    }
-
     return project;
 };
 
 const Project = (props: IProps): JSX.Element => {
     const classes = useStyles();
     const { projectID } = props;
-
-    const data = {
-        data: [
-            { id: 'abcdefg132452', text: 'Task #1', start_date: '15-04-2019', duration: 3, progress: 0.6 },
-            { id: 2, text: 'Task #2', start_date: '18-04-2019', duration: 3, progress: 0.4 },
-        ],
-        links: [{ id: 1, source: 1, target: 2, type: '0' }],
-    };
-
     useFirebaseConnect([{ path: `projects/${projectID}/` }]);
-
     const project = useSelector((state: RootState) =>
         // if projects has been loaded, set project, else set to null
         state.firebase.data.projects ? parseFirebaseProjectDataJSON(state.firebase.data.projects[projectID]) : null,
     );
+
     if (project) {
         return (
             <main className={classes.content}>
                 <div className={classes.appBarSpacer}>
-                    <GanttApp tasks={project ? project.tasks : data} projectID={projectID} />
+                    <GanttApp tasks={project.tasks} projectID={projectID} />
                 </div>
             </main>
         );
@@ -84,7 +82,6 @@ const Project = (props: IProps): JSX.Element => {
     }
 };
 const mapStateToProps = (state: any, ownProps: any) => {
-    console.log(state.firebase);
     const projectID = ownProps.match.params.id;
     return {
         projectID,

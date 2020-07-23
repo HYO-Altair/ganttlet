@@ -36,11 +36,11 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             const dateString1 = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
             const dateString2 = `${date.getDate() + 2}-${date.getMonth()}-${date.getFullYear()}`;
             const tasks = {
-                data: [
-                    { id: 1, text: 'Sample Task #1', start_date: dateString1, duration: 3, progress: 0.6 },
-                    { id: 2, text: 'Sample Task #2', start_date: dateString2, duration: 3, progress: 0.4 },
-                ],
-                links: [{ id: 1, source: 1, target: 2, type: '0' }],
+                data: {
+                    '1': { id: 1, text: 'Sample Task #1', start_date: dateString1, duration: 3, progress: 0.6 },
+                    '2': { id: 2, text: 'Sample Task #2', start_date: dateString2, duration: 3, progress: 0.4 },
+                },
+                links: { '1': { id: 1, source: 1, target: 2, type: '0' } },
             };
 
             // add project id to user's list of projects

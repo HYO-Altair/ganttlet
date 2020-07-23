@@ -59,7 +59,7 @@ function SideDrawer(props: IProps) {
 
     const menuItems = [
         {
-            link: '/',
+            link: '/dashboard',
             name: 'Dashboard',
             icon: <DashboardIcon />,
         },

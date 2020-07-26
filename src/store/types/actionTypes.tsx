@@ -24,7 +24,10 @@ export const DELETE_USER_ERROR = 'DELETE_USER_ERROR';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 export const CREATE_PROJECT_ERROR = 'CREATE_PROJECT_ERROR';
 export const CREATE_PROJECT_SUCCESS = 'CREATE_PROJECT_SUCCESS';
-
+export const VIEW_PROJECT_SUCCESS = 'VIEW_PROJECT_SUCCESS';
+export const VIEW_PROJECT_ERROR = 'VIEW_PROJECT_FAILURE';
+export const NOT_VIEW_PROJECT_SUCCESS = 'NOT_VIEW_PROJECT_SUCCESS';
+export const NOT_VIEW_PROJECT_ERROR = 'NOT_VIEW_PROJECT_FAILURE';
 /*
  * TODO: these interfaces might be pointless
  * but not sure can't figure out what async actions return (nth?)
@@ -71,4 +74,10 @@ interface ICreateProject {
     err?: string;
 }
 
-export type TProjectAction = ICreateProject;
+interface IViewProject {
+    type: typeof VIEW_PROJECT_ERROR | typeof VIEW_PROJECT_SUCCESS;
+    projectId?: string;
+    err?: string;
+}
+
+export type TProjectAction = ICreateProject | IViewProject;

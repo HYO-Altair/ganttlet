@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
     const classes = useStyles();
-    const { projects } = props;
+    const { projects, handleSideDrawerClose } = props;
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
@@ -55,7 +55,11 @@ const Dashboard = (props) => {
                         projects.owned &&
                         Object.keys(projects.owned).map((key) => (
                             <Grid key={key} item xs={3}>
-                                <ProjectCard projectName={projects.owned[key]} projectID={key} />
+                                <ProjectCard
+                                    projectName={projects.owned[key]}
+                                    projectID={key}
+                                    handleSideDrawerClose={handleSideDrawerClose}
+                                />
                             </Grid>
                         ))}
                 </Grid>

@@ -2,15 +2,25 @@ import React, { memo } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-import { List, ListItem, ListItemIcon, ListItemText, Divider, Drawer, IconButton } from '@material-ui/core';
+import {
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Divider,
+    Drawer,
+    IconButton,
+    ListSubheader,
+} from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
+import SettingsIcon from '@material-ui/icons/Settings';
 
-import { secondaryListItems } from './listItems';
 import * as Constants from '../../config/constants';
+import { connect } from 'react-redux';
 
 const drawerWidth = Constants.drawerWidth;
 
@@ -52,29 +62,18 @@ interface IProps extends WithStyles<typeof styles> {
     // non style props
     handleSideDrawerClose: { (): void };
     sideDrawerOpen: boolean;
+    project: any; // redux state
     // injected style props
 }
-function SideDrawer(props: IProps) {
-    const { classes, handleSideDrawerClose, sideDrawerOpen } = props;
-
+const SideDrawer = (props: IProps) => {
+    const { classes, handleSideDrawerClose, sideDrawerOpen, project } = props;
     const menuItems = [
         {
             link: '/dashboard',
             name: 'Dashboard',
             icon: <DashboardIcon />,
         },
-        {
-            link: '/members',
-            name: 'Members',
-            icon: <PeopleIcon />,
-        },
-        {
-            link: '/reports',
-            name: 'Reports',
-            icon: <BarChartIcon />,
-        },
     ];
-
     return (
         <Drawer
             variant="permanent"
@@ -102,9 +101,47 @@ function SideDrawer(props: IProps) {
                 })}
             </List>
             <Divider />
-            <List>{secondaryListItems}</List>
+            {
+                // Project Details
+                project.projectId && !project.projectError && (
+                    <List>
+                        <div>
+                            <ListSubheader inset>Project</ListSubheader>
+                            <Link key="chart" to={'/project/' + project.projectId}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <BarChartIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Chart" />
+                                </ListItem>
+                            </Link>
+                            <Link key="chart" to={'/members/' + project.projectId}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <PeopleIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Members" />{' '}
+                                </ListItem>
+                            </Link>
+                            <Link key="chart" to={'/projectsettings/' + project.projectId}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <SettingsIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Settings" />{' '}
+                                </ListItem>
+                            </Link>
+                        </div>
+                    </List>
+                )
+            }
         </Drawer>
     );
-}
-
-export default withStyles(styles, { withTheme: true })(memo(SideDrawer));
+};
+const mapStateToProps = (state: any) => {
+    return {
+        //auth: state.firebase.auth,
+        project: state.project,
+    };
+};
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(SideDrawer)));

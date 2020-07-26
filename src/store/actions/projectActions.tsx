@@ -1,6 +1,15 @@
 import { IProject } from '../../config/types';
 import { AnyAction } from 'redux';
-import { CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR, TGetState, IGetFirebase } from '../types/actionTypes';
+import {
+    CREATE_PROJECT_SUCCESS,
+    CREATE_PROJECT_ERROR,
+    TGetState,
+    IGetFirebase,
+    VIEW_PROJECT_SUCCESS,
+    VIEW_PROJECT_ERROR,
+    NOT_VIEW_PROJECT_SUCCESS,
+    NOT_VIEW_PROJECT_ERROR,
+} from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ExtendedFirebaseInstance } from 'react-redux-firebase';
 
@@ -52,6 +61,37 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             dispatch({ type: CREATE_PROJECT_SUCCESS, project });
         } catch (err) {
             dispatch({ type: CREATE_PROJECT_ERROR, err });
+        }
+    };
+};
+
+// action for viewing project
+export const viewProject = (projectId: string): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        try {
+            // check to make sure user has access to this project
+            dispatch({ type: VIEW_PROJECT_SUCCESS, projectId });
+        } catch (err) {
+            dispatch({ type: VIEW_PROJECT_ERROR, err });
+        }
+    };
+};
+
+// action for leaving project page
+export const notViewProject = (): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        try {
+            dispatch({ type: NOT_VIEW_PROJECT_SUCCESS });
+        } catch (err) {
+            dispatch({ type: NOT_VIEW_PROJECT_ERROR, err });
         }
     };
 };

@@ -10,10 +10,12 @@ export interface IAuthAction {
 }
 // projectReducer
 export interface IProjectState {
-    projects: IProject[];
+    projectId: string | null;
+    projectError: string | null;
 }
 export interface IProjectAction {
     type: string;
-    project: IProject;
-    err: string;
+    project: IProject | null;
+    projectId: string | null;
+    err: string | null;
 }

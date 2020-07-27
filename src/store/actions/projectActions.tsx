@@ -81,13 +81,11 @@ export const deleteProject = (
         try {
             const firebase = getFirebase() as ExtendedFirebaseInstance;
             const db = firebase.database();
-            const auth = firebase.auth();
-            const profile = _getState().firebase.profile;
             const uid = _getState().firebase.auth.uid;
 
             // retrieve list of users authorized on project
             const managers = await db.ref(`/projects/${projectId}/managers`).once('value');
-            const members = await db.ref(`/projects/${projectId}/managers`).once('value');
+            //const members = await db.ref(`/projects/${projectId}/managers`).once('value');
             // check to make sure current user is a manager
             console.log(managers.val());
             let hasPermission = false;
@@ -111,9 +109,7 @@ export const deleteProject = (
             // TODO: send notification of project deletion to users
             for (const childSnapshot of array) {
                 const id = childSnapshot.key;
-                const username = childSnapshot.val();
                 console.log(id);
-                console.log(username);
                 const deletionMsg = 'Project ' + projectName + ' has been deleted by Manager ' + username;
                 // TODO: send notification
                 console.log(deletionMsg);

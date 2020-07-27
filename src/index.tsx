@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './components/dashboard/Dashboard';
 import * as serviceWorker from './serviceWorker';
 import { store, rrfProps } from './store';
 import { Provider } from 'react-redux';

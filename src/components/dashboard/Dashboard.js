@@ -11,16 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            Team Altair {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import DashUI from './AppBar';
 
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
@@ -46,49 +37,7 @@ const Dashboard = (props) => {
     const { projects } = props;
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={1}>
-                    <Typography>Owned Projects</Typography>
-                    {/*owned projects*/}
-                    {projects &&
-                        projects.owned &&
-                        Object.keys(projects.owned).map((key) => (
-                            <Grid key={key} item xs={3}>
-                                <ProjectCard projectName={projects.owned[key]} projectID={key} />
-                            </Grid>
-                        ))}
-                </Grid>
-
-                <Divider />
-
-                <Grid container spacing={1}>
-                    <Typography>Joined Projects</Typography>
-                    {/*joined projects*/}
-                    {projects &&
-                        projects.joined &&
-                        Object.keys(projects.joined).map((key) => (
-                            <Grid key={key} item xs={3}>
-                                <ProjectCard projectName={projects.joined[key]} projectID={key} />
-                            </Grid>
-                        ))}
-                </Grid>
-
-                <Divider />
-
-                <Grid container spacing={1}>
-                    <AddProjectForm />
-                </Grid>
-
-                <Divider />
-
-                <Grid container spacing={1} m="2rem">
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </Grid>
-            </Container>
-            <Footer />
+            <DashUI/>
         </main>
     );
 };

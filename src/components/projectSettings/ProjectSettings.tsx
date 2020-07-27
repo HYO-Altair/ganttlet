@@ -54,10 +54,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
-    if (json === undefined) {
+    if (json === undefined || json === null) {
         return null;
     }
-
     const emptyTasksData = {
         data: [],
         links: [],
@@ -183,7 +182,8 @@ const ProjectSettings = (props: IProps): JSX.Element => {
                                                     'Are you sure you wish to delete this project? This is not reversable',
                                                 )
                                             ) {
-                                                deleteProject(projectId);
+                                                // TODO: set project name stuff in viewproject
+                                                deleteProject(projectId, '');
                                             }
                                         }}
                                     >
@@ -198,13 +198,14 @@ const ProjectSettings = (props: IProps): JSX.Element => {
         );
     } else {
         return (
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer}>
+            <div className={classes.root}>
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
                     <Typography gutterBottom variant="h5">
                         Project not found or User not authorized.
                     </Typography>
-                </div>
-            </main>
+                </main>
+            </div>
         );
     }
 };
@@ -218,7 +219,7 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         viewProject: (projectId: string) => dispatch(viewProject(projectId)),
         notViewProject: () => dispatch(notViewProject()),
-        deleteProject: (projectId: string) => dispatch(deleteProject(projectId)),
+        deleteProject: (projectId: string, projectName: string) => dispatch(deleteProject(projectId, projectName)),
     };
 };
 export default compose(

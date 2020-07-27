@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
-    if (json === undefined) {
+    if (json === undefined || json === null) {
         return null;
     }
 

@@ -7,6 +7,7 @@ import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
 import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
 import { viewProject } from '../../store/actions/projectActions';
+import AddMemberForm from './AddMember';
 
 interface IProps {
     projectID: string;
@@ -69,6 +70,7 @@ const Members = (props: IProps): JSX.Element => {
         return (
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
+                <AddMemberForm projectID={projectID} />
                 <Typography>Project Members page for project {projectID}</Typography>
             </main>
         );

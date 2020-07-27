@@ -17,34 +17,37 @@ const useStyles = makeStyles({
 interface Props {
     projectName: string;
     projectID: string;
+    handleSideDrawerClose: any;
 }
 
 export default function ImgMediaCard(props: Props): JSX.Element {
     const classes = useStyles();
-    const { projectName, projectID } = props;
+    const { projectName, projectID, handleSideDrawerClose } = props;
     console.log(projectName);
     console.log(projectID);
     return (
         <Link to={'/project/' + projectID}>
-            <Card className={classes.root}>
-                <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        alt={projectName}
-                        height="140"
-                        image={projectImage}
-                        title={projectName}
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5">
-                            name: {projectName}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            id: {projectID}
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
+            <div onClick={() => handleSideDrawerClose()}>
+                <Card className={classes.root}>
+                    <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt={projectName}
+                            height="140"
+                            image={projectImage}
+                            title={projectName}
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5">
+                                name: {projectName}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                id: {projectID}
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            </div>
         </Link>
     );
 }

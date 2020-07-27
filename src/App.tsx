@@ -16,6 +16,8 @@ import Project from './components/project/Project';
 
 import { connect } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
+import Members from './components/members/Members';
+import ProjectSettings from './components/projectSettings/ProjectSettings';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -81,13 +83,13 @@ function App(props: IProps): JSX.Element {
         setIsMobileDrawerOpen(false);
     }, [setIsMobileDrawerOpen]);
 
-    const handleSideDrawerOpen = useCallback(() => {
+    const handleSideDrawerOpen = () => {
         setIsSideDrawerOpen(true);
-    }, [setIsSideDrawerOpen]);
+    };
 
-    const handleSideDrawerClose = useCallback(() => {
+    const handleSideDrawerClose = () => {
         setIsSideDrawerOpen(false);
-    }, [setIsSideDrawerOpen]);
+    };
 
     const renderMergedProps = (component: any, ...rest: any) => {
         const finalProps = Object.assign({}, ...rest);
@@ -144,11 +146,22 @@ function App(props: IProps): JSX.Element {
                                         path={'/dashboard'}
                                         component={Dashboard}
                                         selectDashboard={selectDashBoard}
+                                        handleSideDrawerClose={handleSideDrawerClose}
                                     />
                                     <PrivateRoute path="/profile" component={Profile} selectProfile={selectProfile} />
                                     <PrivateRoute
                                         path="/project/:id"
                                         component={Project}
+                                        selectProject={selectProject}
+                                    />
+                                    <PrivateRoute
+                                        path="/members/:id"
+                                        component={Members}
+                                        selectProject={selectProject}
+                                    />
+                                    <PrivateRoute
+                                        path="/projectsettings/:id"
+                                        component={ProjectSettings}
                                         selectProject={selectProject}
                                     />
                                     <PublicRoute path="/login" component={Login} selectLogin={selectLogin} />

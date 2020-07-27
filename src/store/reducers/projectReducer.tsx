@@ -1,7 +1,8 @@
 import { IProjectState, IProjectAction } from '../types/reducerTypes';
 
 const initState = {
-    projects: [],
+    projectId: '',
+    projectError: null,
 };
 
 const projectReducer = (state: IProjectState = initState, action: IProjectAction): IProjectState => {
@@ -12,6 +13,18 @@ const projectReducer = (state: IProjectState = initState, action: IProjectAction
         case 'CREATE_PROJECT_ERROR':
             console.log('create project error', action.err);
             return state;
+        case 'VIEW_PROJECT_SUCCESS':
+            console.log('view project', action.projectId);
+            return { ...state, projectId: action.projectId, projectError: null };
+        case 'VIEW_PROJECT_ERROR':
+            console.log('view project error', action.err);
+            return { ...state, projectId: '', projectError: action.err };
+        case 'NOT_VIEW_PROJECT_SUCCESS':
+            console.log('not view project');
+            return { ...state, projectId: '', projectError: null };
+        case 'NOT_VIEW_PROJECT_ERROR':
+            console.log('not view project error', action.err);
+            return { ...state, projectId: '', projectError: action.err };
         default:
             return state;
     }

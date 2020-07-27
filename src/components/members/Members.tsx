@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { compose } from 'redux';
 import { connect, useSelector } from 'react-redux';
 import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
-import GanttApp from '../ganttapp/';
 import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
-import { viewProject, notViewProject } from '../../store/actions/projectActions';
+import { viewProject } from '../../store/actions/projectActions';
 
 interface IProps {
     projectID: string;
     viewProject: any;
-    handleSideDrawerClose: any;
-    notViewProject: any;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -58,27 +55,21 @@ const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
     return project;
 };
 
-const Project = (props: IProps): JSX.Element => {
+const Members = (props: IProps): JSX.Element => {
     const classes = useStyles();
-    const { projectID, viewProject, notViewProject } = props;
+    const { projectID, viewProject } = props;
     useFirebaseConnect([{ path: `projects/${projectID}/` }]);
     const project = useSelector((state: RootState) =>
         // if projects has been loaded, set project, else set to null
         state.firebase.data.projects ? parseFirebaseProjectDataJSON(state.firebase.data.projects[projectID]) : null,
     );
-    useEffect(() => {
-        viewProject(projectID);
 
-        return function cleanup() {
-            notViewProject();
-        };
-    }, [notViewProject, projectID, viewProject]);
     if (project) {
+        viewProject(projectID);
         return (
             <main className={classes.content}>
-                <div className={classes.appBarSpacer}>
-                    <GanttApp tasks={project.tasks} projectID={projectID} />
-                </div>
+                <div className={classes.appBarSpacer} />
+                <Typography>Project Members page for project {projectID}</Typography>
             </main>
         );
     } else {
@@ -100,7 +91,6 @@ const mapStateToProps = (state: any, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         viewProject: (projectId: string) => dispatch(viewProject(projectId)),
-        notViewProject: () => dispatch(notViewProject()),
     };
 };
-export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect([{ path: 'projects' }]))(Project);
+export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect([{ path: 'projects' }]))(Members);

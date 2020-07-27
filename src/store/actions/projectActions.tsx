@@ -1,6 +1,15 @@
 import { IProject } from '../../config/types';
 import { AnyAction } from 'redux';
-import { CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR, TGetState, IGetFirebase } from '../types/actionTypes';
+import {
+    CREATE_PROJECT_SUCCESS,
+    CREATE_PROJECT_ERROR,
+    TGetState,
+    IGetFirebase,
+    VIEW_PROJECT_SUCCESS,
+    VIEW_PROJECT_ERROR,
+    NOT_VIEW_PROJECT_SUCCESS,
+    NOT_VIEW_PROJECT_ERROR,
+} from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ExtendedFirebaseInstance } from 'react-redux-firebase';
 
@@ -28,9 +37,20 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             // project parameter
             const timezoneOffset = new Date().getTimezoneOffset();
             const members = { [ownerUid]: profile.firstName + ' ' + profile.lastName };
-            // empty tasks not getting added to firebase, keeping it here in case
-            // we want to add a dummy example first task or smt to every new proj
-            const tasks = {};
+
+            // Sample tasks
+            const date = new Date();
+
+            // Converting to format '15-04-2019' (Date-Month-Year)
+            const dateString1 = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+            const dateString2 = `${date.getDate() + 2}-${date.getMonth()}-${date.getFullYear()}`;
+            const tasks = {
+                data: {
+                    '1': { id: 1, text: 'Sample Task #1', start_date: dateString1, duration: 3, progress: 0.6 },
+                    '2': { id: 2, text: 'Sample Task #2', start_date: dateString2, duration: 3, progress: 0.4 },
+                },
+                links: { '1': { id: 1, source: 1, target: 2, type: '0' } },
+            };
 
             // add project id to user's list of projects
             const result = await db.ref(`/users/${ownerUid}/projects/owned/`).push(project.name);
@@ -41,6 +61,37 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             dispatch({ type: CREATE_PROJECT_SUCCESS, project });
         } catch (err) {
             dispatch({ type: CREATE_PROJECT_ERROR, err });
+        }
+    };
+};
+
+// action for viewing project
+export const viewProject = (projectId: string): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        try {
+            // check to make sure user has access to this project
+            dispatch({ type: VIEW_PROJECT_SUCCESS, projectId });
+        } catch (err) {
+            dispatch({ type: VIEW_PROJECT_ERROR, err });
+        }
+    };
+};
+
+// action for leaving project page
+export const notViewProject = (): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        try {
+            dispatch({ type: NOT_VIEW_PROJECT_SUCCESS });
+        } catch (err) {
+            dispatch({ type: NOT_VIEW_PROJECT_ERROR, err });
         }
     };
 };

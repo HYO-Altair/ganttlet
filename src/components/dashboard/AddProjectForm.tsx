@@ -49,14 +49,14 @@ const AddProjectForm = (props: IProps): JSX.Element => {
                 Submit
             </Button> */}
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open form dialog
+                Create Project
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                <DialogTitle id="form-dialog-title">Create Project</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We will send updates
-                        occasionally.
+                        To Create a new project, please enter a name and a description. You will be added to the project
+                        as a manager by default.
                     </DialogContentText>
                     <TextField id="name" label="Name" onChange={handleChange} fullWidth />
                     <TextField id="description" label="Description" onChange={handleChange} fullWidth />

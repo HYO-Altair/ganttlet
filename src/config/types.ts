@@ -24,20 +24,32 @@ export interface IProject {
     description: string;
     managers: unknown;
     members: unknown;
-    tasks: unknown;
+    tasks: ITasksWrapper;
 }
 
-export interface IProjectTask {
-    id: string;
-    taskName: string;
-    description: string;
-    color: string;
-    duration: string;
-    startDate: string;
-    endDate: string;
-    assignees: unknown;
-    subTasks: unknown;
-    comments: unknown;
+export interface ITasksWrapper {
+    data: IProjectTaskData[];
+    links: IProjectTaskLink[];
+}
+
+// I changed this to resemble the DHTMLX task JSON exactly. We'll probably change this up down the
+export interface IProjectTaskData {
+    ['!nativeeditor_status']: string; // Probably turn this into an enum
+    id: number;
+    text: string;
+    parent: number;
+    progress: number;
+    duration: number;
+    start_date: string;
+    end_date: string;
+}
+
+export interface IProjectTaskLink {
+    ['!nativeeditor_status']: string; // Probably turn this into an enum
+    id: number;
+    source: number;
+    target: number;
+    type: string;
 }
 
 export interface ITaskComment {

@@ -22,8 +22,11 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 export const DELETE_USER_ERROR = 'DELETE_USER_ERROR';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_PROJECT_FAILURE = 'DELETE_PROJECT_FAILURE';
 export const CREATE_PROJECT_ERROR = 'CREATE_PROJECT_ERROR';
 export const CREATE_PROJECT_SUCCESS = 'CREATE_PROJECT_SUCCESS';
+export const DELETE_PROJECT_ERROR = 'DELETE_PROJECT_ERROR';
+export const DELETE_PROJECT_SUCCESS = 'DELETE_PROJECT_SUCCESS';
 export const VIEW_PROJECT_SUCCESS = 'VIEW_PROJECT_SUCCESS';
 export const VIEW_PROJECT_ERROR = 'VIEW_PROJECT_FAILURE';
 export const NOT_VIEW_PROJECT_SUCCESS = 'NOT_VIEW_PROJECT_SUCCESS';
@@ -73,6 +76,10 @@ interface ICreateProject {
     type: typeof CREATE_PROJECT_ERROR | typeof CREATE_PROJECT_SUCCESS;
     err?: string;
 }
+interface IDeleteProject {
+    type: typeof DELETE_PROJECT_ERROR | typeof DELETE_PROJECT_SUCCESS;
+    err?: string;
+}
 
 interface IViewProject {
     type: typeof VIEW_PROJECT_ERROR | typeof VIEW_PROJECT_SUCCESS;
@@ -80,4 +87,4 @@ interface IViewProject {
     err?: string;
 }
 
-export type TProjectAction = ICreateProject | IViewProject;
+export type TProjectAction = ICreateProject | IDeleteProject | IViewProject;

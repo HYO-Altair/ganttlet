@@ -51,6 +51,7 @@ interface IProps extends WithStyles<typeof styles> {
 
     // injected style props
 }
+
 function NavigationDrawer(props: IProps): JSX.Element {
     const { width, open, onClose, anchor, classes, menuItems, selectedItem, theme } = props;
 

@@ -9,10 +9,12 @@ import {
     VIEW_PROJECT_ERROR,
     NOT_VIEW_PROJECT_SUCCESS,
     NOT_VIEW_PROJECT_ERROR,
+    DELETE_PROJECT_SUCCESS,
+    DELETE_PROJECT_ERROR,
+    DELETE_PROJECT_FAILURE,
 } from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ExtendedFirebaseInstance } from 'react-redux-firebase';
-
 // action for creating a new project
 export const createProject = (project: IProject): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
@@ -61,6 +63,74 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             dispatch({ type: CREATE_PROJECT_SUCCESS, project });
         } catch (err) {
             dispatch({ type: CREATE_PROJECT_ERROR, err });
+        }
+    };
+};
+
+// action for creating a new project
+export const deleteProject = (
+    projectId: string,
+    projectName: string,
+): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        // make async call to database
+        try {
+            const firebase = getFirebase() as ExtendedFirebaseInstance;
+            const db = firebase.database();
+            const uid = _getState().firebase.auth.uid;
+
+            // retrieve list of users authorized on project
+            const managers = await db.ref(`/projects/${projectId}/managers`).once('value');
+            //const members = await db.ref(`/projects/${projectId}/managers`).once('value');
+            // check to make sure current user is a manager
+            console.log(managers.val());
+            let hasPermission = false;
+            let username = '';
+
+            const array = [] as any[];
+            managers.forEach((childSnapshot) => {
+                const id = childSnapshot.key;
+                console.log(id);
+                if (id === uid) {
+                    hasPermission = true;
+                    username = childSnapshot.val();
+                }
+                array.push(childSnapshot);
+                return false;
+            });
+
+            if (!hasPermission)
+                dispatch({ type: DELETE_PROJECT_FAILURE, err: 'User not authorized to delete project' });
+
+            // TODO: send notification of project deletion to users
+            for (const childSnapshot of array) {
+                const id = childSnapshot.key;
+                console.log(id);
+                const deletionMsg = 'Project ' + projectName + ' has been deleted by Manager ' + username;
+                // TODO: send notification
+                console.log(deletionMsg);
+            }
+            // remove project from user's project list
+            for (const childSnapshot of array) {
+                const id = childSnapshot.key as string;
+                const username = childSnapshot.val();
+                console.log(id);
+                console.log(username);
+                await db.ref(`/users/${id}/projects/owned`).update({ [projectId]: null });
+                await db.ref(`/users/${id}/projects/joined`).update({ [projectId]: null });
+            }
+            // delete project
+            await db.ref(`/projects/`).update({ [projectId]: null });
+            // add project to projects
+            //await db.ref(`/projects/${projectId}`).set({ ...project, managers, timezoneOffset, members, tasks });
+
+            dispatch({ type: DELETE_PROJECT_SUCCESS });
+        } catch (err) {
+            dispatch({ type: DELETE_PROJECT_ERROR, err });
         }
     };
 };

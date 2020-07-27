@@ -30,10 +30,13 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
+    root: {
+        padding: theme.spacing(4),
+    },
 }));
 
 const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
-    if (json === undefined) {
+    if (json === undefined || json === null) {
         return null;
     }
 
@@ -74,10 +77,13 @@ const Members = (props: IProps): JSX.Element => {
         );
     } else {
         return (
-            <div>
-                <Typography gutterBottom variant="h5">
-                    Project not found or User not authorized.
-                </Typography>
+            <div className={classes.root}>
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Typography gutterBottom variant="h5">
+                        Project not found or User not authorized.
+                    </Typography>
+                </main>
             </div>
         );
     }

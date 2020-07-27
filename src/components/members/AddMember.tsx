@@ -14,17 +14,6 @@ interface IProps {
 
 function AddMemberForm(props: IProps): JSX.Element {
     useFirebaseConnect([{ path: `users` }]);
-    const [state, setState] = useState({
-        userEmail: '',
-        error: false,
-    });
-
-    const handleChange = (event: any) => {
-        setState({
-            ...state,
-            [event.target.name]: event.target.value,
-        });
-    };
 
     function getEmailList(usersObject: Record<string, IUser>) {
         if (!usersObject) {
@@ -36,6 +25,7 @@ function AddMemberForm(props: IProps): JSX.Element {
         }
         return ans;
     }
+
     const emailList = useSelector((state: RootState) =>
         // if users have been loaded, set users, else set to null
         getEmailList(state.firebase.data.users),
@@ -51,6 +41,19 @@ function AddMemberForm(props: IProps): JSX.Element {
             });
         }
     };
+
+    const [state, setState] = useState({
+        userEmail: '',
+        error: false,
+    });
+
+    const handleChange = (event: any) => {
+        setState({
+            ...state,
+            [event.target.name]: event.target.value,
+        });
+    };
+
     return (
         <div>
             <TextField

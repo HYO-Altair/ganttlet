@@ -108,7 +108,7 @@ const SideDrawer = (props: IProps) => {
                     <List>
                         <div>
                             <ListSubheader inset>Project</ListSubheader>
-                            <Link key="chart" to={'/project/' + project.projectId}>
+                            <Link key="1" to={'/project/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <BarChartIcon />
@@ -116,7 +116,7 @@ const SideDrawer = (props: IProps) => {
                                     <ListItemText primary="Chart" />
                                 </ListItem>
                             </Link>
-                            <Link key="chart" to={'/members/' + project.projectId}>
+                            <Link key="2" to={'/members/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <PeopleIcon />
@@ -124,7 +124,7 @@ const SideDrawer = (props: IProps) => {
                                     <ListItemText primary="Members" />{' '}
                                 </ListItem>
                             </Link>
-                            <Link key="chart" to={'/projectsettings/' + project.projectId}>
+                            <Link key="3" to={'/projectsettings/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <SettingsIcon />

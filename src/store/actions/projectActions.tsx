@@ -9,6 +9,8 @@ import {
     VIEW_PROJECT_ERROR,
     NOT_VIEW_PROJECT_SUCCESS,
     NOT_VIEW_PROJECT_ERROR,
+    DELETE_PROJECT_SUCCESS,
+    DELETE_PROJECT_ERROR,
 } from '../types/actionTypes';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ExtendedFirebaseInstance } from 'react-redux-firebase';
@@ -61,6 +63,38 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             dispatch({ type: CREATE_PROJECT_SUCCESS, project });
         } catch (err) {
             dispatch({ type: CREATE_PROJECT_ERROR, err });
+        }
+    };
+};
+
+// action for creating a new project
+export const deleteProject = (projectId: string): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        // make async call to database
+        try {
+            const firebase = getFirebase() as ExtendedFirebaseInstance;
+            const db = firebase.database();
+            const auth = firebase.auth();
+            const profile = _getState().firebase.profile;
+
+            // retrieve list of users authorized on project
+            const managers = await db.ref(`/projects/${projectId}/managers`).once('value');
+            const members = await db.ref(`/projects/${projectId}/managers`).once('value');
+            // check to make sure current user is a manager
+            console.log(managers.val());
+            // TODO: send notification of project deletion to users
+            // remove project from user's project list
+            // delete project
+            // add project to projects
+            //await db.ref(`/projects/${projectId}`).set({ ...project, managers, timezoneOffset, members, tasks });
+
+            dispatch({ type: DELETE_PROJECT_SUCCESS });
+        } catch (err) {
+            dispatch({ type: DELETE_PROJECT_ERROR, err });
         }
     };
 };

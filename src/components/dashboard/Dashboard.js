@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
+import Notifications from './notifications';
 
 function Copyright() {
     return (
@@ -48,6 +49,7 @@ const Dashboard = (props) => {
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
+                <Notifications />
                 <Grid container spacing={1}>
                     <Typography>Owned Projects</Typography>
                     {/*owned projects*/}

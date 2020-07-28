@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import {
-    Avatar,
-    Button,
     CssBaseline,
     TextField,
-    Grid,
-    Box,
-    Typography,
     Container,
-    Link,
     Card,
     CardActionArea,
     CardContent,
@@ -17,8 +10,6 @@ import {
     CardHeader,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 

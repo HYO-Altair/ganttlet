@@ -12,7 +12,7 @@ import {
     createLink,
     updateLink,
     deleteLink,
-} from '../../store/actions/ChartActions/TaskActions';
+} from '../../store/actions/ChartActions/taskActions';
 import { connect } from 'react-redux';
 
 class GanttApp extends Component {

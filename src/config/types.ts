@@ -54,8 +54,10 @@ export interface IProjectTaskLink {
 
 export interface ITaskComment {
     originalPoster: string;
+    timestamp: string;
     text: string;
     taggedUsers: unknown;
+    children: ITaskComment[];
 }
 
 export interface IGoogleAuthProfile {

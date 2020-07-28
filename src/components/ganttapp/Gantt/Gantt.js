@@ -108,13 +108,16 @@ class Gantt extends Component {
             }
         };
 
+        gantt.locale.labels.section_owner = "Owner";
         gantt.config.lightbox.sections = [
             { name: "description", height: 70, map_to: "text", type: "textarea", focus: true },
+            { name: "owner", height: 50, type: "textarea", map_to: "official_name" },
 
-            { name: "color", height: 40, map_to: "color", type: "color_picker" },
+            { name: "color", height: 30, map_to: "color", type: "color_picker" },
 
             { name: "time", height: 72, map_to: "auto", type: "duration" }
         ];
+
         gantt.init(this.ganttContainer);
         this.initGanttDataProcessor();
         if (tasks) gantt.parse(tasks);

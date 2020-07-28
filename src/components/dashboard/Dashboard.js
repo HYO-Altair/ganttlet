@@ -11,7 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
-
+import Comments from '../ganttapp/comments/Comments';
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -92,6 +92,7 @@ const Dashboard = (props) => {
                     </Box>
                 </Grid>
             </Container>
+            <Comments />
             <Footer />
         </main>
     );

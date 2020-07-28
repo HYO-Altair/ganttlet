@@ -1,3 +1,7 @@
 .gantt-container {
-  height: calc(100vh - 50px - 200px);
+    height: calc(100vh - 50px - 200px);
+}
+
+.color_container {
+    padding: 0px 0px 0px 7px;
 }

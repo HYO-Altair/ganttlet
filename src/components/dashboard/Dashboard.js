@@ -75,7 +75,11 @@ const Dashboard = (props) => {
                         projects.joined &&
                         Object.keys(projects.joined).map((key) => (
                             <Grid key={key} item xs={3}>
-                                <ProjectCard projectName={projects.joined[key]} projectID={key} />
+                                <ProjectCard
+                                    projectName={projects.joined[key]}
+                                    projectID={key}
+                                    handleSideDrawerClose={handleSideDrawerClose}
+                                />
                             </Grid>
                         ))}
                 </Grid>

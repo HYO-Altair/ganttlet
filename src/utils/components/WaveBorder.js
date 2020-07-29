@@ -8,6 +8,7 @@ const styles = {
         width: '100%',
         marginBottom: -7,
         height: '7vw',
+        zIndex: '0vw',
         minHeight: '7vw',
     },
     '@keyframes moveForever': {

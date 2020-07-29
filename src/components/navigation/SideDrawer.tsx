@@ -34,7 +34,7 @@ const styles = (theme: Theme) =>
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.enteringScreen,
             }),
-            height: '100%',
+            height: '100vh',
         },
         drawerPaperClose: {
             overflowX: 'hidden',
@@ -42,10 +42,12 @@ const styles = (theme: Theme) =>
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
             }),
+
             width: theme.spacing(7),
             [theme.breakpoints.up('sm')]: {
                 width: theme.spacing(9),
             },
+            height: '100vh',
         },
         toolbarIcon: {
             display: 'flex',

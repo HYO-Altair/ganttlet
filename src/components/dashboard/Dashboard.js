@@ -3,25 +3,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
 import Notifications from './notifications';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            Team Altair {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,

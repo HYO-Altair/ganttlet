@@ -7,6 +7,7 @@ import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
 import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
 import { viewProject } from '../../store/actions/projectActions';
+import AddMemberForm from './AddMember';
 
 interface IProps {
     projectID: string;
@@ -30,10 +31,13 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
+    root: {
+        padding: theme.spacing(4),
+    },
 }));
 
 const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
-    if (json === undefined) {
+    if (json === undefined || json === null) {
         return null;
     }
 
@@ -69,15 +73,19 @@ const Members = (props: IProps): JSX.Element => {
         return (
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
+                <AddMemberForm projectID={projectID} />
                 <Typography>Project Members page for project {projectID}</Typography>
             </main>
         );
     } else {
         return (
-            <div>
-                <Typography gutterBottom variant="h5">
-                    Project not found or User not authorized.
-                </Typography>
+            <div className={classes.root}>
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Typography gutterBottom variant="h5">
+                        Project not found or User not authorized.
+                    </Typography>
+                </main>
             </div>
         );
     }

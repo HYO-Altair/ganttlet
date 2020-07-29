@@ -86,6 +86,35 @@ class Gantt extends Component {
         //sets the format of the dates that will come from the data source
         gantt.config.xml_date = '%d-%m-%Y %H:%i';
         const { tasks } = this.props;
+
+        //change color of the tasks
+        gantt.locale.labels.section_color = "Color";
+        gantt.form_blocks["color_picker"] = {
+            render: function (sns) {
+                return "<div class='color_container'>" +
+                    "<input class='color_picker' type='color'>" +
+                    "</div>";
+            },
+            set_value: function (node, value, task) {
+                node.querySelector(".color_picker").value = value || "";
+            },
+            get_value: function (node, task) {
+                return node.querySelector(".color_picker").value;
+            },
+            focus: function (node) {
+                var a = node.querySelector(".color_picker");
+                a.select();
+                a.focus();
+            }
+        };
+
+        gantt.config.lightbox.sections = [
+            { name: "description", height: 70, map_to: "text", type: "textarea", focus: true },
+
+            { name: "color", height: 40, map_to: "color", type: "color_picker" },
+
+            { name: "time", height: 72, map_to: "auto", type: "duration" }
+        ];
         gantt.init(this.ganttContainer);
         this.initGanttDataProcessor();
         if (tasks) gantt.parse(tasks);

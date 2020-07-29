@@ -24,7 +24,7 @@ const styles = (theme: Theme) =>
             display: 'flex',
         },
         wrapper: {
-            backgroundColor: theme.palette.common.white,
+            backgroundColor: theme.palette.grey[50],
             overflowX: 'hidden',
             overflowY: 'hidden',
         },

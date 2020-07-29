@@ -171,13 +171,11 @@ function NavBar(props: IProps): JSX.Element {
                                     </IconButton>
                                 </Link>
 
-                                <Link key="notifications" to="/notifications" className={classes.noDecoration}>
-                                    <IconButton color="inherit" onClick={handleNotificationsIconClick}>
-                                        <Badge badgeContent={4} color="secondary">
-                                            <NotificationsIcon />
-                                        </Badge>
-                                    </IconButton>
-                                </Link>
+                                <IconButton color="secondary" onClick={handleNotificationsIconClick}>
+                                    <Badge badgeContent={4} color="secondary">
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton>
 
                                 <Link key="logout" to="/login" className={classes.noDecoration} data-cy="logoutButton">
                                     <IconButton color="inherit" onClick={handleExitIconClick}>

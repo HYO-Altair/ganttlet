@@ -59,9 +59,9 @@ const Dashboard = (props) => {
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-      <Notifications />          
-      <Typography className={classes.titles} >Owned Projects</Typography>
-                <Divider className={classes.divider}/>
+                <Notifications />
+                <Typography className={classes.titles}>Owned Projects</Typography>
+                <Divider className={classes.divider} />
                 <Grid container spacing={4}>
                     {/*owned projects*/}
                     {projects &&
@@ -79,7 +79,7 @@ const Dashboard = (props) => {
                 </Grid>
 
                 <Typography className={classes.titles}>Joined Projects</Typography>
-                <Divider className={classes.divider}/>
+                <Divider className={classes.divider} />
                 <Grid container spacing={1}>
                     {/*joined projects*/}
                     {projects &&

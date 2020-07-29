@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import { Grid, Typography, Box, IconButton, withWidth, isWidthUp } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MailIcon from '@material-ui/icons/Mail';
-import GitHubIcon from '@material-ui/icons/GitHub';
 
 import WaveBorder from '../../utils/components/WaveBorder';
 
@@ -78,19 +77,14 @@ function Footer(props: IProps): JSX.Element {
                             About Us
                         </Typography>
                         <Typography style={{ color: '#8f9296' }} paragraph>
-                            Hack Your Own&apos;s Team Altair is... blah blah
+                            Hack Your Own&apos;s Team Altair has 4 members:
+                            <ul>
+                                <li>Nick Chen</li>
+                                <li>Lucas Pham</li>
+                                <li>Khoi Le</li>
+                                <li>Joseph Pallipadan</li>
+                            </ul>
                         </Typography>
-                        <Box display="flex">
-                            <Box>
-                                <IconButton
-                                    aria-label={'Github'}
-                                    className={classes.socialIcon}
-                                    href={'https://github.com/HYO-Altair'}
-                                >
-                                    <GitHubIcon />
-                                </IconButton>
-                            </Box>
-                        </Box>
                     </Grid>
                 </Grid>
             </div>

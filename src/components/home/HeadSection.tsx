@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, memo } from 'react';
 import classNames from 'classnames';
 
@@ -5,7 +6,6 @@ import { Grid, Typography, Card, Button, Hidden, Box, withWidth, isWidthUp } fro
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 import WaveBorder from '../../utils/components/WaveBorder';
-import headerImage from '../../assets/images/headerImage.jpg';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -116,7 +116,7 @@ function HeadSection(props: IProps): JSX.Element {
                                         >
                                             <Box mb={4}>
                                                 <Typography variant={isWidthUp('lg', width) ? 'h3' : 'h4'}>
-                                                    Free Template for building an SaaS app using Material-UI
+                                                    Welcome To Gantlett
                                                 </Typography>
                                             </Box>
                                             <div>
@@ -125,8 +125,9 @@ function HeadSection(props: IProps): JSX.Element {
                                                         variant={isWidthUp('lg', width) ? 'h6' : 'body1'}
                                                         color="textSecondary"
                                                     >
-                                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                                                        diam nonumy eirmod tempor invidunt
+                                                        Gantlett is a fully-featured, completely free, Gantt Chart
+                                                        making tool brought to you by the folks at HackYourOwn's Team
+                                                        Altair. We hope you enjoy!
                                                     </Typography>
                                                 </Box>
                                                 <Button
@@ -135,16 +136,22 @@ function HeadSection(props: IProps): JSX.Element {
                                                     fullWidth
                                                     className={classes.extraLargeButton}
                                                     classes={{ label: classes.extraLargeButtonLabel }}
-                                                    href="https://github.com/dunky11/react-saas-template"
+                                                    href="https://github.com/HYO-Altair"
                                                 >
-                                                    Download from GitHub
+                                                    Check out our repository
                                                 </Button>
                                             </div>
                                         </Box>
                                     </Grid>
                                     <Hidden smDown>
                                         <Grid item md={6}>
-                                            <img src={headerImage} className={classes.image} alt="header example" />
+                                            <img
+                                                src={
+                                                    'https://dhtmlx.com/docs/products/dhtmlxGantt/images/gantt-demo.png'
+                                                }
+                                                className={classes.image}
+                                                alt="header example"
+                                            />
                                         </Grid>
                                     </Hidden>
                                 </Box>

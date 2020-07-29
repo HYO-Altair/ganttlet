@@ -5,44 +5,35 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import projectImage from '../../assets/images/gantt.png';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     root: {
         maxWidth: 345,
     },
+    links: {
+        underline: 'none',
+    }
 });
 
 interface Props {
     projectName: string;
     projectID: string;
+    projectDes: string;
     handleSideDrawerClose: any;
 }
 
 export default function ImgMediaCard(props: Props): JSX.Element {
     const classes = useStyles();
-    const { projectName, projectID, handleSideDrawerClose } = props;
-    console.log(projectName);
-    console.log(projectID);
+    const { projectName, projectID, projectDes, handleSideDrawerClose } = props;
     return (
-        <Link to={'/project/' + projectID}>
+        <Link to={'/project/' + projectID} style={{ textDecoration: 'none' }}>
             <div onClick={() => handleSideDrawerClose()}>
                 <Card className={classes.root}>
                     <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            alt={projectName}
-                            height="140"
-                            image={projectImage}
-                            title={projectName}
-                        />
                         <CardContent>
-                            <Typography gutterBottom variant="h5">
-                                name: {projectName}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                id: {projectID}
+                            <Typography variant="h5">
+                                {projectName}
                             </Typography>
                         </CardContent>
                     </CardActionArea>

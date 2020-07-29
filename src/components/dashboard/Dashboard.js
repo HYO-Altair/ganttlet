@@ -12,6 +12,16 @@ import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
 
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            Team Altair {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
+
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
     container: {
@@ -29,8 +39,18 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
+    titles: {
+        paddingTop: theme.spacing(4),
+    },
+    addProjectFab: {
+        position: 'absolute',
+        bottom: theme.spacing(60),
+        right: theme.spacing(35),
+    },
+    divider: {
+        marginBottom: theme.spacing(2),
+    },
 }));
-
 const Dashboard = (props) => {
     const classes = useStyles();
     const { projects, handleSideDrawerClose } = props;
@@ -38,8 +58,9 @@ const Dashboard = (props) => {
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={1}>
-                    <Typography>Owned Projects</Typography>
+                <Typography className={classes.titles} >Owned Projects</Typography>
+                <Divider className={classes.divider}/>
+                <Grid container spacing={4}>
                     {/*owned projects*/}
                     {projects &&
                         projects.owned &&
@@ -48,37 +69,38 @@ const Dashboard = (props) => {
                                 <ProjectCard
                                     projectName={projects.owned[key]}
                                     projectID={key}
+                                    projectDes={key.description}
                                     handleSideDrawerClose={handleSideDrawerClose}
                                 />
                             </Grid>
                         ))}
                 </Grid>
 
-                <Divider />
-
+                <Typography className={classes.titles}>Joined Projects</Typography>
+                <Divider className={classes.divider}/>
                 <Grid container spacing={1}>
-                    <Typography>Joined Projects</Typography>
                     {/*joined projects*/}
                     {projects &&
                         projects.joined &&
                         Object.keys(projects.joined).map((key) => (
                             <Grid key={key} item xs={3}>
-                                <ProjectCard projectName={projects.joined[key]} projectID={key} />
+                                <ProjectCard
+                                    projectName={projects.joined[key]}
+                                    projectID={key}
+                                    projectDes={key.description}
+                                    handleSideDrawerClose={handleSideDrawerClose}
+                                />
                             </Grid>
                         ))}
                 </Grid>
-
-                <Divider />
-
-                <Grid container spacing={1}>
-                    <AddProjectForm />
-                </Grid>
-
-                <Divider />
-
                 <Grid container spacing={1} m="2rem">
                     <Box pt={4}>
                         <Copyright />
+                    </Box>
+                </Grid>
+                <Grid container spacing={1}>
+                    <Box pt={4} className={classes.addProjectFab}>
+                        <AddProjectForm />
                     </Box>
                 </Grid>
             </Container>

@@ -109,7 +109,7 @@ const SideDrawer = (props: IProps) => {
                 project.projectId && !project.projectError && (
                     <List>
                         <div>
-                            <ListSubheader inset>Project</ListSubheader>
+                            <ListSubheader inset>{project.projectName}</ListSubheader>
                             <Link key="1" to={'/project/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>

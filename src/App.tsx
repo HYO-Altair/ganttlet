@@ -28,6 +28,14 @@ const styles = (theme: Theme) =>
             overflowX: 'hidden',
             overflowY: 'hidden',
         },
+        center: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            width: '100vw',
+            fontSize: '8vh',
+        },
     });
 
 interface IProps extends WithStyles<typeof styles> {
@@ -117,7 +125,14 @@ function App(props: IProps): JSX.Element {
         );
 
     function AuthIsLoaded({ children }: any) {
-        if (!isLoaded(auth)) return <div>splash screen...</div>;
+        if (!isLoaded(auth))
+            return (
+                <div className={classes.center}>
+                    <div className="loader center">
+                        <i className="fa fa-cog fa-spin" />
+                    </div>
+                </div>
+            );
         return children;
     }
 

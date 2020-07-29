@@ -151,8 +151,12 @@ export const viewProject = (projectId: string): ThunkAction<Promise<void>, TGetS
         { getFirebase }: IGetFirebase,
     ) => {
         try {
+            const firebase = getFirebase() as ExtendedFirebaseInstance;
+            const db = firebase.database();
+
+            const project = await db.ref(`/projects/${projectId}`).once('value');
             // check to make sure user has access to this project
-            dispatch({ type: VIEW_PROJECT_SUCCESS, projectId });
+            dispatch({ type: VIEW_PROJECT_SUCCESS, projectId, projectName: project.val().name });
         } catch (err) {
             dispatch({ type: VIEW_PROJECT_ERROR, err });
         }

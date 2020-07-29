@@ -51,6 +51,7 @@ class Gantt extends Component {
 
     setZoom(value) {
         gantt.ext.zoom.setLevel(value);
+        gantt.exportToExcel();
     }
 
     initGanttDataProcessor() {
@@ -91,7 +92,7 @@ class Gantt extends Component {
         gantt.locale.labels.section_color = 'Color';
         gantt.form_blocks['color_picker'] = {
             render: function (sns) {
-                return "<div class='color_container'>" + "<input class='color_picker' type='color'>" + '</div>';
+                return "<div class='color_container'><input class='color_picker' type='color'></div>";
             },
             set_value: function (node, value, task) {
                 node.querySelector('.color_picker').value = value || '';

@@ -38,7 +38,9 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             // but should be selectable upon project creation and passed in inside
             // project parameter
             const timezoneOffset = new Date().getTimezoneOffset();
-            const members = { [ownerUid]: profile.firstName + ' ' + profile.lastName };
+
+            //const members = { [ownerUid]: profile.firstName + ' ' + profile.lastName };
+            const members = {};
 
             // Sample tasks
             const date = new Date();

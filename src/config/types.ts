@@ -22,8 +22,8 @@ export interface IProject {
     name: string;
     timeZone: string;
     description: string;
-    managers: unknown;
-    members: unknown;
+    managers: unknown[];
+    members: unknown[];
     tasks: ITasksWrapper;
 }
 

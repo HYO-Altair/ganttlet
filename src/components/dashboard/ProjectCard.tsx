@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +12,7 @@ const useStyles = makeStyles({
     },
     links: {
         underline: 'none',
-    }
+    },
 });
 
 interface Props {
@@ -25,16 +24,14 @@ interface Props {
 
 export default function ImgMediaCard(props: Props): JSX.Element {
     const classes = useStyles();
-    const { projectName, projectID, projectDes, handleSideDrawerClose } = props;
+    const { projectName, projectID, handleSideDrawerClose } = props;
     return (
         <Link to={'/project/' + projectID} style={{ textDecoration: 'none' }}>
             <div onClick={() => handleSideDrawerClose()}>
                 <Card className={classes.root}>
                     <CardActionArea>
                         <CardContent>
-                            <Typography variant="h5">
-                                {projectName}
-                            </Typography>
+                            <Typography variant="h5">{projectName}</Typography>
                         </CardContent>
                     </CardActionArea>
                 </Card>

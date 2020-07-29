@@ -50,7 +50,7 @@ const AddProjectForm = (props: IProps): JSX.Element => {
             <Button onClick={handleSubmit} color="secondary">
                 Submit
             </Button> */}
-           <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
+            <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
                 <AddIcon />
             </Fab>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

@@ -18,13 +18,9 @@ interface IProps {
 
 const useStyles = makeStyles((theme) => ({
     fab: {
-        top: 'auto',
         right: 0,
         bottom: 0,
-        left: 'auto',
         position: 'fixed',
-        height: 'auto',
-        width: 'auto',
         padding: theme.spacing(2),
         margin: theme.spacing(7),
     },
@@ -66,13 +62,13 @@ const AddProjectForm = (props: IProps): JSX.Element => {
             </Button> */}
             <Fab
                 color="primary"
-                variant="extended"
+                //variant="extended"
                 aria-label="add"
                 onClick={handleClickOpen}
                 className={classes.fab}
                 size="large"
             >
-                <AddIcon /> &nbsp;&nbsp;New Project
+                <AddIcon /> {/*&nbsp;&nbsp;New Project*/}
             </Fab>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Create Project</DialogTitle>

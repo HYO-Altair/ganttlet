@@ -1,5 +1,5 @@
 import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
-import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
+import { MuiThemeProvider, CssBaseline, CircularProgress } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
@@ -25,8 +25,7 @@ const styles = (theme: Theme) =>
         },
         wrapper: {
             backgroundColor: theme.palette.grey[50],
-            overflowX: 'hidden',
-            overflowY: 'hidden',
+            overflow: 'hidden',
         },
         center: {
             display: 'flex',
@@ -128,9 +127,7 @@ function App(props: IProps): JSX.Element {
         if (!isLoaded(auth))
             return (
                 <div className={classes.center}>
-                    <div className="loader center">
-                        <i className="fa fa-cog fa-spin" />
-                    </div>
+                    <CircularProgress />
                 </div>
             );
         return children;

@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import { addMessage } from '../../store/actions/ChartActions/MessageActions';
 
 function convertMessagesObjectToString(objects) {
+    if (!objects) return [];
     const ans = [];
     Object.values(objects).forEach((obj) => {
         ans.push(`${obj.content} by ${obj.actor} on ${obj.date}`);

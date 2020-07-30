@@ -31,6 +31,11 @@ export const VIEW_PROJECT_SUCCESS = 'VIEW_PROJECT_SUCCESS';
 export const VIEW_PROJECT_ERROR = 'VIEW_PROJECT_FAILURE';
 export const NOT_VIEW_PROJECT_SUCCESS = 'NOT_VIEW_PROJECT_SUCCESS';
 export const NOT_VIEW_PROJECT_ERROR = 'NOT_VIEW_PROJECT_FAILURE';
+export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS';
+export const LOAD_COMMENTS_ERROR = 'LOAD_COMMENTS_ERROR';
+export const SHOW_COMMENTS = 'SHOW_COMMENTS';
+export const HIDE_COMMENTS = 'HIDE_COMMENTS';
+
 /*
  * TODO: these interfaces might be pointless
  * but not sure can't figure out what async actions return (nth?)

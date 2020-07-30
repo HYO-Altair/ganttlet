@@ -104,16 +104,3 @@ export const deleteLink = (
         db.ref(`projects/${projectid}/tasks/links/${linkid}`).set(null);
     };
 };
-
-export const openComments = (
-    projectId: string,
-    taskId: string,
-): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
-    return async (
-        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
-        _getState: TGetState,
-        { getFirebase }: IGetFirebase,
-    ) => {
-        console.log('in the openComments action');
-    };
-};

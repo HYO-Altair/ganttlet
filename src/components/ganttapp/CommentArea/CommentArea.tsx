@@ -3,12 +3,8 @@ import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import classes from '*.module.css';
 import { Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
+import { IComment } from '../../../config/types';
 
-export interface IComment {
-    name: string;
-    message: string;
-    time: string;
-}
 const styles = (theme: Theme) =>
     createStyles({
         container: { width: '30vw' },

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import PropTypes from 'prop-types';
-import { openComments } from '../../../store/actions/ChartActions/TaskActions';
+import { loadComments, showComments } from '../../../store/actions/ChartActions/TaskActions';
 import CommentArea from '../CommentArea';
 class Gantt extends Component {
     constructor(props) {
@@ -121,7 +121,8 @@ class Gantt extends Component {
         gantt.attachEvent('onTaskDblClick', function (id, e) {
             //any custom logic here
             console.log('yeet hay');
-            openComments(projectId, id);
+            loadComments(projectId, id);
+            showComments();
             return true;
         });
         gantt.init(this.ganttContainer);
@@ -170,7 +171,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        openComments: (projectId, taskId) => dispatch(openComments(projectId, taskId)),
+        loadComments: (projectId, taskId) => dispatch(loadComments(projectId, taskId)),
+        showComments: () => dispatch(showComments()),
     };
 };
 

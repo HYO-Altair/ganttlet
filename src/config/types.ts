@@ -81,3 +81,9 @@ export interface IRegisterCredentials {
     firstName: string;
     lastName: string;
 }
+
+export interface IComment {
+    name: string;
+    message: string;
+    time: string;
+}

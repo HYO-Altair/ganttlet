@@ -18,7 +18,6 @@ const useStyles = makeStyles({
 interface Props {
     projectName: string;
     projectID: string;
-    projectDes: string;
     handleSideDrawerClose: any;
 }
 

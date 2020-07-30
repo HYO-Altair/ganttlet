@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Typography, Button, Paper } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { acceptInvite } from '../../store/actions/notificationActions';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 interface IProps {
     acceptInvite: (projectID: string, projectName: string) => any;
@@ -25,12 +26,12 @@ function Notifications(props: IProps): JSX.Element {
         }
         console.log(data);
         const ans = Object.entries(data).map(([projectId, notification], key) => (
-            <Paper key={key}>
-                <Typography>
-                    {notification.inviterName} is inviting you to collaborate on {notification.projectName}.
-                </Typography>
-                <Button onClick={() => props.acceptInvite(projectId, notification.projectName)}>Accept</Button>
-            </Paper>
+            <div style={{paddingTop: 10, width: 500}}>
+                <SnackbarContent
+                    message={`Invite from ${notification.inviterName} to join ${notification.projectName}`}
+                    action={<Button style={{backgroundColor: 'white'}} onClick={() => props.acceptInvite(projectId, notification.projectName)}>Accept</Button>}
+                />
+            </div>
         ));
         // if (ans !== state.invitationsList) {
         //     setState({

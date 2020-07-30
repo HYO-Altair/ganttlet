@@ -1,5 +1,16 @@
 import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
-import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
+import clsx from 'clsx';
+import {
+    MuiThemeProvider,
+    CssBaseline,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Divider,
+    Button,
+    Drawer,
+} from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
@@ -18,6 +29,9 @@ import { connect } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 import Members from './components/members/Members';
 import ProjectSettings from './components/projectSettings/ProjectSettings';
+import CommentsArea from './components/ganttapp/CommentArea';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -27,6 +41,12 @@ const styles = (theme: Theme) =>
             backgroundColor: theme.palette.grey[50],
             overflowX: 'hidden',
             overflowY: 'hidden',
+        },
+        list: {
+            width: 250,
+        },
+        fullList: {
+            width: 'auto',
         },
     });
 
@@ -39,6 +59,29 @@ function App(props: IProps): JSX.Element {
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
+    const [isCommentsOpen, setIsCommentsOpen] = React.useState({
+        right: false,
+    });
+    const toggleDrawer = (anchor: any, open: any) => (event: any) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setIsCommentsOpen({ ...isCommentsOpen, [anchor]: open });
+    };
+
+    const list = (anchor: any) => (
+        <div
+            className={clsx(classes.list, {
+                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+            })}
+            role="presentation"
+            onClick={toggleDrawer(anchor, false)}
+            onKeyDown={toggleDrawer(anchor, false)}
+        >
+            <CommentsArea />
+        </div>
+    );
 
     const selectHome = useCallback(() => {
         smoothScrollTop();
@@ -172,6 +215,16 @@ function App(props: IProps): JSX.Element {
                                     />
                                     <PropsRoute path="/" component={Home} selectHome={selectHome} />
                                 </Switch>
+                                <React.Fragment key="right">
+                                    <Button onClick={toggleDrawer('right', true)}>{'right'}</Button>
+                                    <Drawer
+                                        anchor="right"
+                                        open={isCommentsOpen['right']}
+                                        onClose={toggleDrawer('right', false)}
+                                    >
+                                        {list('right')}
+                                    </Drawer>
+                                </React.Fragment>
                             </div>
                         </div>
                     </Suspense>

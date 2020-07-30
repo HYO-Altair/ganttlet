@@ -30,8 +30,10 @@ import { isLoaded } from 'react-redux-firebase';
 import Members from './components/members/Members';
 import ProjectSettings from './components/projectSettings/ProjectSettings';
 import CommentsArea from './components/ganttapp/CommentArea';
+import ChatIcon from '@material-ui/icons/Chat';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { hideComments, showComments } from './store/actions/ChartActions/commentsActions';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -53,35 +55,34 @@ const styles = (theme: Theme) =>
 interface IProps extends WithStyles<typeof styles> {
     auth: any;
     comments: any;
+    showComments: any;
+    hideComments: any;
 }
 
 function App(props: IProps): JSX.Element {
-    const { classes, auth, comments } = props;
+    const { classes, auth, comments, showComments, hideComments } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
-    const [isCommentsOpen, setIsCommentsOpen] = React.useState({
-        right: false,
-    });
-    const toggleDrawer = (anchor: any, open: any) => (event: any) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-
-        setIsCommentsOpen({ ...isCommentsOpen, [anchor]: open });
-    };
 
     const list = (anchor: any) => (
         <div
             className={clsx(classes.list)}
             role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
+            onClick={() => hideComments()}
+            onKeyDown={() => hideComments()}
         >
             <CommentsArea />
         </div>
     );
-
+    const toggleDrawer = () => (event: any) => {
+        console.log('toggle drawer triggered');
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        if (comments.showComments) hideComments();
+        else showComments();
+    };
     const selectHome = useCallback(() => {
         smoothScrollTop();
         document.title = 'Ganttlet';
@@ -215,12 +216,10 @@ function App(props: IProps): JSX.Element {
                                     <PropsRoute path="/" component={Home} selectHome={selectHome} />
                                 </Switch>
                                 <React.Fragment key="right">
-                                    <Button onClick={toggleDrawer('right', true)}>{'right'}</Button>
-                                    <Drawer
-                                        anchor="right"
-                                        open={isCommentsOpen['right']}
-                                        onClose={toggleDrawer('right', false)}
-                                    >
+                                    <Button onClick={() => showComments()}>
+                                        <ChatIcon />
+                                    </Button>
+                                    <Drawer anchor="right" open={comments.showComments} onClose={() => hideComments()}>
                                         {list('right')}
                                     </Drawer>
                                 </React.Fragment>
@@ -244,5 +243,10 @@ const mapStateToProps = (state: any) => {
         //profile: state.firebase.profile,
     };
 };
-
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(App)));
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        hideComments: () => dispatch(hideComments()),
+        showComments: () => dispatch(showComments()),
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(memo(App)));

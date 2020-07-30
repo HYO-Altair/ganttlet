@@ -120,10 +120,10 @@ class Gantt extends Component {
         ];
         gantt.attachEvent('onTaskDblClick', function (id, e) {
             //any custom logic here
-            console.log('yeet hay');
+            console.log('dbl');
             loadComments(projectId, id);
-            showComments();
-            console.log('yeet hay');
+            //showComments();
+            console.log('done');
             return true;
         });
         gantt.init(this.ganttContainer);

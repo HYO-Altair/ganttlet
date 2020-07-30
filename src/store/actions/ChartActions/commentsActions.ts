@@ -10,6 +10,7 @@ import {
 } from '../../types/actionTypes';
 
 import { AnyAction } from 'redux';
+import { ExtendedFirebaseInstance } from 'react-redux-firebase';
 
 export const loadComments = (
     projectid: string,
@@ -21,22 +22,21 @@ export const loadComments = (
         { getFirebase }: IGetFirebase,
     ) => {
         try {
-            console.log('in the openComments action');
-            dispatch({ type: LOAD_COMMENTS_SUCCESS, projectid, taskid });
+            // query the database and retrieve the comments for projectid/taskid
+            const firebase = getFirebase() as ExtendedFirebaseInstance;
+            const db = firebase.database();
+            const comments = await db.ref(`projects/${projectid}/tasks/data/${taskid}/comments`).once('value');
+            console.log('in the loadComments action');
+            console.log(comments);
+            dispatch({ type: LOAD_COMMENTS_SUCCESS, comments });
         } catch (err) {
+            console.log('oop');
             dispatch({ type: LOAD_COMMENTS_ERROR, err });
         }
-        // query the database and retrieve the comments for projectid/taskid
-        //const firebase = getFirebase() as ExtendedFirebaseInstance;
-        //const db = firebase.database();
-        //db.ref(`projects/${projectid}/tasks/data/${taskid}/comments`).;
     };
 };
 
-export const showComments = (
-    projectid: string,
-    taskid: string,
-): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+export const showComments = (): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
         dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
         _getState: TGetState,
@@ -48,10 +48,7 @@ export const showComments = (
     };
 };
 
-export const hideComments = (
-    projectid: string,
-    taskid: string,
-): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+export const hideComments = (): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
         dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
         _getState: TGetState,

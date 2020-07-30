@@ -23,7 +23,7 @@ interface Props {
 
 export default function ImgMediaCard(props: Props): JSX.Element {
     const classes = useStyles();
-    const { projectName, projectID, projectDes, handleSideDrawerClose } = props;
+    const { projectName, projectID, handleSideDrawerClose } = props;
     return (
         <Link to={'/project/' + projectID} style={{ textDecoration: 'none' }}>
             <div onClick={() => handleSideDrawerClose()}>

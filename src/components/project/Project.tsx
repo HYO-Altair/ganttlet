@@ -71,11 +71,7 @@ const Project = (props: IProps): JSX.Element => {
     );
     useEffect(() => {
         viewProject(projectID);
-
-        return function cleanup() {
-            notViewProject();
-        };
-    }, [notViewProject, projectID, viewProject]);
+    }, [projectID, viewProject]);
     if (project) {
         return (
             <main className={classes.content}>

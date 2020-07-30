@@ -21,16 +21,16 @@ export interface IProjectAction {
 }
 // commentsReducer
 export interface ICommentsState {
-    //projectid: string | null;
-    //taskid: string | null;
-    comments: IComment[] | [];
+    projectid: string | null;
+    taskid: string | null;
+    comments: IComment[] | null;
     commentsError: string | null;
     showComments: boolean;
 }
 export interface ICommentsAction {
     type: string;
-    comments: IComment[] | [];
-    //projectid: string | null;
-    //taskid: string | null;
+    projectid: string | null;
+    comments: IComment[] | null;
+    taskid: string | null;
     err: string | null;
 }

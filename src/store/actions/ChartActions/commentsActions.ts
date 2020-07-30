@@ -7,11 +7,34 @@ import {
     LOAD_COMMENTS_ERROR,
     SHOW_COMMENTS,
     HIDE_COMMENTS,
+    SET_COMMENTS_INFO_SUCCESS,
+    SET_COMMENTS_INFO_ERROR,
 } from '../../types/actionTypes';
 
 import { AnyAction } from 'redux';
 import { ExtendedFirebaseInstance } from 'react-redux-firebase';
+import { IComment } from '../../../config/types';
 
+export const setCommentsInfo = (
+    projectid: string,
+    taskid: string,
+): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        try {
+            dispatch({ type: SET_COMMENTS_INFO_SUCCESS, projectid, taskid });
+        } catch (err) {
+            dispatch({ type: SET_COMMENTS_INFO_ERROR, err });
+        }
+        // query the database and retrieve the comments for projectid/taskid
+        //const firebase = getFirebase() as ExtendedFirebaseInstance;
+        //const db = firebase.database();
+        //db.ref(`projects/${projectid}/tasks/data/${taskid}/comments`).;
+    };
+};
 export const loadComments = (
     projectid: string,
     taskid: string,
@@ -23,19 +46,19 @@ export const loadComments = (
     ) => {
         try {
             // query the database and retrieve the comments for projectid/taskid
+            console.log('loading comments');
             const firebase = getFirebase() as ExtendedFirebaseInstance;
             const db = firebase.database();
-            const comments = await db.ref(`projects/${projectid}/tasks/data/${taskid}/comments`).once('value');
-            console.log('in the loadComments action');
+            let comments = await (await db.ref(`projects/${projectid}/tasks/comments/${taskid}`).once('value')).val();
             console.log(comments);
+            if (comments === null) comments = [];
             dispatch({ type: LOAD_COMMENTS_SUCCESS, comments });
         } catch (err) {
-            console.log('oop');
+            console.log(err);
             dispatch({ type: LOAD_COMMENTS_ERROR, err });
         }
     };
 };
-
 export const showComments = (): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
         dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,

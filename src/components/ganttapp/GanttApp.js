@@ -79,7 +79,6 @@ class GanttApp extends Component {
                         onDataUpdated={this.logDataUpdate}
                     />
                 </div>
-                <CommentArea />
                 <MessageArea messages={messages} />
             </div>
         );

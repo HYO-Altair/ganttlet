@@ -1,11 +1,8 @@
 import React from 'react';
+import { IComment } from '../../../config/types';
 
 export interface IProps {
-    comment: {
-        name: string;
-        message: string;
-        time: string;
-    };
+    comment: IComment;
 }
 
 export default function Comment(props: IProps): JSX.Element {

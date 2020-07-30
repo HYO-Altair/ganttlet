@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import PropTypes from 'prop-types';
-import { loadComments, showComments } from '../../../store/actions/ChartActions/commentsActions';
+import { setCommentsInfo, showComments } from '../../../store/actions/ChartActions/commentsActions';
 import CommentArea from '../CommentArea';
 class Gantt extends Component {
     constructor(props) {
@@ -88,7 +88,7 @@ class Gantt extends Component {
     componentDidMount() {
         //sets the format of the dates that will come from the data source
         gantt.config.xml_date = '%d-%m-%Y %H:%i';
-        const { tasks, projectId, loadComments, showComments } = this.props;
+        const { tasks, projectId, setCommentsInfo, showComments } = this.props;
 
         //change color of the tasks
         gantt.locale.labels.section_color = 'Color';
@@ -118,14 +118,16 @@ class Gantt extends Component {
 
             { name: 'time', height: 72, map_to: 'auto', type: 'duration' },
         ];
-        gantt.attachEvent('onTaskDblClick', function (id, e) {
-            //any custom logic here
-            console.log('dbl');
-            loadComments(projectId, id);
-            //showComments();
-            console.log('done');
-            return true;
-        });
+        if (!gantt.__taskDblClick)
+            gantt.__taskDblClick = gantt.attachEvent('onTaskDblClick', function (id, e) {
+                //any custom logic here
+                console.log('dbl');
+                setCommentsInfo(projectId, id);
+                //showComments();
+                console.log('done');
+                return true;
+            });
+
         gantt.init(this.ganttContainer);
         this.initGanttDataProcessor();
         if (tasks) gantt.parse(tasks);
@@ -161,7 +163,7 @@ class Gantt extends Component {
 }
 
 Gantt.propTypes = {
-    loadComments: PropTypes.any,
+    setCommentsInfo: PropTypes.any,
     showComments: PropTypes.any,
     projectId: PropTypes.string,
     tasks: PropTypes.object,
@@ -173,7 +175,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        loadComments: (projectid, taskid) => dispatch(loadComments(projectid, taskid)),
+        setCommentsInfo: (projectid, taskid) => dispatch(setCommentsInfo(projectid, taskid)),
         showComments: () => dispatch(showComments()),
     };
 };

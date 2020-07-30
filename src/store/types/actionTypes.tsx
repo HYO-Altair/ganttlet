@@ -35,7 +35,8 @@ export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS';
 export const LOAD_COMMENTS_ERROR = 'LOAD_COMMENTS_ERROR';
 export const SHOW_COMMENTS = 'SHOW_COMMENTS';
 export const HIDE_COMMENTS = 'HIDE_COMMENTS';
-
+export const SET_COMMENTS_INFO_SUCCESS = 'SET_COMMENTS_INFO_SUCCESS';
+export const SET_COMMENTS_INFO_ERROR = 'SET_COMMENTS_INFO_ERROR';
 /*
  * TODO: these interfaces might be pointless
  * but not sure can't figure out what async actions return (nth?)

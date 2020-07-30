@@ -39,7 +39,7 @@ blahblah
 * **Nick Chen** - [nchendev](https://github.com/nchendev)
 * **Lucas Pham** - [luangia](https://github.com/luangia)
 * **Khoi Le** - [Khoi8](https://github.com/Khoi8)
-* **Joseph Pallidan** - [JosephPallipadan](https://github.com/JosephPallipadan)
+* **Joseph Pallipadan** - [JosephPallipadan](https://github.com/JosephPallipadan)
 
 
 ## License

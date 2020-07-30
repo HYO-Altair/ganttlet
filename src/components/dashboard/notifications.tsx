@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Typography, Button, Paper } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { acceptInvite } from '../../store/actions/notificationActions';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 

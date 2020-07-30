@@ -1,6 +1,6 @@
 import React from 'react';
 
-export interface CommentI {
+export interface IProps {
     comment: {
         name: string;
         message: string;
@@ -8,7 +8,7 @@ export interface CommentI {
     };
 }
 
-export default function Comment(props: CommentI): JSX.Element {
+export default function Comment(props: IProps): JSX.Element {
     const { name, message, time } = props.comment;
 
     return (

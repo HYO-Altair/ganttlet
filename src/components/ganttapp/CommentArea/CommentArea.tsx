@@ -1,42 +1,42 @@
-import React, { Component } from 'react';
+import React, { useState, memo } from 'react';
 import CommentForm from './CommentForm';
-import CommentI from './Comment';
 import CommentList from './CommentList';
+import classes from '*.module.css';
+import { Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
 
-interface CommentAreaState {
-    comments: Array<typeof CommentI>;
+export interface IComment {
+    name: string;
+    message: string;
+    time: string;
 }
+const styles = (theme: Theme) =>
+    createStyles({
+        container: { width: '30vw' },
+    });
 
-class CommentArea extends Component<null, CommentAreaState> {
-    constructor(props: any) {
-        super(props);
+type IProps = WithStyles<typeof styles>;
 
-        this.state = {
-            comments: [],
-        };
-        this.addComment = this.addComment.bind(this);
-    }
+const CommentArea = (props: IProps): JSX.Element => {
+    const { classes } = props;
 
-    addComment(comment: typeof CommentI): void {
-        this.setState({
-            comments: [comment, ...this.state.comments],
-        });
-    }
+    const [comments, setComments] = useState([] as IComment[]);
 
-    render(): JSX.Element {
-        return (
-            <div>
-                <div className="col-4  pt-3 bg-white">
-                    {/*Comment List component */}
-                    <CommentList comments={this.state.comments as Array<typeof CommentI>} />
-                </div>
-                <div className="col-4  pt-3 border-right">
-                    {/*Comment Form component */}
-                    <CommentForm addComment={this.addComment} />
-                </div>
+    const addComment = (comment: IComment): void => {
+        setComments([comment, ...comments]);
+    };
+
+    return (
+        <div className={classes.container}>
+            <div className="col-4  pt-3 bg-white">
+                {/*Comment List component */}
+                <CommentList comments={comments as IComment[]} />
             </div>
-        );
-    }
-}
+            <div className="col-4  pt-3 border-right">
+                {/*Comment Form component */}
+                <CommentForm addComment={addComment} />
+            </div>
+        </div>
+    );
+};
 
-export default CommentArea;
+export default withStyles(styles, { withTheme: true })(memo(CommentArea));

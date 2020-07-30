@@ -43,7 +43,7 @@ const styles = (theme: Theme) =>
             overflowY: 'hidden',
         },
         list: {
-            width: 250,
+            width: 'auto',
         },
         fullList: {
             width: 'auto',
@@ -72,9 +72,7 @@ function App(props: IProps): JSX.Element {
 
     const list = (anchor: any) => (
         <div
-            className={clsx(classes.list, {
-                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-            })}
+            className={clsx(classes.list)}
             role="presentation"
             onClick={toggleDrawer(anchor, false)}
             onKeyDown={toggleDrawer(anchor, false)}

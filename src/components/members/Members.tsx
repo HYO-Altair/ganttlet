@@ -75,7 +75,6 @@ const Members = (props: IProps): JSX.Element => {
                 <div className={classes.appBarSpacer} />
                 <MemberList project={project} />
                 <AddMemberForm projectID={projectID} />
-                <Typography>Project Members page for project {projectID}</Typography>
             </main>
         );
     } else {

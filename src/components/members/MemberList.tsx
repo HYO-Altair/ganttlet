@@ -25,37 +25,65 @@ interface IProps {
 function MemberList(props: IProps): JSX.Element {
     const classes = useStyles();
     const { project } = props;
+
+    function managersList(project: IProject ) {
+        const managersList: string[] = [];
+        const membersList: string[] = [];
+        Object.keys(project.members).forEach(function(data) {
+            if (Object.keys(project.managers).includes(data)) {
+                managersList.push(data);
+            } else {
+                membersList.push(data);
+            }
+        });
+        /*for (var member in Object.values(project.members)) {
+            console.log(member);
+            if (Object.values(project.managers).includes(member)) {
+                managersList.push(member);
+            } else {
+                membersList.push(member);
+            }
+            }*/
+        return [managersList, membersList];
+    }
+
+    const members = managersList(props.project);
     return (
         <div>
-            <Container maxWidth="lg" className={classes.container}>
-                <Typography className={classes.titles}>Managers</Typography>
+            <Container maxWidth="xl" className={classes.container}>
+                <Typography className={classes.titles}>Members</Typography>
                 <Divider className={classes.divider} />
-                <Grid container spacing={4}>
+                <Grid container spacing={2}>
                     {/*managers*/}
                     {project.managers &&
-                        Object.keys(project.managers).map((key) => (
-                            <Grid key={key} item xs={3}>
+                        members[0].map((key) => (
+                            <Grid key={key} item xs={2}>
                                 <Card className={classes.root}>
                                     <CardActionArea>
                                         <CardContent>
-                                            <Typography variant="h5">{project.managers[key]}</Typography>
+                                            <Typography variant="h5">
+                                                {project.managers[key]}
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Manager
+                                            </Typography>
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>
                             </Grid>
                         ))}
-                </Grid>
-
-                <Typography className={classes.titles}>Members</Typography>
-                <Divider className={classes.divider} />
-                <Grid container spacing={1}>
                     {project.members &&
-                        Object.keys(project.members).map((key) => (
+                        members[1].map((key) => (
                             <Grid key={key} item xs={3}>
                                 <Card className={classes.root}>
                                     <CardActionArea>
                                         <CardContent>
-                                            <Typography variant="h5">{project.members[key]}</Typography>
+                                            <Typography variant="h5">
+                                                {project.members[key]}
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                               Member
+                                            </Typography>
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>

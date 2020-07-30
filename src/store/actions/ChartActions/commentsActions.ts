@@ -20,8 +20,8 @@ export const loadComments = (
         _getState: TGetState,
         { getFirebase }: IGetFirebase,
     ) => {
-        console.log('in the openComments action');
         try {
+            console.log('in the openComments action');
             dispatch({ type: LOAD_COMMENTS_SUCCESS, projectid, taskid });
         } catch (err) {
             dispatch({ type: LOAD_COMMENTS_ERROR, err });
@@ -42,6 +42,8 @@ export const showComments = (
         _getState: TGetState,
         { getFirebase }: IGetFirebase,
     ) => {
+        console.log('in the showComments action');
+
         dispatch({ type: SHOW_COMMENTS });
     };
 };

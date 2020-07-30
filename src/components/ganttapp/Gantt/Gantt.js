@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import PropTypes from 'prop-types';
-import { loadComments, showComments } from '../../../store/actions/ChartActions/TaskActions';
+import { loadComments, showComments } from '../../../store/actions/ChartActions/commentsActions';
 import CommentArea from '../CommentArea';
 class Gantt extends Component {
     constructor(props) {
@@ -88,7 +88,7 @@ class Gantt extends Component {
     componentDidMount() {
         //sets the format of the dates that will come from the data source
         gantt.config.xml_date = '%d-%m-%Y %H:%i';
-        const { tasks, projectId, openComments } = this.props;
+        const { tasks, projectId, loadComments, showComments } = this.props;
 
         //change color of the tasks
         gantt.locale.labels.section_color = 'Color';
@@ -123,6 +123,7 @@ class Gantt extends Component {
             console.log('yeet hay');
             loadComments(projectId, id);
             showComments();
+            console.log('yeet hay');
             return true;
         });
         gantt.init(this.ganttContainer);
@@ -160,7 +161,8 @@ class Gantt extends Component {
 }
 
 Gantt.propTypes = {
-    openComments: PropTypes.any,
+    loadComments: PropTypes.any,
+    showComments: PropTypes.any,
     projectId: PropTypes.string,
     tasks: PropTypes.object,
     zoom: PropTypes.string,
@@ -171,7 +173,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        loadComments: (projectId, taskId) => dispatch(loadComments(projectId, taskId)),
+        loadComments: (projectid, taskid) => dispatch(loadComments(projectid, taskid)),
         showComments: () => dispatch(showComments()),
     };
 };

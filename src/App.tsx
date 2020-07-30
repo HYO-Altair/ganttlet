@@ -1,5 +1,5 @@
 import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
-import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
+import { MuiThemeProvider, CssBaseline, CircularProgress } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
@@ -25,8 +25,15 @@ const styles = (theme: Theme) =>
         },
         wrapper: {
             backgroundColor: theme.palette.grey[50],
-            overflowX: 'hidden',
-            overflowY: 'hidden',
+            overflow: 'hidden',
+        },
+        center: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            width: '100vw',
+            fontSize: '8vh',
         },
     });
 
@@ -117,7 +124,12 @@ function App(props: IProps): JSX.Element {
         );
 
     function AuthIsLoaded({ children }: any) {
-        if (!isLoaded(auth)) return <div>splash screen...</div>;
+        if (!isLoaded(auth))
+            return (
+                <div className={classes.center}>
+                    <CircularProgress />
+                </div>
+            );
         return children;
     }
 

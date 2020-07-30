@@ -3,25 +3,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
 import Notifications from './notifications';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            Team Altair {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
@@ -31,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        height: '100vh',
+        minHeight: '100vh',
         overflow: 'auto',
     },
     paper: {
@@ -42,11 +30,6 @@ const useStyles = makeStyles((theme) => ({
     },
     titles: {
         paddingTop: theme.spacing(4),
-    },
-    addProjectFab: {
-        position: 'absolute',
-        bottom: theme.spacing(60),
-        right: theme.spacing(35),
     },
     divider: {
         marginBottom: theme.spacing(2),
@@ -80,7 +63,7 @@ const Dashboard = (props) => {
 
                 <Typography className={classes.titles}>Joined Projects</Typography>
                 <Divider className={classes.divider} />
-                <Grid container spacing={1}>
+                <Grid container spacing={4}>
                     {/*joined projects*/}
                     {projects &&
                         projects.joined &&
@@ -95,18 +78,8 @@ const Dashboard = (props) => {
                             </Grid>
                         ))}
                 </Grid>
-                <Grid container spacing={1} m="2rem">
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </Grid>
-                <Grid container spacing={1}>
-                    <Box pt={4} className={classes.addProjectFab}>
-                        <AddProjectForm />
-                    </Box>
-                </Grid>
+                <AddProjectForm />
             </Container>
-            <Footer />
         </main>
     );
 };

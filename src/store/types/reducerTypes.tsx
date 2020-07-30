@@ -12,10 +12,12 @@ export interface IAuthAction {
 export interface IProjectState {
     projectId: string | null;
     projectError: string | null;
+    projectName: string | null;
 }
 export interface IProjectAction {
     type: string;
     project: IProject | null;
     projectId: string | null;
+    projectName: string | null;
     err: string | null;
 }

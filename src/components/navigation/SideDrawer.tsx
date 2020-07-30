@@ -34,7 +34,7 @@ const styles = (theme: Theme) =>
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.enteringScreen,
             }),
-            height: '100%',
+            minHeight: '100vh',
         },
         drawerPaperClose: {
             overflowX: 'hidden',
@@ -42,10 +42,12 @@ const styles = (theme: Theme) =>
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
             }),
+
             width: theme.spacing(7),
             [theme.breakpoints.up('sm')]: {
                 width: theme.spacing(9),
             },
+            minHeight: '100vh',
         },
         toolbarIcon: {
             display: 'flex',
@@ -107,7 +109,7 @@ const SideDrawer = (props: IProps) => {
                 project.projectId && !project.projectError && (
                     <List>
                         <div>
-                            <ListSubheader inset>Project</ListSubheader>
+                            <ListSubheader inset>{project.projectName}</ListSubheader>
                             <Link key="1" to={'/project/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>

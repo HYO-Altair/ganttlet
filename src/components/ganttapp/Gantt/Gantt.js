@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import PropTypes from 'prop-types';
-
+import { openComments } from '../../../store/actions/ChartActions/TaskActions';
+import CommentArea from '../CommentArea';
 class Gantt extends Component {
     constructor(props) {
         super(props);
@@ -85,39 +88,42 @@ class Gantt extends Component {
     componentDidMount() {
         //sets the format of the dates that will come from the data source
         gantt.config.xml_date = '%d-%m-%Y %H:%i';
-        const { tasks } = this.props;
+        const { tasks, projectId, openComments } = this.props;
 
         //change color of the tasks
-        gantt.locale.labels.section_color = "Color";
-        gantt.form_blocks["color_picker"] = {
+        gantt.locale.labels.section_color = 'Color';
+        gantt.form_blocks['color_picker'] = {
             render: function (sns) {
-                return "<div class='color_container'>" +
-                    "<input class='color_picker' type='color'>" +
-                    "</div>";
+                return "<div class='color_container'>" + "<input class='color_picker' type='color'>" + '</div>';
             },
             set_value: function (node, value, task) {
-                node.querySelector(".color_picker").value = value || "";
+                node.querySelector('.color_picker').value = value || '';
             },
             get_value: function (node, task) {
-                return node.querySelector(".color_picker").value;
+                return node.querySelector('.color_picker').value;
             },
             focus: function (node) {
-                var a = node.querySelector(".color_picker");
+                var a = node.querySelector('.color_picker');
                 a.select();
                 a.focus();
-            }
+            },
         };
 
-        gantt.locale.labels.section_owner = "Owner";
+        gantt.locale.labels.section_owner = 'Owner';
         gantt.config.lightbox.sections = [
-            { name: "description", height: 70, map_to: "text", type: "textarea", focus: true },
-            { name: "owner", height: 50, type: "textarea", map_to: "official_name" },
+            { name: 'description', height: 70, map_to: 'text', type: 'textarea', focus: true },
+            { name: 'owner', height: 50, type: 'textarea', map_to: 'official_name' },
 
-            { name: "color", height: 30, map_to: "color", type: "color_picker" },
+            { name: 'color', height: 30, map_to: 'color', type: 'color_picker' },
 
-            { name: "time", height: 72, map_to: "auto", type: "duration" }
+            { name: 'time', height: 72, map_to: 'auto', type: 'duration' },
         ];
-
+        gantt.attachEvent('onTaskDblClick', function (id, e) {
+            //any custom logic here
+            console.log('yeet hay');
+            openComments(projectId, id);
+            return true;
+        });
         gantt.init(this.ganttContainer);
         this.initGanttDataProcessor();
         if (tasks) gantt.parse(tasks);
@@ -153,9 +159,19 @@ class Gantt extends Component {
 }
 
 Gantt.propTypes = {
+    openComments: PropTypes.any,
+    projectId: PropTypes.string,
     tasks: PropTypes.object,
     zoom: PropTypes.string,
     onDataUpdated: PropTypes.func,
 };
+const mapStateToProps = (state) => {
+    return {};
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openComments: (projectId, taskId) => dispatch(openComments(projectId, taskId)),
+    };
+};
 
-export default Gantt;
+export default connect(mapStateToProps, mapDispatchToProps)(Gantt);

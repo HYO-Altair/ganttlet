@@ -24,7 +24,9 @@ $ npm start
 
 ## Running the tests
 
-blahblah
+```sh
+$ npx cypress run
+```
 
 
 ## Built With

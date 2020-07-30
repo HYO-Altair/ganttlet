@@ -18,6 +18,24 @@ const features = [
         mdDelay: '0',
         smDelay: '0',
     },
+    {
+        color: '#00C853',
+        headline: 'Feature 2',
+        text:
+            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.',
+        icon: <BuildIcon style={{ fontSize: iconSize }} />,
+        mdDelay: '0',
+        smDelay: '0',
+    },
+    {
+        color: '#00C853',
+        headline: 'Feature 3',
+        text:
+            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.',
+        icon: <BuildIcon style={{ fontSize: iconSize }} />,
+        mdDelay: '0',
+        smDelay: '0',
+    },
 ];
 
 const styles = () =>

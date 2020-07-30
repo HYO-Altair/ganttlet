@@ -49,7 +49,6 @@ function MemberList(props: IProps): JSX.Element {
                 <Typography className={classes.titles}>Members</Typography>
                 <Divider className={classes.divider} />
                 <Grid container spacing={1}>
-                    {/*owned projects*/}
                     {project.members &&
                         Object.keys(project.members).map((key) => (
                             <Grid key={key} item xs={3}>

@@ -51,3 +51,24 @@ export const acceptInvite = (
         }
     };
 };
+
+export const revokeAccess = (
+    projectID: string,
+    personToRevokeID: string,
+): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        // make async call to database
+        try {
+            const firebase = getFirebase() as ExtendedFirebaseInstance;
+            const db = firebase.database();
+            db.ref(`projects/${projectID}/members/${personToRevokeID}`).set(null);
+            db.ref(`users/${personToRevokeID}/projects/joined/${projectID}`).set(null);
+        } catch (err) {
+            console.log(`Error in revokeAccess: ${err}`);
+        }
+    };
+};

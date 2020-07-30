@@ -25,6 +25,13 @@ export interface IProject {
     managers: unknown[];
     members: unknown[];
     tasks: ITasksWrapper;
+    messages: IMessage[];
+}
+
+export interface IMessage {
+    actor: string;
+    content: string;
+    date: string;
 }
 
 export interface ITasksWrapper {

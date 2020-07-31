@@ -137,10 +137,7 @@ class Gantt extends Component {
         if (!gantt.__taskDblClick)
             gantt.__taskDblClick = gantt.attachEvent('onTaskDblClick', function (id, e) {
                 //any custom logic here
-                console.log('dbl');
-                setCommentsInfo(projectId, id);
-                //showComments();
-                console.log('done');
+                click = 1;
                 return true;
             });
 

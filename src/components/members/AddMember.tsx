@@ -35,7 +35,6 @@ function AddMemberForm(props: IProps): JSX.Element {
 
     useFirebaseConnect([{ path: `users` }]);
     useFirebaseConnect([{ path: `projects` }]);
-    const [member, addMember] = React.useState({ email: ''});
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {

@@ -26,27 +26,30 @@ const CommentList = (props: IProps) => {
     const { projectid, taskid, comments, loadComments, classes } = props;
     // console.log('Hey');
     // console.log(props.comments);
+    //const comments = useSelector(state => state.comments.comments);
+
     useEffect(() => {
         if (comments === null) {
             loadComments(projectid, taskid);
         }
-    }, []);
+        console.log(comments && comments.length > 0);
+    }, [comments, loadComments, projectid, taskid]);
     if (!comments) {
+        console.log(comments);
         return (
             <div className={classes.center}>
                 <CircularProgress />
             </div>
         );
-    } else if (comments && comments.length > 0) {
+    } else if (comments) {
+        console.log(comments);
         return (
             <div className="commentList">
                 {/*<h5 className="text-muted mb4">
                     <span className="badge badge-success">{comments.length}</span> Comment
                     {props.comments.length > 0 ? 's' : ''}
         </h5>*/}
-                {comments.map((comment: any, index: number) => (
-                    <Comment key={index} comment={comment} />
-                ))}
+                {comments && Object.keys(comments).map((key) => <Comment key={key} comment={comments[key]} />)}
             </div>
         );
     } else {

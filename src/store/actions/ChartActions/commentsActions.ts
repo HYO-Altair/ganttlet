@@ -92,7 +92,12 @@ export const createComment = (
     ) => {
         const firebase = getFirebase() as ExtendedFirebaseInstance;
         const db = firebase.database();
+        const timestamp = new Date().toString();
+        comment['timestamp'] = timestamp;
         db.ref(`projects/${projectid}/tasks/comments/${taskid}`).push(comment);
+        console.log('comment created');
+        console.log(projectid);
+        console.log(taskid);
     };
 };
 

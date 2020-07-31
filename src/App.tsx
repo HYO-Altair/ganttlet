@@ -65,16 +65,6 @@ function App(props: IProps): JSX.Element {
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
 
-    const list = (anchor: any) => (
-        <div
-            className={clsx(classes.list)}
-            role="presentation"
-            onClick={() => hideComments()}
-            onKeyDown={() => hideComments()}
-        >
-            <CommentsArea />
-        </div>
-    );
     const toggleDrawer = () => (event: any) => {
         console.log('toggle drawer triggered');
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -220,7 +210,9 @@ function App(props: IProps): JSX.Element {
                                         <ChatIcon />
                                     </Button>
                                     <Drawer anchor="right" open={comments.showComments} onClose={() => hideComments()}>
-                                        {list('right')}
+                                        <div className={clsx(classes.list)} role="presentation">
+                                            <CommentsArea />
+                                        </div>
                                     </Drawer>
                                 </React.Fragment>
                             </div>

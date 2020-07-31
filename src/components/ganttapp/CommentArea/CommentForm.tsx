@@ -7,7 +7,7 @@ import { createComment } from '../../../store/actions/ChartActions/commentsActio
 interface CommentFormState {
     error: string;
     comment: {
-        name: string;
+        username: string;
         message: string;
     };
 }
@@ -23,7 +23,7 @@ const CommentForm = (props: IProps) => {
         error: '',
 
         comment: {
-            name: '',
+            username: '',
             message: '',
         },
     });
@@ -59,10 +59,10 @@ const CommentForm = (props: IProps) => {
         const { comment } = state;
         // console.log('wy');
         // console.log(comment);
-        createComment(comment);
+        createComment(projectid, taskid, comment);
     };
     const isFormValid = (): boolean => {
-        return state.comment.name !== '' && state.comment.message !== '';
+        return state.comment.username !== '' && state.comment.message !== '';
     };
 
     const renderError = (): JSX.Element | null => {
@@ -75,10 +75,10 @@ const CommentForm = (props: IProps) => {
                 <div className="form-group">
                     <input
                         onChange={handleFieldChange}
-                        value={state.comment.name}
+                        value={state.comment.username}
                         className="form-control"
-                        placeholder="😎 Your Name"
-                        name="name"
+                        placeholder="😎 Your username"
+                        name="username"
                         type="text"
                     />
                 </div>

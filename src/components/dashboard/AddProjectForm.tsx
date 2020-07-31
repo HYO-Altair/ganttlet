@@ -3,18 +3,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createProject } from '../../store/actions/projectActions';
 import TextField from '@material-ui/core/TextField';
-import { Button } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 interface IProps {
     createProject: any;
 }
 
+const useStyles = makeStyles((theme) => ({
+    fab: {
+        right: 0,
+        bottom: 0,
+        position: 'fixed',
+        padding: theme.spacing(2),
+        margin: theme.spacing(7),
+    },
+}));
 const AddProjectForm = (props: IProps): JSX.Element => {
+    const classes = useStyles();
     const { createProject } = props;
     const [project, setProject] = React.useState({ name: '', description: '' });
     const [open, setOpen] = React.useState(false);
@@ -48,9 +60,16 @@ const AddProjectForm = (props: IProps): JSX.Element => {
             <Button onClick={handleSubmit} color="secondary">
                 Submit
             </Button> */}
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Create Project
-            </Button>
+            <Fab
+                color="primary"
+                //variant="extended"
+                aria-label="add"
+                onClick={handleClickOpen}
+                className={classes.fab}
+                size="large"
+            >
+                <AddIcon /> {/*&nbsp;&nbsp;New Project*/}
+            </Fab>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Create Project</DialogTitle>
                 <DialogContent>

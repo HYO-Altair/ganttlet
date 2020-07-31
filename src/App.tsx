@@ -10,6 +10,7 @@ import {
     Divider,
     Button,
     Drawer,
+      CircularProgress,
 } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
@@ -41,8 +42,15 @@ const styles = (theme: Theme) =>
         },
         wrapper: {
             backgroundColor: theme.palette.grey[50],
-            overflowX: 'hidden',
-            overflowY: 'hidden',
+            overflow: 'hidden',
+        },
+        center: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            width: '100vw',
+            fontSize: '8vh',
         },
         list: {
             width: 'auto',
@@ -150,7 +158,12 @@ function App(props: IProps): JSX.Element {
         );
 
     function AuthIsLoaded({ children }: any) {
-        if (!isLoaded(auth)) return <div>splash screen...</div>;
+        if (!isLoaded(auth))
+            return (
+                <div className={classes.center}>
+                    <CircularProgress />
+                </div>
+            );
         return children;
     }
 

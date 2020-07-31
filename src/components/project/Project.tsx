@@ -76,7 +76,7 @@ const Project = (props: IProps): JSX.Element => {
         return (
             <main className={classes.content}>
                 <div className={classes.appBarSpacer}>
-                    <GanttApp tasks={project.tasks} projectID={projectID} />
+                    <GanttApp tasks={project.tasks} projectID={projectID} messages={project.messages} />
                 </div>
             </main>
         );

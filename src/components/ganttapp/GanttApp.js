@@ -15,23 +15,42 @@ import {
     deleteLink,
 } from '../../store/actions/ChartActions/TaskActions';
 import { connect } from 'react-redux';
+import { addMessage } from '../../store/actions/ChartActions/MessageActions';
+
+function convertMessagesObjectToString(objects) {
+    if (!objects) return [];
+    const ans = [];
+    Object.values(objects).forEach((obj) => {
+        ans.push(`${obj.content} by ${obj.actor} on ${obj.date}`);
+    });
+    return ans;
+}
 
 class GanttApp extends Component {
-    state = {
-        currentZoom: 'Days',
-        messages: [],
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentZoom: 'Days',
+            messages: convertMessagesObjectToString(props.messages),
+        };
+    }
 
     addMessage(message) {
-        const maxLogLength = 5;
-        const newMessage = { message };
-        const messages = [newMessage, ...this.state.messages];
+        const currentDate = new Date();
+        const messageObject = {
+            actor: 'Will be set in action',
+            content: message,
+            date: currentDate.toUTCString(),
+        };
+        this.props.addMessage(messageObject, this.props.projectID);
+    }
 
-        if (messages.length > maxLogLength) {
-            messages.length = maxLogLength;
-        }
+    shouldComponentUpdate(nextProps) {
+        return this.props.messages !== nextProps.messages;
+    }
 
-        this.setState({ messages });
+    componentDidUpdate(prevProps) {
+        this.setState({ messages: convertMessagesObjectToString(prevProps.messages) });
     }
 
     logDataUpdate = (entityType, action, itemData, id) => {
@@ -90,6 +109,7 @@ const mapStateToProps = () => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
+        addMessage: (message, projectid) => dispatch(addMessage(message, projectid)),
         createTask: (task, projectid, taskid) => dispatch(createTask(task, projectid, taskid)),
         updateTask: (task, projectid, taskid) => dispatch(updateTask(task, projectid, taskid)),
         deleteTask: (task, projectid, taskid) => dispatch(deleteTask(task, projectid, taskid)),
@@ -101,7 +121,9 @@ const mapDispatchToProps = (dispatch) => {
 
 GanttApp.propTypes = {
     tasks: PropTypes.object,
+    messages: PropTypes.object,
     projectID: PropTypes.string,
+    addMessage: PropTypes.func,
     createTask: PropTypes.func,
     updateTask: PropTypes.func,
     deleteTask: PropTypes.func,

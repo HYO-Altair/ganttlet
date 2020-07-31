@@ -38,7 +38,9 @@ export const createProject = (project: IProject): ThunkAction<Promise<void>, TGe
             // but should be selectable upon project creation and passed in inside
             // project parameter
             const timezoneOffset = new Date().getTimezoneOffset();
-            const members = { [ownerUid]: profile.firstName + ' ' + profile.lastName };
+
+            //const members = { [ownerUid]: profile.firstName + ' ' + profile.lastName };
+            const members = {};
 
             // Sample tasks
             const date = new Date();
@@ -149,8 +151,12 @@ export const viewProject = (projectId: string): ThunkAction<Promise<void>, TGetS
         { getFirebase }: IGetFirebase,
     ) => {
         try {
+            const firebase = getFirebase() as ExtendedFirebaseInstance;
+            const db = firebase.database();
+
+            const project = await db.ref(`/projects/${projectId}`).once('value');
             // check to make sure user has access to this project
-            dispatch({ type: VIEW_PROJECT_SUCCESS, projectId });
+            dispatch({ type: VIEW_PROJECT_SUCCESS, projectId, projectName: project.val().name });
         } catch (err) {
             dispatch({ type: VIEW_PROJECT_ERROR, err });
         }

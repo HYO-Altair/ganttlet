@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
 import { viewProject } from '../../store/actions/projectActions';
 import AddMemberForm from './AddMember';
-
+import MemberList from './MemberList';
 interface IProps {
     projectID: string;
     viewProject: any;
@@ -73,6 +73,7 @@ const Members = (props: IProps): JSX.Element => {
         return (
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
+                <MemberList project={project} />
                 <AddMemberForm projectID={projectID} />
                 <Typography>Project Members page for project {projectID}</Typography>
             </main>

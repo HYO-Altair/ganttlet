@@ -93,7 +93,8 @@ class Gantt extends Component {
         gantt.locale.labels.section_color = 'Color';
         gantt.form_blocks['color_picker'] = {
             render: function (sns) {
-                return "<div class='color_container'>" + "<input class='color_picker' type='color'>" + '</div>';
+                return "<div class='color_container'><input class='color_picker' type='color'></div>";
+
             },
             set_value: function (node, value, task) {
                 node.querySelector('.color_picker').value = value || '';
@@ -111,7 +112,7 @@ class Gantt extends Component {
         gantt.locale.labels.section_owner = 'Owner';
         gantt.config.lightbox.sections = [
             { name: 'description', height: 70, map_to: 'text', type: 'textarea', focus: true },
-            { name: 'owner', height: 50, type: 'textarea', map_to: 'official_name' },
+{ name: 'owner', height: 50, type: 'textarea', map_to: 'official_name' },
 
             { name: 'color', height: 30, map_to: 'color', type: 'color_picker' },
 

@@ -22,9 +22,16 @@ export interface IProject {
     name: string;
     timeZone: string;
     description: string;
-    managers: unknown;
-    members: unknown;
+    managers: unknown[];
+    members: unknown[];
     tasks: ITasksWrapper;
+    messages: IMessage[];
+}
+
+export interface IMessage {
+    actor: string;
+    content: string;
+    date: string;
 }
 
 export interface ITasksWrapper {

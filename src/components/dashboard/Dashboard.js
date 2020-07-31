@@ -3,24 +3,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import Footer from '../footer/Footer';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            Team Altair {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Notifications from './notifications';
 
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
@@ -30,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        height: '100vh',
+        minHeight: '100vh',
         overflow: 'auto',
     },
     paper: {
@@ -39,8 +28,13 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         flexDirection: 'column',
     },
+    titles: {
+        paddingTop: theme.spacing(4),
+    },
+    divider: {
+        marginBottom: theme.spacing(2),
+    },
 }));
-
 const Dashboard = (props) => {
     const classes = useStyles();
     const { projects, handleSideDrawerClose } = props;
@@ -48,8 +42,10 @@ const Dashboard = (props) => {
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={1}>
-                    <Typography>Owned Projects</Typography>
+                <Notifications />
+                <Typography className={classes.titles}>Owned Projects</Typography>
+                <Divider className={classes.divider} />
+                <Grid container spacing={4}>
                     {/*owned projects*/}
                     {projects &&
                         projects.owned &&
@@ -58,41 +54,32 @@ const Dashboard = (props) => {
                                 <ProjectCard
                                     projectName={projects.owned[key]}
                                     projectID={key}
+                                    projectDes={key.description}
                                     handleSideDrawerClose={handleSideDrawerClose}
                                 />
                             </Grid>
                         ))}
                 </Grid>
 
-                <Divider />
-
-                <Grid container spacing={1}>
-                    <Typography>Joined Projects</Typography>
+                <Typography className={classes.titles}>Joined Projects</Typography>
+                <Divider className={classes.divider} />
+                <Grid container spacing={4}>
                     {/*joined projects*/}
                     {projects &&
                         projects.joined &&
                         Object.keys(projects.joined).map((key) => (
                             <Grid key={key} item xs={3}>
-                                <ProjectCard projectName={projects.joined[key]} projectID={key} />
+                                <ProjectCard
+                                    projectName={projects.joined[key]}
+                                    projectID={key}
+                                    projectDes={key.description}
+                                    handleSideDrawerClose={handleSideDrawerClose}
+                                />
                             </Grid>
                         ))}
                 </Grid>
-
-                <Divider />
-
-                <Grid container spacing={1}>
-                    <AddProjectForm />
-                </Grid>
-
-                <Divider />
-
-                <Grid container spacing={1} m="2rem">
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </Grid>
+                <AddProjectForm />
             </Container>
-            <Footer />
         </main>
     );
 };

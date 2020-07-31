@@ -1,44 +1,53 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ganttlet
 
-## Available Scripts
+Gantlett is a fully-featured, completely free, Gantt Chart making tool brought to you by the folks at HackYourOwn's Team Altair. Ganttlet boosts your team's productity by organizing all your milestones/tasks into an intuitive interactive chart.
 
-In the project directory, you can run:
+## For developers
 
-### `npm start`
+Clone the source locally:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+$ git clone https://github.com/HYO-Altair/ganttlet
+$ cd ganttlet
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Install project dependencies:
 
-### `npm test`
+```sh
+$ npm install
+```
+Start the app:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+$ npm start
+```
 
-### `npm run build`
+## Running the tests
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+$ npx cypress run
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Built With
 
-### `npm run eject`
+* [Firebase](https://firebase.google.com/) - The web framework used
+* [Cypress](https://www.cypress.io/) - End-to-end testing
+* [React](https://reactjs.org/) - Javascript library for user interface
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Authors
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* **Nick Chen** - [nchendev](https://github.com/nchendev)
+* **Lucas Pham** - [luangia](https://github.com/luangia)
+* **Khoi Le** - [Khoi8](https://github.com/Khoi8)
+* **Joseph Pallipadan** - [JosephPallipadan](https://github.com/JosephPallipadan)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Acknowledgments
+* [Hack Your Own](https://hackyourown.org/) for offering us a wonderful and supportive community who provide us with the opportunity to learn and exchange ideas with one another.
+* Tremendous hat tip to Peter Yang for being our project mentor, who has offered invaluable feedback to our development phase, without which this project would have been quite quite different

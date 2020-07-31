@@ -8,12 +8,13 @@ import { IUser } from '../../config/types';
 import { sendInvite } from '../../store/actions/notificationActions';
 
 interface IProps {
-    sendInvite: (inviteeID: string, projectID: string) => any;
+    sendInvite: (inviteeID: string, projectID: string, projectName: string, inviterName: string) => any;
     projectID: string;
 }
 
 function AddMemberForm(props: IProps): JSX.Element {
     useFirebaseConnect([{ path: `users` }]);
+    useFirebaseConnect([{ path: `projects` }]);
 
     function getEmailList(usersObject: Record<string, IUser>) {
         if (!usersObject) {
@@ -30,9 +31,17 @@ function AddMemberForm(props: IProps): JSX.Element {
         // if users have been loaded, set users, else set to null
         getEmailList(state.firebase.data.users),
     );
+
+    const projectDetails = useSelector((state: RootState) => state.firebase.data.projects[props.projectID]);
+
     const inviteUser = () => {
         if (state.userEmail in emailList) {
-            props.sendInvite(emailList[state.userEmail], props.projectID);
+            props.sendInvite(
+                emailList[state.userEmail],
+                props.projectID,
+                projectDetails.name,
+                String(Object.values(projectDetails.managers)[0]),
+            );
         } else {
             console.log(emailList);
             setState({
@@ -79,7 +88,8 @@ const mapStateToProps = () => {
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        sendInvite: (inviteeID: string, projectID: string) => dispatch(sendInvite(inviteeID, projectID)),
+        sendInvite: (inviteeID: string, projectID: string, projectName: string, inviterName: string) =>
+            dispatch(sendInvite(inviteeID, projectID, projectName, inviterName)),
     };
 };
 

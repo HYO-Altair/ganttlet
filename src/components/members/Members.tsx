@@ -5,6 +5,7 @@ import { connect, useSelector } from 'react-redux';
 import { firebaseConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
 import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
 import { viewProject } from '../../store/actions/projectActions';
 import AddMemberForm from './AddMember';
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
         padding: theme.spacing(4),
     },
+    title: {
+        padding: theme.spacing(1.68),
+    }
 }));
 
 const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
@@ -73,9 +77,10 @@ const Members = (props: IProps): JSX.Element => {
         return (
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
+                <Typography className={classes.title} gutterBottom variant="h5"> Members </Typography>
+                <Divider/>
                 <MemberList project={project} />
                 <AddMemberForm projectID={projectID} />
-                <Typography>Project Members page for project {projectID}</Typography>
             </main>
         );
     } else {

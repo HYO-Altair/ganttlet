@@ -1,20 +1,49 @@
 import React from 'react';
 import { useState } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, makeStyles } from '@material-ui/core';
 import { useSelector, connect } from 'react-redux';
 import { useFirebaseConnect } from 'react-redux-firebase';
 import { RootState } from '../../store/reducers';
 import { IUser } from '../../config/types';
 import { sendInvite } from '../../store/actions/notificationActions';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 interface IProps {
     sendInvite: (inviteeID: string, projectID: string, projectName: string, inviterName: string) => any;
     projectID: string;
 }
 
+
+const useStyles = makeStyles((theme) => ({
+    fab: {
+        right: 0,
+        bottom: 0,
+        position: 'fixed',
+        padding: theme.spacing(2),
+        margin: theme.spacing(7),
+    },
+}));
+
 function AddMemberForm(props: IProps): JSX.Element {
+    const classes = useStyles();
+
     useFirebaseConnect([{ path: `users` }]);
     useFirebaseConnect([{ path: `projects` }]);
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     function getEmailList(usersObject: Record<string, IUser>) {
         if (!usersObject) {
@@ -34,7 +63,9 @@ function AddMemberForm(props: IProps): JSX.Element {
 
     const projectDetails = useSelector((state: RootState) => state.firebase.data.projects[props.projectID]);
 
-    const inviteUser = () => {
+    const inviteUser = (e: any) => {
+        e.preventDefault();
+        handleClose();
         if (state.userEmail in emailList) {
             props.sendInvite(
                 emailList[state.userEmail],
@@ -65,20 +96,39 @@ function AddMemberForm(props: IProps): JSX.Element {
 
     return (
         <div>
-            <TextField
-                error={state.error}
-                fullWidth
-                label="New Name"
-                name="userEmail"
-                onChange={handleChange}
-                type="text"
-                value={state.userEmail}
-                variant="outlined"
-                helperText={state.error ? 'User does not exist' : ''}
-            />
-            <Button onClick={inviteUser} variant="contained">
-                Default
-            </Button>
+            <Fab
+                color="primary"
+                aria-label="add"
+                onClick={handleClickOpen}
+                className={classes.fab}
+                variant="extended"
+            >
+                <AddIcon />
+                Invite Members
+            </Fab>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Add Member</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Please enter the email of the member you wish to add.
+                    </DialogContentText>
+                    <TextField
+                        error={state.error}
+                        id="email"
+                        label="Enter Email"
+                        name="userEmail"
+                        onChange={handleChange}
+                        value={state.userEmail}
+                        helperText={state.error ? 'User does not exist' : ''}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={inviteUser} color="primary">
+                       Invite
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

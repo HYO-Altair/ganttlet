@@ -3,6 +3,7 @@ import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import { Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
+import NoComment from './NoComment/';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -30,7 +31,11 @@ const CommentArea = (props: IProps): JSX.Element => {
             </div>
         );
     } else {
-        return <div className={classes.container}>You havent selected a comment yet</div>;
+        return (
+            <div className={classes.container}>
+                <NoComment />
+            </div>
+        );
     }
 };
 const mapStateToProps = (state: any) => {

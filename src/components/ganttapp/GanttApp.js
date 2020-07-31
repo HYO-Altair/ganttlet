@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Gantt from './Gantt';
 import Toolbar from './Toolbar';
 import MessageArea from './MessageArea';
-import CommentArea from './CommentArea';
 import PropTypes from 'prop-types';
 // import { Fab } from '@material-ui/core';
 // import { Add } from '@material-ui/icons';

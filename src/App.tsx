@@ -1,17 +1,6 @@
 import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
 import clsx from 'clsx';
-import {
-    MuiThemeProvider,
-    CssBaseline,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Divider,
-    Button,
-    Drawer,
-      CircularProgress,
-} from '@material-ui/core';
+import { MuiThemeProvider, CssBaseline, Button, Drawer, CircularProgress } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
@@ -32,8 +21,6 @@ import Members from './components/members/Members';
 import ProjectSettings from './components/projectSettings/ProjectSettings';
 import CommentsArea from './components/ganttapp/CommentArea';
 import ChatIcon from '@material-ui/icons/Chat';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import { hideComments, showComments } from './store/actions/ChartActions/commentsActions';
 const styles = (theme: Theme) =>
     createStyles({

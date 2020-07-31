@@ -91,9 +91,19 @@ export const createComment = (
         { getFirebase }: IGetFirebase,
     ) => {
         const firebase = getFirebase() as ExtendedFirebaseInstance;
+        const state = _getState();
         const db = firebase.database();
-        const timestamp = new Date().toString();
+
+        const date = new Date();
+        const year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString();
+        month = month.length > 1 ? month : '0' + month;
+        let day = date.getDate().toString();
+        day = day.length > 1 ? day : '0' + day;
+        const timestamp = month + '/' + day + '/' + year;
+
         comment['timestamp'] = timestamp;
+        comment['username'] = state.firebase.auth.displayName;
         db.ref(`projects/${projectid}/tasks/comments/${taskid}`).push(comment);
         console.log('comment created');
         console.log(projectid);

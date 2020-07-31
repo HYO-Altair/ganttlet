@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { IComment } from '../../../config/types';
@@ -23,7 +23,6 @@ const CommentForm = (props: IProps) => {
         error: '',
 
         comment: {
-            username: '',
             message: '',
         },
     });
@@ -62,7 +61,7 @@ const CommentForm = (props: IProps) => {
         createComment(projectid, taskid, comment);
     };
     const isFormValid = (): boolean => {
-        return state.comment.username !== '' && state.comment.message !== '';
+        return state.comment.message !== '';
     };
 
     const renderError = (): JSX.Element | null => {
@@ -72,17 +71,6 @@ const CommentForm = (props: IProps) => {
     return (
         <React.Fragment>
             <form method="post" onSubmit={onSubmit}>
-                <div className="form-group">
-                    <input
-                        onChange={handleFieldChange}
-                        value={state.comment.username}
-                        className="form-control"
-                        placeholder="😎 Your username"
-                        name="username"
-                        type="text"
-                    />
-                </div>
-
                 <div className="form-group">
                     <textarea
                         onChange={handleFieldChange}

@@ -1,9 +1,10 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { memo } from 'react';
 import { CircularProgress, Theme, createStyles, withStyles, WithStyles } from '@material-ui/core';
 import Comment from './Comment';
 import { IComment } from '../../../config/types';
-import { connect } from 'react-redux';
-import { loadComments } from '../../../store/actions/ChartActions/commentsActions';
+import { connect, useSelector } from 'react-redux';
+import { useFirebaseConnect } from 'react-redux-firebase';
+import { RootState } from '../../../store/reducers';
 const styles = (theme: Theme) =>
     createStyles({
         center: {
@@ -18,22 +19,20 @@ const styles = (theme: Theme) =>
 interface IProps extends WithStyles<typeof styles> {
     projectid: string;
     taskid: string;
-    comments: IComment[];
-    loadComments: any;
 }
 
 const CommentList = (props: IProps) => {
-    const { projectid, taskid, comments, loadComments, classes } = props;
-    // console.log('Hey');
-    // console.log(props.comments);
-    //const comments = useSelector(state => state.comments.comments);
+    const { projectid, taskid, classes } = props;
 
-    useEffect(() => {
-        if (comments === null) {
-            loadComments(projectid, taskid);
-        }
-        console.log(comments && comments.length > 0);
-    }, [comments, loadComments, projectid, taskid]);
+    useFirebaseConnect([`projects/${projectid}/tasks/comments/${taskid}`]);
+    let comments = null as any | IComment[];
+    comments = useSelector((state: RootState) =>
+        // if comments has been loaded, set project, else set to null
+        projectid && taskid && state.firebase.data.projects[projectid].tasks.comments[taskid]
+            ? state.firebase.data.projects[projectid].tasks.comments[taskid]
+            : [],
+    );
+    console.log(comments);
     if (!comments) {
         console.log(comments);
         return (
@@ -41,14 +40,10 @@ const CommentList = (props: IProps) => {
                 <CircularProgress />
             </div>
         );
-    } else if (comments) {
+    } else if (comments && Object.keys(comments).length > 0) {
         console.log(comments);
         return (
             <div className="commentList">
-                {/*<h5 className="text-muted mb4">
-                    <span className="badge badge-success">{comments.length}</span> Comment
-                    {props.comments.length > 0 ? 's' : ''}
-        </h5>*/}
                 {comments && Object.keys(comments).map((key) => <Comment key={key} comment={comments[key]} />)}
             </div>
         );
@@ -64,12 +59,6 @@ const mapStateToProps = (state: any) => {
     return {
         projectid: state.comments.projectid,
         taskid: state.comments.taskid,
-        comments: state.comments.comments,
     };
 };
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        loadComments: (projectid: string, taskid: string) => dispatch(loadComments(projectid, taskid)),
-    };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(memo(CommentList)));
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(CommentList)));

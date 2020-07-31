@@ -1,30 +1,42 @@
-import React, { useState, memo } from 'react';
+import React, { memo } from 'react';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import { Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
-import { IComment } from '../../../config/types';
+import { connect } from 'react-redux';
 
 const styles = (theme: Theme) =>
     createStyles({
         container: { width: '30vw' },
     });
 
-type IProps = WithStyles<typeof styles>;
+interface IProps extends WithStyles<typeof styles> {
+    projectid: string;
+    taskid: string;
+}
 
 const CommentArea = (props: IProps): JSX.Element => {
-    const { classes } = props;
-
-    return (
-        <div className={classes.container}>
-            <div className="col-4  pt-3 bg-white">
-                {/*Comment List component */}
-                <CommentList />
+    const { projectid, taskid, classes } = props;
+    if (projectid && taskid) {
+        return (
+            <div className={classes.container}>
+                <div className="col-4  pt-3 bg-white">
+                    {/*Comment List component */}
+                    <CommentList />
+                </div>
+                <div className="col-4  pt-3 border-right">
+                    {/*Comment Form component */}
+                    <CommentForm />
+                </div>
             </div>
-            <div className="col-4  pt-3 border-right">
-                {/*Comment Form component */}
-                <CommentForm />
-            </div>
-        </div>
-    );
+        );
+    } else {
+        return <div className={classes.container}>You havent selected a comment yet</div>;
+    }
 };
-export default withStyles(styles, { withTheme: true })(memo(CommentArea));
+const mapStateToProps = (state: any) => {
+    return {
+        projectid: state.comments.projectid,
+        taskid: state.comments.taskid,
+    };
+};
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(CommentArea)));

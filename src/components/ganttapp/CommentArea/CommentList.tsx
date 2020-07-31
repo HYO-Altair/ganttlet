@@ -26,9 +26,14 @@ const CommentList = (props: IProps) => {
 
     useFirebaseConnect([`projects/${projectid}/tasks/comments/${taskid}`]);
     let comments = null as any | IComment[];
+    console.log(projectid);
+    console.log(taskid);
     comments = useSelector((state: RootState) =>
         // if comments has been loaded, set project, else set to null
-        projectid && taskid && state.firebase.data.projects[projectid].tasks.comments[taskid]
+        projectid &&
+        taskid &&
+        state.firebase.data.projects[projectid].tasks.comments &&
+        state.firebase.data.projects[projectid].tasks.comments[taskid]
             ? state.firebase.data.projects[projectid].tasks.comments[taskid]
             : [],
     );

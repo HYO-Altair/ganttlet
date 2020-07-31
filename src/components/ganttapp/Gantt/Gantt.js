@@ -94,7 +94,6 @@ class Gantt extends Component {
         gantt.form_blocks['color_picker'] = {
             render: function (sns) {
                 return "<div class='color_container'><input class='color_picker' type='color'></div>";
-
             },
             set_value: function (node, value, task) {
                 node.querySelector('.color_picker').value = value || '';
@@ -112,15 +111,15 @@ class Gantt extends Component {
         gantt.locale.labels.section_owner = 'Owner';
         gantt.config.lightbox.sections = [
             { name: 'description', height: 70, map_to: 'text', type: 'textarea', focus: true },
-{ name: 'owner', height: 50, type: 'textarea', map_to: 'official_name' },
+            { name: 'owner', height: 50, type: 'textarea', map_to: 'official_name' },
 
             { name: 'color', height: 30, map_to: 'color', type: 'color_picker' },
 
             { name: 'time', height: 72, map_to: 'auto', type: 'duration' },
         ];
         let click = 0;
-        if (!gantt.__taskSelected)
-            gantt.__taskSelected = gantt.attachEvent('onTaskSelected', function (id, e) {
+        if (!gantt.__taskClick)
+            gantt.__taskClick = gantt.attachEvent('onTaskClick', function (id, e) {
                 setTimeout(function () {
                     if (click) {
                         return false;
@@ -137,7 +136,11 @@ class Gantt extends Component {
             });
         if (!gantt.__taskDblClick)
             gantt.__taskDblClick = gantt.attachEvent('onTaskDblClick', function (id, e) {
-                click = 1;
+                //any custom logic here
+                console.log('dbl');
+                setCommentsInfo(projectId, id);
+                //showComments();
+                console.log('done');
                 return true;
             });
 

@@ -90,7 +90,12 @@ class GanttApp extends Component {
                     <Toolbar zoom={currentZoom} onZoomChange={this.handleZoomChange} />
                 </div>
                 <div className="gantt-container">
-                    <Gantt tasks={this.props.tasks} zoom={currentZoom} onDataUpdated={this.logDataUpdate} />
+                    <Gantt
+                        projectId={this.props.projectID}
+                        tasks={this.props.tasks}
+                        zoom={currentZoom}
+                        onDataUpdated={this.logDataUpdate}
+                    />
                 </div>
                 <MessageArea messages={messages} />
             </div>

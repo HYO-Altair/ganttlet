@@ -59,12 +59,6 @@ export interface IProjectTaskLink {
     type: string;
 }
 
-export interface ITaskComment {
-    originalPoster: string;
-    text: string;
-    taggedUsers: unknown;
-}
-
 export interface IGoogleAuthProfile {
     email: string;
     family_name: string;
@@ -87,4 +81,10 @@ export interface IRegisterCredentials {
     password: string;
     firstName: string;
     lastName: string;
+}
+
+export interface IComment {
+    username: string;
+    message: string;
+    timestamp: string;
 }

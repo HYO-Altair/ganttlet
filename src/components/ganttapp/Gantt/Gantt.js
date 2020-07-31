@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import PropTypes from 'prop-types';
-
+import { setCommentsInfo, showComments } from '../../../store/actions/ChartActions/commentsActions';
 class Gantt extends Component {
     constructor(props) {
         super(props);
@@ -85,7 +87,7 @@ class Gantt extends Component {
     componentDidMount() {
         //sets the format of the dates that will come from the data source
         gantt.config.xml_date = '%d-%m-%Y %H:%i';
-        const { tasks } = this.props;
+        const { tasks, projectId, setCommentsInfo } = this.props;
 
         //change color of the tasks
         gantt.locale.labels.section_color = 'Color';
@@ -106,13 +108,42 @@ class Gantt extends Component {
             },
         };
 
+        gantt.locale.labels.section_owner = 'Owner';
         gantt.config.lightbox.sections = [
             { name: 'description', height: 70, map_to: 'text', type: 'textarea', focus: true },
+            { name: 'owner', height: 50, type: 'textarea', map_to: 'official_name' },
 
-            { name: 'color', height: 40, map_to: 'color', type: 'color_picker' },
+            { name: 'color', height: 30, map_to: 'color', type: 'color_picker' },
 
             { name: 'time', height: 72, map_to: 'auto', type: 'duration' },
         ];
+        let click = 0;
+        if (!gantt.__taskClick)
+            gantt.__taskClick = gantt.attachEvent('onTaskClick', function (id, e) {
+                setTimeout(function () {
+                    if (click) {
+                        return false;
+                    } else {
+                        //any custom logic here
+                        console.log('dbl');
+                        setCommentsInfo(projectId, id);
+                        //showComments();
+                        console.log('done');
+                        return true;
+                    }
+                }, 200);
+                click = 0;
+            });
+        if (!gantt.__taskDblClick)
+            gantt.__taskDblClick = gantt.attachEvent('onTaskDblClick', function (id, e) {
+                //any custom logic here
+                console.log('dbl');
+                setCommentsInfo(projectId, id);
+                //showComments();
+                console.log('done');
+                return true;
+            });
+
         gantt.init(this.ganttContainer);
         this.initGanttDataProcessor();
         if (tasks) gantt.parse(tasks);
@@ -148,9 +179,18 @@ class Gantt extends Component {
 }
 
 Gantt.propTypes = {
+    setCommentsInfo: PropTypes.any,
+    showComments: PropTypes.any,
+    projectId: PropTypes.string,
     tasks: PropTypes.object,
     zoom: PropTypes.string,
     onDataUpdated: PropTypes.func,
 };
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCommentsInfo: (projectid, taskid) => dispatch(setCommentsInfo(projectid, taskid)),
+        showComments: () => dispatch(showComments()),
+    };
+};
 
-export default Gantt;
+export default connect(null, mapDispatchToProps)(Gantt);

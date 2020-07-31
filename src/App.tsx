@@ -1,5 +1,6 @@
 import React, { Fragment, Suspense, memo, useState, useCallback } from 'react';
-import { MuiThemeProvider, CssBaseline, CircularProgress } from '@material-ui/core';
+import clsx from 'clsx';
+import { MuiThemeProvider, CssBaseline, Button, Drawer, CircularProgress } from '@material-ui/core';
 import theme from './assets/style/theme';
 import GlobalStyles from './assets/style/GlobalStyles';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
@@ -18,6 +19,9 @@ import { connect } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 import Members from './components/members/Members';
 import ProjectSettings from './components/projectSettings/ProjectSettings';
+import CommentsArea from './components/ganttapp/CommentArea';
+import ChatIcon from '@material-ui/icons/Chat';
+import { hideComments, showComments } from './store/actions/ChartActions/commentsActions';
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -35,18 +39,35 @@ const styles = (theme: Theme) =>
             width: '100vw',
             fontSize: '8vh',
         },
+        list: {
+            width: 'auto',
+        },
+        fullList: {
+            width: 'auto',
+        },
     });
 
 interface IProps extends WithStyles<typeof styles> {
     auth: any;
+    comments: any;
+    showComments: any;
+    hideComments: any;
 }
 
 function App(props: IProps): JSX.Element {
-    const { classes, auth } = props;
+    const { classes, auth, comments, showComments, hideComments } = props;
     const [selectedTab, setSelectedTab] = useState('');
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
 
+    const toggleDrawer = () => (event: any) => {
+        console.log('toggle drawer triggered');
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        if (comments.showComments) hideComments();
+        else showComments();
+    };
     const selectHome = useCallback(() => {
         smoothScrollTop();
         document.title = 'Ganttlet';
@@ -184,6 +205,16 @@ function App(props: IProps): JSX.Element {
                                     />
                                     <PropsRoute path="/" component={Home} selectHome={selectHome} />
                                 </Switch>
+                                <React.Fragment key="right">
+                                    <Button onClick={() => showComments()}>
+                                        <ChatIcon />
+                                    </Button>
+                                    <Drawer anchor="right" open={comments.showComments} onClose={() => hideComments()}>
+                                        <div className={clsx(classes.list)} role="presentation">
+                                            <CommentsArea />
+                                        </div>
+                                    </Drawer>
+                                </React.Fragment>
                             </div>
                         </div>
                     </Suspense>
@@ -200,8 +231,14 @@ const mapStateToProps = (state: any) => {
     //console.log(state);
     return {
         auth: state.firebase.auth,
+        comments: state.comments,
         //profile: state.firebase.profile,
     };
 };
-
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(App)));
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        hideComments: () => dispatch(hideComments()),
+        showComments: () => dispatch(showComments()),
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(memo(App)));

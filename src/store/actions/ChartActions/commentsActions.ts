@@ -80,3 +80,51 @@ export const hideComments = (): ThunkAction<Promise<void>, TGetState, IGetFireba
         dispatch({ type: HIDE_COMMENTS });
     };
 };
+export const createComment = (
+    projectid: string,
+    taskid: string,
+    comment: IComment,
+): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        const firebase = getFirebase() as ExtendedFirebaseInstance;
+        const db = firebase.database();
+        db.ref(`projects/${projectid}/tasks/comments/${taskid}`).push(comment);
+    };
+};
+
+export const editComment = (
+    projectid: string,
+    taskid: string,
+    commentid: string,
+    message: string,
+): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        const firebase = getFirebase() as ExtendedFirebaseInstance;
+        const db = firebase.database();
+        db.ref(`projects/${projectid}/tasks/comments/${taskid}/${commentid}`).update({ message });
+    };
+};
+
+export const deleteComment = (
+    projectid: string,
+    taskid: string,
+    commentid: string,
+): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
+    return async (
+        dispatch: ThunkDispatch<TGetState, IGetFirebase, AnyAction>,
+        _getState: TGetState,
+        { getFirebase }: IGetFirebase,
+    ) => {
+        const firebase = getFirebase() as ExtendedFirebaseInstance;
+        const db = firebase.database();
+        db.ref(`projects/${projectid}/tasks/comments/${taskid}/${commentid}`).set(null);
+    };
+};

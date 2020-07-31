@@ -1,4 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { IComment } from '../../../config/types';
+import { createComment } from '../../../store/actions/ChartActions/commentsActions';
 
 interface CommentFormState {
     error: string;
@@ -8,38 +12,32 @@ interface CommentFormState {
     };
 }
 
-interface CommentFormProps {
-    addComment: (comment: any) => void;
+interface IProps {
+    projectid: string;
+    taskid: string;
+    createComment: any;
 }
-export default class CommentForm extends Component<CommentFormProps, CommentFormState> {
-    constructor(props: CommentFormProps) {
-        super(props);
+const CommentForm = (props: IProps) => {
+    const { projectid, taskid, createComment } = props;
+    const [state, setState] = useState({
+        error: '',
 
-        this.state = {
-            error: '',
-
-            comment: {
-                name: '',
-                message: '',
-            },
-        };
-
-        //bind context to methods
-        this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-
+        comment: {
+            name: '',
+            message: '',
+        },
+    });
     /**
      * Handle form input field changes & update the state
      */
 
-    handleFieldChange = (event: React.SyntheticEvent): void => {
+    const handleFieldChange = (event: React.SyntheticEvent): void => {
         const { value, name } = event.target as HTMLInputElement;
 
-        this.setState({
-            ...this.state,
+        setState({
+            ...state,
             comment: {
-                ...this.state.comment,
+                ...state.comment,
                 [name]: value,
             },
         });
@@ -47,61 +45,72 @@ export default class CommentForm extends Component<CommentFormProps, CommentForm
     /**
      * Form submit handler
      */
-    onSubmit(e: React.SyntheticEvent): void {
+    const onSubmit = (e: React.SyntheticEvent): void => {
         // prevent default form submission
         e.preventDefault();
 
-        if (!this.isFormValid()) {
-            this.setState({ error: 'All fields are required.' });
+        if (!isFormValid()) {
+            setState({ ...state, error: 'All fields are required.' });
             // loading status and clear error
-            this.setState({ error: '' });
+            setState({ ...state, error: '' });
 
             return;
         }
-        const { comment } = this.state;
+        const { comment } = state;
         // console.log('wy');
         // console.log(comment);
-        this.props.addComment(comment);
-    }
-    isFormValid(): boolean {
-        return this.state.comment.name !== '' && this.state.comment.message !== '';
-    }
+        createComment(comment);
+    };
+    const isFormValid = (): boolean => {
+        return state.comment.name !== '' && state.comment.message !== '';
+    };
 
-    renderError(): JSX.Element | null {
-        return this.state.error ? <div className="alert alert-danger">{this.state.error}</div> : null;
-    }
+    const renderError = (): JSX.Element | null => {
+        return state.error ? <div className="alert alert-danger">{state.error}</div> : null;
+    };
 
-    render() {
-        return (
-            <React.Fragment>
-                <form method="post" onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <input
-                            onChange={this.handleFieldChange}
-                            value={this.state.comment.name}
-                            className="form-control"
-                            placeholder="😎 Your Name"
-                            name="name"
-                            type="text"
-                        />
-                    </div>
+    return (
+        <React.Fragment>
+            <form method="post" onSubmit={onSubmit}>
+                <div className="form-group">
+                    <input
+                        onChange={handleFieldChange}
+                        value={state.comment.name}
+                        className="form-control"
+                        placeholder="😎 Your Name"
+                        name="name"
+                        type="text"
+                    />
+                </div>
 
-                    <div className="form-group">
-                        <textarea
-                            onChange={this.handleFieldChange}
-                            value={this.state.comment.message}
-                            className="form-control"
-                            placeholder="🤬 Your Comment"
-                            name="message"
-                        />
-                    </div>
+                <div className="form-group">
+                    <textarea
+                        onChange={handleFieldChange}
+                        value={state.comment.message}
+                        className="form-control"
+                        placeholder="🤬 Your Comment"
+                        name="message"
+                    />
+                </div>
 
-                    {this.renderError()}
-                    <div className="form-group">
-                        <button className="btn btn-primary">Comment ➤</button>
-                    </div>
-                </form>
-            </React.Fragment>
-        );
-    }
-}
+                {renderError()}
+                <div className="form-group">
+                    <button className="btn btn-primary">Comment ➤</button>
+                </div>
+            </form>
+        </React.Fragment>
+    );
+};
+const mapStateToProps = (state: any) => {
+    return {
+        projectid: state.comments.projectid,
+        taskid: state.comments.taskid,
+    };
+};
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        createComment: (projectid: string, taskid: string, comment: IComment) =>
+            dispatch(createComment(projectid, taskid, comment)),
+    };
+};
+export default compose(connect(mapStateToProps, mapDispatchToProps))(CommentForm);

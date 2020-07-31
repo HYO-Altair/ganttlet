@@ -14,12 +14,6 @@ type IProps = WithStyles<typeof styles>;
 const CommentArea = (props: IProps): JSX.Element => {
     const { classes } = props;
 
-    //const [comments, setComments] = useState([] as IComment[]);
-
-    const addComment = (comment: IComment): void => {
-        //setComments([comment, ...comments]);
-    };
-
     return (
         <div className={classes.container}>
             <div className="col-4  pt-3 bg-white">
@@ -28,10 +22,9 @@ const CommentArea = (props: IProps): JSX.Element => {
             </div>
             <div className="col-4  pt-3 border-right">
                 {/*Comment Form component */}
-                <CommentForm addComment={addComment} />
+                <CommentForm />
             </div>
         </div>
     );
 };
-
 export default withStyles(styles, { withTheme: true })(memo(CommentArea));

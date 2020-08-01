@@ -7,7 +7,7 @@ import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
 import GanttApp from '../ganttapp/';
 import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
-import { viewProject, notViewProject } from '../../store/actions/projectActions';
+import { viewProject } from '../../store/actions/projectActions';
 
 interface IProps {
     projectID: string;

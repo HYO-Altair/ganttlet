@@ -84,20 +84,22 @@ class GanttApp extends Component {
     render() {
         const { currentZoom, messages } = this.state;
         return (
-            <div className="gantt-app">
-                <div className="appBarSpacer" />
-                <div className="zoom-bar">
-                    <Toolbar zoom={currentZoom} onZoomChange={this.handleZoomChange} />
+            <div>
+                <div className="gantt-app">
+                    <div className="appBarSpacer" />
+                    <div className="zoom-bar">
+                        <Toolbar zoom={currentZoom} onZoomChange={this.handleZoomChange} />
+                    </div>
+                    <div className="gantt-container">
+                        <Gantt
+                            projectId={this.props.projectID}
+                            tasks={this.props.tasks}
+                            zoom={currentZoom}
+                            onDataUpdated={this.logDataUpdate}
+                        />
+                    </div>
+                    <MessageArea messages={messages} />
                 </div>
-                <div className="gantt-container">
-                    <Gantt
-                        projectId={this.props.projectID}
-                        tasks={this.props.tasks}
-                        zoom={currentZoom}
-                        onDataUpdated={this.logDataUpdate}
-                    />
-                </div>
-                <MessageArea messages={messages} />
             </div>
         );
     }

@@ -12,21 +12,20 @@ const styles = (theme: Theme) =>
 
 interface IProps extends WithStyles<typeof styles> {
     projectid: string;
-    taskid: string;
 }
 
 const CommentArea = (props: IProps): JSX.Element => {
-    const { projectid, taskid, classes } = props;
-    if (projectid && taskid) {
+    const { projectid, classes } = props;
+    if (projectid) {
         return (
             <div className={classes.container}>
                 <div className="col-4  pt-3 bg-white">
                     {/*Comment List component */}
-                    <CommentList />
+                    <CommentList projectid={projectid} />
                 </div>
                 <div className="col-4  pt-3 border-right">
                     {/*Comment Form component */}
-                    <CommentForm />
+                    <CommentForm projectid={projectid} />
                 </div>
             </div>
         );
@@ -38,10 +37,4 @@ const CommentArea = (props: IProps): JSX.Element => {
         );
     }
 };
-const mapStateToProps = (state: any) => {
-    return {
-        projectid: state.comments.projectid,
-        taskid: state.comments.taskid,
-    };
-};
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(CommentArea)));
+export default connect()(withStyles(styles, { withTheme: true })(memo(CommentArea)));

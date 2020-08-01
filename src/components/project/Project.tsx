@@ -13,7 +13,6 @@ interface IProps {
     projectID: string;
     viewProject: any;
     handleSideDrawerClose: any;
-    notViewProject: any;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +62,7 @@ const parseFirebaseProjectDataJSON = (json: any): IProject | null => {
 
 const Project = (props: IProps): JSX.Element => {
     const classes = useStyles();
-    const { projectID, viewProject, notViewProject } = props;
+    const { projectID, viewProject } = props;
     useFirebaseConnect([{ path: `projects/${projectID}/` }]);
     const project = useSelector((state: RootState) =>
         // if projects has been loaded, set project, else set to null
@@ -102,7 +101,6 @@ const mapStateToProps = (state: any, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         viewProject: (projectId: string) => dispatch(viewProject(projectId)),
-        notViewProject: () => dispatch(notViewProject()),
     };
 };
 export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect([{ path: 'projects' }]))(Project);

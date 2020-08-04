@@ -34,7 +34,7 @@ function MemberList(props: IProps): JSX.Element {
                 <TableRow key={key}>
                     <TableCell>
                         <Typography variant="body2">
-                            {project.members[key]}
+                            {project.managers[key]}
                         </Typography>
                     </TableCell>
                     <TableCell>
@@ -61,7 +61,7 @@ function MemberList(props: IProps): JSX.Element {
             )
         }
     }
-    
+
     return (
         <div>
             <Container className={classes.container}>
@@ -83,6 +83,10 @@ function MemberList(props: IProps): JSX.Element {
                         </TableHead>
                         <TableBody>
                         {project.managers &&
+                                Object.keys(project.managers).map((key) => (
+                                    membersList(props.project,key)
+                                ))}
+                        {project.members&&
                                 Object.keys(project.members).map((key) => (
                                     membersList(props.project,key)
                                 ))}

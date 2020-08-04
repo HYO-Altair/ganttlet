@@ -60,14 +60,14 @@ function App(props: IProps): JSX.Element {
     const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
 
-    const toggleDrawer = () => (event: any) => {
+/*    const toggleDrawer = () => (event: any) => {
         console.log('toggle drawer triggered');
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
         if (comments.showComments) hideComments();
         else showComments();
-    };
+        };*/
     const selectHome = useCallback(() => {
         smoothScrollTop();
         document.title = 'Ganttlet';

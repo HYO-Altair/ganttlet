@@ -102,7 +102,7 @@ const mapStateToProps = (state: any, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         viewProject: (projectId: string) => dispatch(viewProject(projectId)),
-        notViewProject: () => dispatch(notViewProject()),
+        //notViewProject: () => dispatch(notViewProject()),
     };
 };
 export default compose(connect(mapStateToProps, mapDispatchToProps), firebaseConnect([{ path: 'projects' }]))(Project);

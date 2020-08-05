@@ -5,3 +5,7 @@
 .color_container {
     padding: 0px 0px 0px 7px;
 }
+
+.gantt-chart {
+    min-height: 100vh;
+}

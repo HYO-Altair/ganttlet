@@ -95,6 +95,7 @@ class GanttApp extends Component {
                         tasks={this.props.tasks}
                         zoom={currentZoom}
                         onDataUpdated={this.logDataUpdate}
+                        className="gantt-chart"
                     />
                 </div>
                 <MessageArea messages={messages} />

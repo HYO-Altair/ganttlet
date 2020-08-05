@@ -5,13 +5,20 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import ProjectCard from './ProjectCard';
 import AddProjectForm from './AddProjectForm';
 import Notifications from './notifications';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper,
+    },
     appBarSpacer: theme.mixins.toolbar,
     container: {
         paddingTop: theme.spacing(4),
@@ -34,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     divider: {
         marginBottom: theme.spacing(2),
     },
+    graybg: {
+        backgroundColor: 'lightgrey',
+    },
 }));
 const Dashboard = (props) => {
     const classes = useStyles();
@@ -43,41 +53,55 @@ const Dashboard = (props) => {
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
                 <Notifications />
-                <Typography className={classes.titles}>Owned Projects</Typography>
-                <Divider className={classes.divider} />
-                <Grid container spacing={4}>
+                <Typography variant="h6" className={classes.titles}>
+                    Managed Projects
+                </Typography>
+                <List component="nav">
                     {/*owned projects*/}
-                    {projects &&
-                        projects.owned &&
+                    {projects && projects.owned ? (
                         Object.keys(projects.owned).map((key) => (
-                            <Grid key={key} item xs={3}>
-                                <ProjectCard
-                                    projectName={projects.owned[key]}
-                                    projectID={key}
-                                    projectDes={key.description}
-                                    handleSideDrawerClose={handleSideDrawerClose}
-                                />
-                            </Grid>
-                        ))}
-                </Grid>
+                            <ProjectCard
+                                projectName={projects.owned[key]}
+                                projectID={key}
+                                projectDes={key.description}
+                                handleSideDrawerClose={handleSideDrawerClose}
+                            />
+                        ))
+                    ) : (
+                        <div>
+                            <Paper variant="outlined" square className={classes.graybg}>
+                                <ListItem>
+                                    <ListItemText primary="You have no managed projects. Create one now by clicking the button on the bottom right!" />
+                                </ListItem>
+                            </Paper>
+                        </div>
+                    )}
+                </List>
 
-                <Typography className={classes.titles}>Joined Projects</Typography>
-                <Divider className={classes.divider} />
-                <Grid container spacing={4}>
+                <Typography variant="h6" className={classes.titles}>
+                    Joined Projects
+                </Typography>
+                <List component="nav">
                     {/*joined projects*/}
-                    {projects &&
-                        projects.joined &&
+                    {projects && projects.joined ? (
                         Object.keys(projects.joined).map((key) => (
-                            <Grid key={key} item xs={3}>
-                                <ProjectCard
-                                    projectName={projects.joined[key]}
-                                    projectID={key}
-                                    projectDes={key.description}
-                                    handleSideDrawerClose={handleSideDrawerClose}
-                                />
-                            </Grid>
-                        ))}
-                </Grid>
+                            <ProjectCard
+                                projectName={projects.joined[key]}
+                                projectID={key}
+                                projectDes={key.description}
+                                handleSideDrawerClose={handleSideDrawerClose}
+                            />
+                        ))
+                    ) : (
+                        <div>
+                            <Paper variant="outlined" square className={classes.graybg}>
+                                <ListItem>
+                                    <ListItemText primary="You have no joined projects. " />
+                                </ListItem>
+                            </Paper>
+                        </div>
+                    )}
+                </List>
                 <AddProjectForm />
             </Container>
         </main>

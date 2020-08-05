@@ -117,16 +117,7 @@ const Profile = (props: IProps): JSX.Element => {
         <div className={classes.root}>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        {/* User Profile Goes here */}
-                        <Form />
-                    </Grid>
 
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </Container>
                 <Button onClick={() => handleClick()} variant="contained" data-cy="deleteButton">
                     Delete Account
                 </Button>

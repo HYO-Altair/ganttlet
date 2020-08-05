@@ -113,6 +113,7 @@ const ProjectSettings = (props: IProps): JSX.Element => {
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
                     <Grid container spacing={4}>
+                        {/**
                         <Grid item md={6} xs={12}>
                             <Card>
                                 <CardHeader title={'Change Project Name' + projectId} />
@@ -168,9 +169,10 @@ const ProjectSettings = (props: IProps): JSX.Element => {
                                 </CardActions>
                             </Card>
                         </Grid>
-                        <Grid item md={6} xs={12}>
+                        **/}
+                        <Grid item md={12} xs={12}>
                             <Card>
-                                <CardHeader title={'Delete Project' + projectId} />
+                                <CardHeader title={'Delete Project'} />
                                 <Divider />
                                 <CardActions>
                                     <Button

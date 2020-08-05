@@ -26,10 +26,17 @@ function Notifications(props: IProps): JSX.Element {
         }
         console.log(data);
         const ans = Object.entries(data).map(([projectId, notification], key) => (
-            <div style={{paddingTop: 10, width: 500}}>
+            <div style={{ paddingTop: 10, width: 500 }}>
                 <SnackbarContent
                     message={`Invite from ${notification.inviterName} to join ${notification.projectName}`}
-                    action={<Button style={{backgroundColor: 'white'}} onClick={() => props.acceptInvite(projectId, notification.projectName)}>Accept</Button>}
+                    action={
+                        <Button
+                            style={{ backgroundColor: 'white' }}
+                            onClick={() => props.acceptInvite(projectId, notification.projectName)}
+                        >
+                            Accept
+                        </Button>
+                    }
                 />
             </div>
         ));
@@ -48,13 +55,14 @@ function Notifications(props: IProps): JSX.Element {
     //     );
     const invitations = generateNotificationList(props.invitations);
     console.log(invitations);
-
-    return (
-        <div>
-            <Typography>Notifications</Typography>
-            {invitations}
-        </div>
-    );
+    if (invitations)
+        return (
+            <div>
+                <Typography>Notifications</Typography>
+                {invitations}
+            </div>
+        );
+    else return <div></div>;
 }
 
 const mapStateToProps = (state: any) => {

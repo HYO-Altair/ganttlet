@@ -13,11 +13,11 @@ import {
     ListSubheader,
 } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { FaChevronLeft as ChevronLeftIcon } from 'react-icons/fa'; //@material-ui/icons/ChevronLeft';
+import { FaFolder as DashboardIcon } from 'react-icons/fa'; //'@material-ui/icons/Dashboard';
+import { FaUsers as PeopleIcon } from 'react-icons/fa'; //'@material-ui/icons/People';
+import { FaChartBar as BarChartIcon } from 'react-icons/fa'; //'@material-ui/icons/BarChart';
+import { FaCog as SettingsIcon } from 'react-icons/fa'; //'@material-ui/icons/Settings';
 
 import * as Constants from '../../config/constants';
 import { connect } from 'react-redux';
@@ -59,6 +59,9 @@ const styles = (theme: Theme) =>
         noDecoration: {
             textDecoration: 'none !important',
         },
+        iconSize: {
+            fontSize: '1.5em',
+        },
     });
 
 interface IProps extends WithStyles<typeof styles> {
@@ -74,7 +77,7 @@ const SideDrawer = (props: IProps) => {
         {
             link: '/dashboard',
             name: 'Dashboard',
-            icon: <DashboardIcon />,
+            icon: <DashboardIcon className={classes.iconSize} />,
         },
     ];
     return (
@@ -87,7 +90,7 @@ const SideDrawer = (props: IProps) => {
         >
             <div className={classes.toolbarIcon}>
                 <IconButton onClick={handleSideDrawerClose}>
-                    <ChevronLeftIcon />
+                    <ChevronLeftIcon className={classes.iconSize} />
                 </IconButton>
             </div>
             <Divider />
@@ -113,7 +116,7 @@ const SideDrawer = (props: IProps) => {
                             <Link key="1" to={'/project/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>
-                                        <BarChartIcon />
+                                        <BarChartIcon className={classes.iconSize} />
                                     </ListItemIcon>
                                     <ListItemText primary="Chart" />
                                 </ListItem>
@@ -121,7 +124,7 @@ const SideDrawer = (props: IProps) => {
                             <Link key="2" to={'/members/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>
-                                        <PeopleIcon />
+                                        <PeopleIcon className={classes.iconSize} />
                                     </ListItemIcon>
                                     <ListItemText primary="Members" />{' '}
                                 </ListItem>
@@ -129,7 +132,7 @@ const SideDrawer = (props: IProps) => {
                             <Link key="3" to={'/projectsettings/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>
-                                        <SettingsIcon />
+                                        <SettingsIcon className={classes.iconSize} />
                                     </ListItemIcon>
                                     <ListItemText primary="Settings" />{' '}
                                 </ListItem>

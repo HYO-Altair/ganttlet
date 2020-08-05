@@ -38,7 +38,7 @@ const styles = (theme: Theme) =>
             }),
         },
         brandText: {
-            fontFamily: "'Baloo Bhaijaan', cursive",
+            fontFamily: 'Montserrat, Open Sans, Roboto',
             fontWeight: 400,
         },
         menuButton: {

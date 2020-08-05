@@ -20,11 +20,11 @@ const CommentArea = (props: IProps): JSX.Element => {
     if (projectid && taskid) {
         return (
             <div className={classes.container}>
-                <div className="col-4  pt-3 bg-white">
+                <div className="col-sm pt-2 bg-white">
                     {/*Comment List component */}
                     <CommentList />
                 </div>
-                <div className="col-4  pt-3 border-right">
+                <div className="col-sm border-right">
                     {/*Comment Form component */}
                     <CommentForm />
                 </div>

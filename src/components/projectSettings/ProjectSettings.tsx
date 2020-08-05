@@ -7,18 +7,7 @@ import { RootState } from '../../store/reducers';
 import { makeStyles } from '@material-ui/core/styles';
 import { IProject, IProjectTaskLink, IProjectTaskData } from '../../config/types';
 import { viewProject, notViewProject, deleteProject } from '../../store/actions/projectActions';
-import {
-    Card,
-    CardHeader,
-    Divider,
-    Grid,
-    CardContent,
-    Button,
-    TextField,
-    CardActions,
-    Select,
-    MenuItem,
-} from '@material-ui/core';
+import { Card, CardHeader, Divider, Grid, Button, CardActions } from '@material-ui/core';
 
 interface IProps {
     projectId: string;

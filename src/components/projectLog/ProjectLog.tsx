@@ -41,29 +41,32 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function JSONtoMessagesArray(json: Record<string, IMessage>) {
+    const objects = Object.values(json);
+    return objects.map((value) => {
+        return `${value.content} by ${value.actor} on ${value.date}`;
+    });
+}
+
 const ProjectLog = (props: IProps): JSX.Element => {
     const classes = useStyles();
     const { projectid } = props;
 
-    useFirebaseConnect(`projects/`);
-    let messages = null as any | IMessage[];
-    useSelector((state: RootState) => console.log(state.firebase));
-
-    messages = useSelector((state: RootState) =>
+    useFirebaseConnect(`projects/${projectid}`);
+    const messages = useSelector((state: RootState) =>
         // if comments has been loaded, set project, else set to null
         projectid &&
         state.firebase.data.projects &&
         state.firebase.data.projects[projectid] &&
         state.firebase.data.projects[projectid].messages
-            ? state.firebase.data.projects[projectid].messages
+            ? JSONtoMessagesArray(state.firebase.data.projects[projectid].messages)
             : [],
     );
-    console.log(messages);
-
     if (messages) {
         return (
             <div>
                 <div className={classes.appBarSpacer} />
+                {/* {JSON.stringify(messages)} */}
                 <MessageArea messages={messages} />
             </div>
         );

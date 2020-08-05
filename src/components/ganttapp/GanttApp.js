@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Gantt from './Gantt';
 import Toolbar from './Toolbar';
-import MessageArea from './MessageArea';
+// import MessageArea from './MessageArea';
 import PropTypes from 'prop-types';
 // import { Fab } from '@material-ui/core';
 // import { Add } from '@material-ui/icons';
@@ -15,6 +15,7 @@ import {
 } from '../../store/actions/ChartActions/TaskActions';
 import { connect } from 'react-redux';
 import { addMessage } from '../../store/actions/ChartActions/MessageActions';
+// import { gantt } from 'dhtmlx-gantt';
 
 function convertMessagesObjectToString(objects) {
     if (!objects) return [];
@@ -53,11 +54,13 @@ class GanttApp extends Component {
     }
 
     logDataUpdate = (entityType, action, itemData, id) => {
-        const text = itemData && itemData.text ? ` (${itemData.text})` : '';
-        let message = `${entityType} ${action}: ${id} ${text}`;
-        if (entityType === 'link' && action !== 'delete') {
-            message += ` ( source: ${itemData.source}, target: ${itemData.target} )`;
-        }
+        console.log(itemData);
+        // const text = itemData?.text ?? '';
+        entityType = entityType.charAt(0).toUpperCase() + entityType.slice(1); // Capitalizing first letter
+        let message = `${entityType} ${action}d`;
+        // if (entityType === 'link' && action !== 'delete') {
+        //     message += ` ( source: ${itemData.source}, target: ${itemData.target} )`;
+        // }
         this.addMessage(message);
 
         // CRUD on task
@@ -82,7 +85,7 @@ class GanttApp extends Component {
     };
 
     render() {
-        const { currentZoom, messages } = this.state;
+        const { currentZoom } = this.state;
         return (
             <div>
                 <div className="gantt-app">
@@ -98,7 +101,7 @@ class GanttApp extends Component {
                             onDataUpdated={this.logDataUpdate}
                         />
                     </div>
-                    <MessageArea messages={messages} />
+                    {/* <MessageArea messages={messages} /> */}
                 </div>
             </div>
         );

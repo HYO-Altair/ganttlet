@@ -58,7 +58,7 @@ function Notifications(props: IProps): JSX.Element {
     if (invitations)
         return (
             <div>
-                <Typography>Notifications</Typography>
+                <Typography variant="h6">Notifications</Typography>
                 {invitations}
             </div>
         );

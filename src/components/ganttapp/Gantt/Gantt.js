@@ -109,6 +109,39 @@ class Gantt extends Component {
         };
 
         gantt.locale.labels.section_owner = 'Owner';
+        //tooltip
+        gantt.plugins({
+            tooltip: true
+        });
+
+        //Search and filter for task
+        var filterValue = "";
+        gantt.$doFilter = function (value) {
+            filterValue = value;
+            gantt.refreshData();
+        }
+
+        gantt.attachEvent("onBeforeTaskDisplay", function (id, task) {
+            if (!filterValue) return true;
+
+            var normalizedText = task.text.toLowerCase();
+            var normalizedValue = filterValue.toLowerCase();
+            return normalizedText.indexOf(normalizedValue) > -1;
+        });
+
+        gantt.attachEvent("onGanttRender", function () {
+            gantt.$root.querySelector("[data-text-filter]").value = filterValue;
+        })
+
+        var textFilter = "<div class='searchEl'>Task name <input data-text-filter id='search' type='text' placeholder='Search tasks...' oninput='gantt.$doFilter(this.value)'></div>";
+
+        gantt.config.columns = [
+            { name: "text", label: textFilter, width: 250, tree: true },
+            { name: "start_date", label: "Start time", width: 80, align: "center" },
+            { name: "duration", label: "Duration", width: 60, align: "center" },
+            { name: "add", label: "", width: 50, align: "left" },
+        ];
+
         gantt.config.lightbox.sections = [
             { name: 'description', height: 70, map_to: 'text', type: 'textarea', focus: true },
             { name: 'owner', height: 50, type: 'textarea', map_to: 'official_name' },

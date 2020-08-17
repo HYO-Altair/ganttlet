@@ -14,11 +14,10 @@ interface CommentFormState {
 
 interface IProps {
     projectid: string;
-    taskid: string;
     createComment: any;
 }
 const CommentForm = (props: IProps) => {
-    const { projectid, taskid, createComment } = props;
+    const { projectid, createComment } = props;
     const [state, setState] = useState({
         error: '',
 
@@ -58,7 +57,7 @@ const CommentForm = (props: IProps) => {
         const { comment } = state;
         // console.log('wy');
         // console.log(comment);
-        createComment(projectid, taskid, comment);
+        createComment(projectid, comment);
     };
     const isFormValid = (): boolean => {
         return state.comment.message !== '';
@@ -89,16 +88,9 @@ const CommentForm = (props: IProps) => {
         </React.Fragment>
     );
 };
-const mapStateToProps = (state: any) => {
-    return {
-        projectid: state.comments.projectid,
-        taskid: state.comments.taskid,
-    };
-};
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        createComment: (projectid: string, taskid: string, comment: IComment) =>
-            dispatch(createComment(projectid, taskid, comment)),
+        createComment: (projectid: string, comment: IComment) => dispatch(createComment(projectid, comment)),
     };
 };
-export default compose(connect(mapStateToProps, mapDispatchToProps))(CommentForm);
+export default compose(connect(null, mapDispatchToProps))(CommentForm);

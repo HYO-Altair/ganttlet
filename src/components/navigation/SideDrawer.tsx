@@ -18,7 +18,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
-
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import * as Constants from '../../config/constants';
 import { connect } from 'react-redux';
 
@@ -125,8 +126,24 @@ const SideDrawer = (props: IProps) => {
                                     </ListItemIcon>
                                     <ListItemText primary="Members" />{' '}
                                 </ListItem>
+                            </Link>{' '}
+                            <Link key="3" to={'/projectdiscussion/' + project.projectId}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <ChatBubbleIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Discussion" />{' '}
+                                </ListItem>
                             </Link>
-                            <Link key="3" to={'/projectsettings/' + project.projectId}>
+                            <Link key="4" to={'/projectlog/' + project.projectId}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <AssignmentIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Log" />{' '}
+                                </ListItem>
+                            </Link>
+                            <Link key="5" to={'/projectsettings/' + project.projectId}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <SettingsIcon />

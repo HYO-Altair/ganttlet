@@ -82,7 +82,6 @@ export const hideComments = (): ThunkAction<Promise<void>, TGetState, IGetFireba
 };
 export const createComment = (
     projectid: string,
-    taskid: string,
     comment: IComment,
 ): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
@@ -104,16 +103,14 @@ export const createComment = (
 
         comment['timestamp'] = timestamp;
         comment['username'] = state.firebase.auth.displayName;
-        db.ref(`projects/${projectid}/tasks/comments/${taskid}`).push(comment);
+        db.ref(`projects/${projectid}/comments/`).push(comment);
         console.log('comment created');
         console.log(projectid);
-        console.log(taskid);
     };
 };
 
 export const editComment = (
     projectid: string,
-    taskid: string,
     commentid: string,
     message: string,
 ): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
@@ -124,13 +121,12 @@ export const editComment = (
     ) => {
         const firebase = getFirebase() as ExtendedFirebaseInstance;
         const db = firebase.database();
-        db.ref(`projects/${projectid}/tasks/comments/${taskid}/${commentid}`).update({ message });
+        db.ref(`projects/${projectid}/comments/${commentid}`).update({ message });
     };
 };
 
 export const deleteComment = (
     projectid: string,
-    taskid: string,
     commentid: string,
 ): ThunkAction<Promise<void>, TGetState, IGetFirebase, AnyAction> => {
     return async (
@@ -140,6 +136,6 @@ export const deleteComment = (
     ) => {
         const firebase = getFirebase() as ExtendedFirebaseInstance;
         const db = firebase.database();
-        db.ref(`projects/${projectid}/tasks/comments/${taskid}/${commentid}`).set(null);
+        db.ref(`projects/${projectid}/comments/${commentid}`).set(null);
     };
 };

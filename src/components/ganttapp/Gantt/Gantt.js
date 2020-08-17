@@ -118,8 +118,8 @@ class Gantt extends Component {
             { name: 'time', height: 72, map_to: 'auto', type: 'duration' },
         ];
         let click = 0;
-        if (!gantt.__taskClick)
-            gantt.__taskClick = gantt.attachEvent('onTaskClick', function (id, e) {
+        if (!gantt.__taskSelected)
+            gantt.__taskSelected = gantt.attachEvent('onTaskSelected', function (id, e) {
                 setTimeout(function () {
                     if (click) {
                         return false;

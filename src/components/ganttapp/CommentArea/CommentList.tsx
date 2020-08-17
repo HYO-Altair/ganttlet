@@ -18,23 +18,19 @@ const styles = (theme: Theme) =>
     });
 interface IProps extends WithStyles<typeof styles> {
     projectid: string;
-    taskid: string;
 }
 
 const CommentList = (props: IProps) => {
-    const { projectid, taskid, classes } = props;
+    const { projectid, classes } = props;
 
-    useFirebaseConnect([`projects/${projectid}/tasks/comments/${taskid}`]);
+    useFirebaseConnect(`projects/`);
     let comments = null as any | IComment[];
     console.log(projectid);
-    console.log(taskid);
+    useSelector((state: RootState) => console.log(state.firebase));
     comments = useSelector((state: RootState) =>
         // if comments has been loaded, set project, else set to null
-        projectid &&
-        taskid &&
-        state.firebase.data.projects[projectid].tasks.comments &&
-        state.firebase.data.projects[projectid].tasks.comments[taskid]
-            ? state.firebase.data.projects[projectid].tasks.comments[taskid]
+        projectid && state.firebase.data.projects[projectid] && state.firebase.data.projects[projectid].comments
+            ? state.firebase.data.projects[projectid].comments
             : [],
     );
     console.log(comments);
@@ -60,10 +56,4 @@ const CommentList = (props: IProps) => {
         );
     }
 };
-const mapStateToProps = (state: any) => {
-    return {
-        projectid: state.comments.projectid,
-        taskid: state.comments.taskid,
-    };
-};
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(memo(CommentList)));
+export default connect()(withStyles(styles, { withTheme: true })(memo(CommentList)));

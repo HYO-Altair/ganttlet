@@ -2,6 +2,7 @@
 
 Gantlett is a fully-featured, completely free, Gantt Chart making tool brought to you by the folks at HackYourOwn's Team Altair. Ganttlet boosts your team's productity by organizing all your milestones/tasks into an intuitive interactive chart.
 
+Check the live site out [HERE](https://ganttlett.web.app/)
 ## For developers
 
 Clone the source locally:

@@ -35,7 +35,18 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
     },
 }));
-const Dashboard = (props) => {
+
+
+interface prop {
+    projects: {
+        owned: Object[];
+        joined: Object[];
+    };
+    handleSideDrawerClose: any;
+}
+
+
+function Dashboard(props: prop): JSX.Element {
     const classes = useStyles();
     const { projects, handleSideDrawerClose } = props;
     return (
@@ -54,7 +65,6 @@ const Dashboard = (props) => {
                                 <ProjectCard
                                     projectName={projects.owned[key]}
                                     projectID={key}
-                                    projectDes={key.description}
                                     handleSideDrawerClose={handleSideDrawerClose}
                                 />
                             </Grid>
@@ -72,7 +82,6 @@ const Dashboard = (props) => {
                                 <ProjectCard
                                     projectName={projects.joined[key]}
                                     projectID={key}
-                                    projectDes={key.description}
                                     handleSideDrawerClose={handleSideDrawerClose}
                                 />
                             </Grid>
@@ -84,9 +93,8 @@ const Dashboard = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
-        //auth: state.firebase.auth,
         projects: state.firebase.profile.projects,
     };
 };

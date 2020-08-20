@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { gantt } from 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import PropTypes from 'prop-types';
@@ -96,7 +95,7 @@ class Gantt extends Component {
                 return "<div class='color_container'><input class='color_picker' type='color'></div>";
             },
             set_value: function (node, value, task) {
-                node.querySelector('.color_picker').value = value || '';
+                node.querySelector('.color_picker').value = value || '#3D7DE5';
             },
             get_value: function (node, task) {
                 return node.querySelector('.color_picker').value;

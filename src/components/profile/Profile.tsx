@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Box, Typography, Container, Grid, Button } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 
 import Form from './Form';
 import { connect } from 'react-redux';
@@ -117,16 +117,7 @@ const Profile = (props: IProps): JSX.Element => {
         <div className={classes.root}>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        {/* User Profile Goes here */}
-                        <Form />
-                    </Grid>
 
-                    <Box pt={4}>
-                        <Copyright />
-                    </Box>
-                </Container>
                 <Button onClick={() => handleClick()} variant="contained" data-cy="deleteButton">
                     Delete Account
                 </Button>

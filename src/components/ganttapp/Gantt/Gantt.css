@@ -5,3 +5,23 @@
 .color_container {
     padding: 0px 0px 0px 7px;
 }
+
+.gantt-chart {
+    min-height: 100vh;
+}
+
+#search {
+    width: 100px;
+    height: 30px;
+    margin-left: 25px;
+    padding: 3px 5px 1px;
+    font-size: 13px;
+}
+
+@media screen and (max-width: 768px) {
+    .gantt_layout_cell.grid_cell.gantt_layout_outer_scroll.gantt_layout_outer_scroll_vertical.gantt_layout_outer_scroll.gantt_layout_outer_scroll_horizontal.gantt_layout_cell_border_right {
+        visibility: hidden;
+        content: none;
+        width: 0px !important;
+    }
+}

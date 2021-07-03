@@ -19,7 +19,7 @@ export default class Toolbar extends Component {
 
         return (
             <div className="tool-bar">
-                <b>Zoom: </b>
+                <b>View by: </b>
                 {zoomRadios}
             </div>
         );

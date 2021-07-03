@@ -8,9 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import LoginIcon from '@material-ui/icons/ExitToApp';
 import RegisterIcon from '@material-ui/icons/ExitToApp';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import PersonIcon from '@material-ui/icons/Person';
+import { FaSignOutAlt as ExitToAppIcon } from 'react-icons/fa'; //'@material-ui/icons/ExitToApp';
 
 import NavigationDrawer from './NavigationDrawer';
 import SideDrawer from '../navigation/SideDrawer';
@@ -40,7 +38,7 @@ const styles = (theme: Theme) =>
             }),
         },
         brandText: {
-            fontFamily: "'Baloo Bhaijaan', cursive",
+            fontFamily: 'Montserrat, Open Sans, Roboto',
             fontWeight: 400,
         },
         menuButton: {
@@ -59,6 +57,9 @@ const styles = (theme: Theme) =>
         toolbar: {
             display: 'flex',
             justifyContent: 'space-between',
+        },
+        iconSize: {
+            fontSize: '1.5em',
         },
     });
 
@@ -160,6 +161,7 @@ function NavBar(props: IProps): JSX.Element {
                     <div>
                         {auth.uid ? (
                             <div>
+                                {/** 
                                 <Link
                                     key="profile"
                                     to="/profile"
@@ -176,9 +178,13 @@ function NavBar(props: IProps): JSX.Element {
                                         <NotificationsIcon />
                                     </Badge>
                                 </IconButton>
-
+                                **/}
                                 <Link key="logout" to="/login" className={classes.noDecoration} data-cy="logoutButton">
-                                    <IconButton color="inherit" onClick={handleExitIconClick}>
+                                    <IconButton
+                                        color="inherit"
+                                        onClick={handleExitIconClick}
+                                        className={classes.iconSize}
+                                    >
                                         <ExitToAppIcon />
                                     </IconButton>
                                 </Link>
